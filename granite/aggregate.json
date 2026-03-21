@@ -1,0 +1,35 @@
+{
+  "n_images_total": 800,
+  "n_good": 800,
+  "n_error": 0,
+  "total_time_seconds": 619.5,
+  "seconds_per_image": 0.8,
+  "dqt_detection_rate": 0.0,
+  "cascade_qualities": [
+    95,
+    85,
+    75,
+    60,
+    40
+  ],
+  "channel_pairs_tested": [
+    "RG",
+    "GB"
+  ],
+  "RG_gen4_ks_mean": 0.026855,
+  "RG_gen4_ks_median": 0.0,
+  "RG_gen4_ks_below_05_pct": 90.1,
+  "RG_gen4_ks_below_01_pct": 84.5,
+  "RG_amplification_pct": 31.8,
+  "RG_gen4_vr_mean": 1.2647,
+  "RG_gen4_vr_above1_pct": 46.2,
+  "GB_gen4_ks_mean": 0.007872,
+  "GB_gen4_ks_median": 0.0,
+  "GB_gen4_ks_below_05_pct": 96.4,
+  "GB_gen4_ks_below_01_pct": 93.1,
+  "GB_amplification_pct": 48.1,
+  "GB_gen4_vr_mean": 1.1551,
+  "GB_gen4_vr_above1_pct": 31.6,
+  "GB_wins_head_to_head": 478,
+  "RG_wins_head_to_head": 322
+}

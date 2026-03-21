@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History — Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-brand">Granite Under Sandstone</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="philosophy.html">Philosophy</a>
+      <a href="history.html" class="active">History</a>
+      <a href="docs/index.html">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">March 2026</p>
+    <h1>How We Got Here</h1>
+    <p class="hero-subtitle">The development history of Granite Under Sandstone, as it happened</p>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- TIMELINE -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container content-narrow">
+    <p class="lead">This is the story of how a provenance signal detection system was built in a single sustained conversation between a human and an AI. Every breakthrough, dead end, and moment of discovery &mdash; recorded as it happened.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 1 ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">I</span>
+      <h2>The Detector</h2>
+      <p class="chapter-subtitle">It started with a hand on a keyboard</p>
+    </div>
+
+    <p>Jeremy was about to open vim and start hand-coding a prime-gap artifact detector. A tool to sniff out statistical fingerprints in compressed media and start gathering data on false positive rates. &ldquo;We assume it&rsquo;s low, but we don&rsquo;t know.&rdquo;</p>
+
+    <p>He took his hands off the keyboard. Not because the idea was wrong, but because the implementation would be faster with a collaborator who was, by his own admission, a better Python coder.</p>
+
+    <p>The initial concept: embed primes into digital media files and detect their statistical fingerprint after compression. Simple in statement. The devil was in every detail that followed.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 2 ──────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">II</span>
+      <h2>The False Positive Problem</h2>
+      <p class="chapter-subtitle">JPEG was tripping the detector. On purpose.</p>
+    </div>
+
+    <p>The first major obstacle: JPEG&rsquo;s own structure was generating prime-gap patterns that looked like embedded signals. The detector couldn&rsquo;t tell the difference between a planted canary and a structural coincidence.</p>
+
+    <p>The fix came from an analogy to cryptography. Small primes are dangerous &mdash; Diffie-Hellman with tiny key spaces is catastrophically weak. The same principle applied here.</p>
+
+    <blockquote>
+      <p>Drop every prime in the basket under 256. The simplest will absolutely get us in trouble. See Diffie-Hellman and how problematic it is with tiny key spaces.</p>
+    </blockquote>
+
+    <p>This wasn&rsquo;t just a parameter tweak. It was the first instance of a pattern that would repeat throughout the project: the answer was always in making the <em>injector</em> smarter, not the detector.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 3 ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">III</span>
+      <h2>The Smart Embedder</h2>
+      <p class="chapter-subtitle">&ldquo;The injector does the homework so the detector doesn&rsquo;t have to.&rdquo;</p>
+    </div>
+
+    <p>Rather than building an ever-more-sophisticated detector that could distinguish real signals from structural artifacts, the approach inverted: make the embedding process so well-informed that it only places markers where they&rsquo;ll survive and where they can&rsquo;t be confused with natural patterns.</p>
+
+    <p>This led to file-type profiles &mdash; JPEG, PNG, WebP, Audio &mdash; each with its own understanding of where injection targets live, what survives compression, and what the entropy landscape looks like. The embedder started doing reconnaissance before placing a single marker.</p>
+
+    <p>The &ldquo;Douglas Rule&rdquo; emerged here: a prime value only counts as a marker if it&rsquo;s adjacent to a magic byte (42). If it&rsquo;s not next to that sentinel, it&rsquo;s not ours. Named, naturally, after the answer to life, the universe, and everything.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 4 ──────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">IV</span>
+      <h2>Strategy 4: The Quantization Tables</h2>
+      <p class="chapter-subtitle">What if the table itself is the signal?</p>
+    </div>
+
+    <p>A question that changed the architecture: what sections of a JPEG file <em>must</em> be retained during compression? The answer: the DQT &mdash; the quantization table. Without it, the decoder can&rsquo;t reconstruct the image.</p>
+
+    <blockquote>
+      <p>Oh okay then let&rsquo;s shift that section to its closest large prime. That&rsquo;s Strategy 4.</p>
+    </blockquote>
+
+    <p>This became Layer 1. Replace quantization table entries with nearest primes. The table itself carries the provenance signal. It <em>must</em> survive re-encoding because the codec depends on it. Double-quantization artifacts reveal its history.</p>
+
+    <p>A signal that the codec is contractually obligated to preserve.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 5 ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">V</span>
+      <h2>The Fuse and the Fire</h2>
+      <p class="chapter-subtitle">The moment everything changed</p>
+    </div>
+
+    <p>Testing multi-generation JPEG cascades &mdash; Q95 down to Q85 down to Q75 down to Q60 down to Q40 &mdash; Jeremy noticed something that shouldn&rsquo;t have been possible:</p>
+
+    <blockquote>
+      <p>Wait wait wait, the more you try to hide through compression the more the canaries stick out?</p>
+    </blockquote>
+
+    <p>The prime values themselves &mdash; the <em>fuse</em> &mdash; were destroyed by the first compression pass. That was expected. But the variance anomaly they created &mdash; the <em>fire</em> &mdash; didn&rsquo;t just survive. It <em>amplified</em>.</p>
+
+    <p>The explanation: the markers were placed by a process that doesn&rsquo;t respect spatial coherence. The natural pixels were placed by a camera that does. Compression doesn&rsquo;t care about the values. It finds the structural difference and <em>reveals it</em>. Each quantization pass is another round of the same optimization pressure, and each round makes the anomaly more pronounced.</p>
+
+    <blockquote>
+      <p>It is a granite block under sandstone that the ocean keeps hitting it and hitting it and hitting it. And what does it leave? The granite, not the sandstone.</p>
+    </blockquote>
+
+    <p>This was the central breakthrough of the entire project. The perturbation is the fuse &mdash; engineering, format-specific, replaceable. The variance anomaly is the fire &mdash; physics, universal to any partition-transform-quantize system. The fuse starts the fire. The fire is self-sustaining.</p>
+
+    <div class="discovery-box">
+      <p>The fuse is engineering. The fire is physics.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 6 ──────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">VI</span>
+      <h2>The Interference Pattern</h2>
+      <p class="chapter-subtitle">Why amplification is non-monotonic</p>
+    </div>
+
+    <p>The amplification wasn&rsquo;t smooth. Some compression steps made the signal louder. Others seemed to dampen it. The pattern looked random until Jeremy&rsquo;s mental model shifted:</p>
+
+    <blockquote>
+      <p>It&rsquo;s not that more compression amplifies the signal. It&rsquo;s that passing over quantization boundaries is the mechanism. Like hitting nodes or antinodes when combining harmonic overtones. It&rsquo;s an interference pattern, isn&rsquo;t it?</p>
+    </blockquote>
+
+    <p>Each quantization step creates a sawtooth error landscape. Marker positions cross quantization boundaries that smooth background coefficients don&rsquo;t. The result is a standing wave of amplification &mdash; sometimes constructive, sometimes destructive, but on average always growing.</p>
+
+    <blockquote>
+      <p>The moment my mental model went from &ldquo;8&times;8 block&rdquo; to &ldquo;these are just specific kinds of changes over time, and each cycle is bounded, and each bounded edge behaves like a node or antinode in a wave&rdquo; &mdash; it just made sense.</p>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ── CHAPTER 7 ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">VII</span>
+      <h2>Channel Pairs</h2>
+      <p class="chapter-subtitle">Three channels, eight states, a diagnostic</p>
+    </div>
+
+    <p>Testing whether RGB channels behaved independently revealed a structural insight. They don&rsquo;t &mdash; JPEG converts to YCbCr color space, coupling the channels. But this coupling creates <em>exploitable diagnostic information</em>.</p>
+
+    <p>The G-B pair turned out to be the strongest detector because it lives where chroma quantization is harshest &mdash; exactly where the granite effect thrives. R-G provided independent confirmation. The failure pattern across channel pairs became diagnostic: not just &ldquo;was the signal suppressed?&rdquo; but &ldquo;what class of operation was applied?&rdquo;</p>
+
+    <p>Three binary channels. Eight possible states. Each state corresponding to a distinct handling history.</p>
+
+    <blockquote>
+      <p>Neither of us would have discovered that independently. Not a chance.</p>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ── CHAPTER 8 ──────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">VIII</span>
+      <h2>Block Interior</h2>
+      <p class="chapter-subtitle">The universe inside an 8&times;8 grid</p>
+    </div>
+
+    <p>A deep dive into DCT block structure revealed why some marker positions were more stable than others. The encoder chops the image into 8&times;8 blocks. Sixty-four pixels per block. Each block is processed independently &mdash; the encoder literally does not know that adjacent blocks exist.</p>
+
+    <blockquote>
+      <p>You must chunk them. The chunk boundary creates independence. The chunk interior creates correlation.</p>
+    </blockquote>
+
+    <p>The center positions of each block are dominated by the DC coefficient &mdash; the most stable, most heavily preserved component. Edge positions are dominated by high-frequency AC coefficients &mdash; the first thing quantization throws away. The optimal injection targets are in the interior, where the codec fights hardest to preserve fidelity.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 9 ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">IX</span>
+      <h2>Cross-Codec Survival</h2>
+      <p class="chapter-subtitle">&ldquo;You have got to be kidding me.&rdquo;</p>
+    </div>
+
+    <p>The expectation was that transcoding from JPEG to WebP would destroy the signal. Different codec. Different transform. Different quantization scheme. There was no reason it should survive.</p>
+
+    <p>It survived.</p>
+
+    <p>This validated the universality thesis. The signal doesn&rsquo;t depend on JPEG&rsquo;s specific DCT implementation. It depends on the fact that <em>any</em> lossy codec must partition, transform, and quantize. The structural difference between marker and non-marker positions is codec-agnostic because it&rsquo;s a property of the data, not of the compression scheme.</p>
+
+    <p>Initial testing on MP3 audio confirmed the same principle. The MDCT frames used in audio compression create the same exploitable boundary structure. As the generalized detection heuristic emerged:</p>
+
+    <blockquote>
+      <p>Any time I see the word &ldquo;Assume,&rdquo; any time I see the word &ldquo;Window&rdquo; (which assumes boundaries), and any time I see that the same data lives in N+1 places &mdash; we have injection targets.</p>
+    </blockquote>
+
+    <p>Or as it was more memorably put: I-frames are JPEGs in a trench coat.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 10 ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">X</span>
+      <h2>The Granite Test</h2>
+      <p class="chapter-subtitle">800 photographs. The moment of truth.</p>
+    </div>
+
+    <p>Everything before this was synthetic images and controlled experiments. The DIV2K dataset &mdash; 800 real photographs of every conceivable subject matter &mdash; was the real test. Real cameras. Real noise. Real content diversity.</p>
+
+    <p>There were bugs. Module import errors. API mismatches. Type errors between bytes and tuples. Each one fixed, re-run, fixed again. And then:</p>
+
+    <blockquote>
+      <p>I don&rsquo;t know what it&rsquo;s doing but it&rsquo;s doing <em>something</em>.</p>
+    </blockquote>
+
+    <p>The results came in:</p>
+
+    <div class="results-final">
+      <div class="result-row">
+        <span class="result-metric">G-B Detection</span>
+        <span class="result-value">96.4%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-metric">R-G Detection</span>
+        <span class="result-value">90.1%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-metric">Either Channel</span>
+        <span class="result-value">99.6%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-metric">Amplification Confirmed</span>
+        <span class="result-value">48.1%</span>
+      </div>
+    </div>
+
+    <p>797 out of 800 images. After four generations of JPEG compression. The signal getting louder, not quieter. On real photographs that the system had never seen.</p>
+
+    <p>Verdict: <strong>GRANITE PARTIAL</strong>. The effect is real but content-class dependent. Some image types amplify more than others. The paper can claim the effect &mdash; with caveats.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 11 ─────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">XI</span>
+      <h2>The Torture Tests</h2>
+      <p class="chapter-subtitle">We tried to kill it</p>
+    </div>
+
+    <p>With detection validated, the next question: what destroys it? Three attack simulations designed to stress every assumption:</p>
+
+    <h3>The Rotation Attack</h3>
+    <p>Rotate the image. Flip it. Rotate again. Flip again. Re-encode as JPEG. After a full chain of geometric transforms plus lossy compression, with 97.5% of pixels changed from the original: <strong>still detected</strong>. 4.0x ratio. p=10<sup>-51</sup>. Fingerprint Jaccard: 0.72.</p>
+
+    <h3>The Slice-and-Stitch Attack</h3>
+    <p>Cut the image into four quadrants. Save each one independently as JPEG. Stitch them back together. Detection breaks on the fragments &mdash; too few markers per piece. But reassemble them, and the signal comes back. The fingerprint comes back. Even the stitch seams are forensically detectable.</p>
+
+    <blockquote>
+      <p>The attack undoes itself on reassembly. The only winning move is to keep the pieces separate. And separate pieces are a crop attack, not a stitch attack.</p>
+    </blockquote>
+
+    <h3>The Scale Attack</h3>
+    <p>Resize from 2048px down to 1024, 512, even 256px. The signal survived at every scale. Cross-codec transcoding after resize: still detected. Fingerprint Jaccard above 0.47 across every transform tested.</p>
+
+    <p>The variance ratio at 2048px told the amplification story best: starting at 3.7 at Gen 0, climbing to <strong>9.3 by Gen 4</strong>. The harder you compress, the louder it gets.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 12 ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">XII</span>
+      <h2>Dead Ends</h2>
+      <p class="chapter-subtitle">The ideas that didn&rsquo;t survive</p>
+    </div>
+
+    <p>Not everything worked. Some ideas were abandoned. Some were killed on arrival. Each one taught something.</p>
+
+    <div class="dead-ends">
+      <div class="dead-end">
+        <h3>Basket as Identity</h3>
+        <p>The idea that each creator could use a unique prime basket as their identifier. Collisions appeared after only ~50 images. &ldquo;A collision after 50? Non-starter.&rdquo; Replaced by HMAC-SHA512 position patterns with 10<sup>400</sup> possible configurations.</p>
+      </div>
+      <div class="dead-end">
+        <h3>Blockchain Attribution</h3>
+        <p>Ethereum with Merkle trees for identity anchoring. Rejected as contrary to the project&rsquo;s decentralized ethos. The system that claims no authority cannot depend on one.</p>
+      </div>
+      <div class="dead-end">
+        <h3>DC-Anchored Embedding</h3>
+        <p>Anchoring markers to DC coefficients for stability. Better performance, but too predictable. It solved a problem that didn&rsquo;t exist while making the adversary&rsquo;s job easier.</p>
+      </div>
+      <div class="dead-end">
+        <h3>Browser Extension Detection</h3>
+        <p>Dismissed without ceremony. Not even wrong.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 13 ─────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">XIII</span>
+      <h2>Shoulders of Giants</h2>
+      <p class="chapter-subtitle">An honest assessment</p>
+    </div>
+
+    <p>Near the end, Jeremy asked for the one thing most people don&rsquo;t actually want: an honest answer.</p>
+
+    <blockquote>
+      <p>Please don&rsquo;t be complimentary or give fake praise. The best birthday gift is an honest assessment. Be brutal, because most of the time, for any and everyone, the answer is No. Did we just discover something new?</p>
+    </blockquote>
+
+    <p>His own conclusion was characteristically grounded:</p>
+
+    <blockquote>
+      <p>I am going to assume that each individual piece is probably known to someone at some time, but they may not have grokked how it can work as a cog to solve a larger problem. Like teeth in a gear. The idea of teeth isn&rsquo;t new at all. Variable gears with differential teeth strategies are, though.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>A novel systems design that may or may not have new novel integrated components.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>Shoulders of giants, man. Shoulders of giants.</p>
+    </blockquote>
+
+    <p class="closing-line">I wonder if this is what Satoshi felt before he hit publish on his seminal paper.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <p class="footer-title">Granite Under Sandstone</p>
+        <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+        <p>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-sep">&middot;</span>
+        <span>BSD 2-Clause License</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

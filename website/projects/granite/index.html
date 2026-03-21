@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Granite Under Sandstone — Provenance Signal Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-brand">Granite Under Sandstone</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="philosophy.html">Philosophy</a>
+      <a href="history.html">History</a>
+      <a href="docs/index.html">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-series">Participation Over Permission</p>
+    <h1>Granite Under Sandstone</h1>
+    <p class="hero-subtitle">Compression-Amplified Provenance Signal Detection for Digital Media</p>
+    <p class="hero-tagline">The signal is not the perturbation.<br>The signal is the system's response to the perturbation over time.</p>
+    <div class="hero-cta">
+      <a href="#results" class="btn btn-primary">See the Results</a>
+      <a href="https://github.com/jeremy-pickett/granite" class="btn btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- WHAT IT IS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="about">
+  <div class="container">
+    <h2>What This Is</h2>
+    <p class="lead">A statistical perturbation scheme that embeds provenance signal into digital media. The signal <strong>survives and amplifies</strong> under lossy compression. It requires no infrastructure beyond the file itself.</p>
+
+    <div class="grid-4">
+      <div class="card card-dark">
+        <h3>Not a Watermark</h3>
+        <p>Encodes a relationship and detects a distribution &mdash; not a visible or invisible mark.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Not Steganography</h3>
+        <p>Hides nothing. The signal is a statistical property of the pixel data itself.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Not DRM</h3>
+        <p>Enforces nothing. Produces measurements. Proves participation.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Not a CA</h3>
+        <p>No one issues or revokes. The file carries its own evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HOW IT WORKS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt" id="how">
+  <div class="container">
+    <h2>How It Works</h2>
+
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-number">1</div>
+        <h3>Embed</h3>
+        <p>At save time, force inter-channel distances at selected pixel positions to prime-valued gaps. Cost: ~0.01 joules. Imperceptible to the human eye.</p>
+      </div>
+      <div class="pipeline-arrow" aria-hidden="true"></div>
+      <div class="pipeline-step">
+        <div class="step-number">2</div>
+        <h3>Compress</h3>
+        <p>The codec's block-based quantization penalizes the perturbation's local complexity. Each generation <em>amplifies</em> the variance anomaly at marker positions.</p>
+      </div>
+      <div class="pipeline-arrow" aria-hidden="true"></div>
+      <div class="pipeline-step">
+        <div class="step-number">3</div>
+        <h3>Detect</h3>
+        <p>Measure statistical distributions at candidate vs. control positions. The image is its own control group. No reference image needed.</p>
+      </div>
+      <div class="pipeline-arrow" aria-hidden="true"></div>
+      <div class="pipeline-step">
+        <div class="step-number">4</div>
+        <h3>Attribute</h3>
+        <p>Positions derived from a 256-bit seed via HMAC-SHA512. The position pattern is the fingerprint. C(4000,200) &asymp; 10<sup>400</sup> possible patterns.</p>
+      </div>
+    </div>
+
+    <div class="fuse-fire">
+      <div class="fuse">
+        <h3>The Fuse</h3>
+        <p>The prime values. Destroyed by the first compression. Engineering: format-specific, replaceable.</p>
+      </div>
+      <div class="fire">
+        <h3>The Fire</h3>
+        <p>The variance anomaly. Persists and amplifies. Physics: universal to any partition-transform-quantize system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- RESULTS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="results">
+  <div class="container">
+    <h2>Results</h2>
+    <p class="lead">800 real photographs. Four generations of JPEG compression. The signal gets <strong>louder</strong>, not quieter.</p>
+
+    <div class="results-headline">
+      <div class="stat">
+        <span class="stat-number">99.6%</span>
+        <span class="stat-label">Detection Rate</span>
+        <span class="stat-detail">Either channel pair, KS p&lt;0.05</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">96.4%</span>
+        <span class="stat-label">G-B Channel</span>
+        <span class="stat-detail">Best single channel pair</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">48.1%</span>
+        <span class="stat-label">Amplification</span>
+        <span class="stat-detail">Signal grows under compression</span>
+      </div>
+    </div>
+
+    <div class="results-chart">
+      <img src="assets/granite_test_v2.png" alt="DIV2K Granite Test — Channel pair comparison showing KS distribution, variance ratio across cascade, head-to-head comparison, and enrichment ratio" loading="lazy">
+      <p class="caption">DIV2K validation: 800 images through Q95 &rarr; Q85 &rarr; Q75 &rarr; Q60 &rarr; Q40 cascade</p>
+    </div>
+
+    <h3>The Cascade</h3>
+    <p>Each row is a JPEG re-encode at decreasing quality. The signal survives every generation.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Generation</th><th>Quality</th><th>G-B KS p&lt;0.05</th><th>R-G KS p&lt;0.05</th><th>G-B Variance Ratio</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gen 0</td><td>Q95</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
+          <tr><td>Gen 1</td><td>Q85</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
+          <tr><td>Gen 2</td><td>Q75</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
+          <tr><td>Gen 3</td><td>Q60</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
+          <tr class="highlight-row"><td>Gen 4</td><td>Q40</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- TORTURE TESTS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt" id="attacks">
+  <div class="container">
+    <h2>Torture Tests</h2>
+    <p class="lead">We tried to kill it. Here's what happened.</p>
+
+    <div class="grid-3">
+      <div class="card attack-card">
+        <div class="attack-icon">&#x21BB;</div>
+        <h3>Rotation Attack</h3>
+        <div class="attack-result pass">SURVIVED</div>
+        <ul>
+          <li>Flips: perfect detection (3.3x ratio, p&asymp;10<sup>-42</sup>)</li>
+          <li>Up to 7&deg; rotation: detected without position correction</li>
+          <li>Full chain (rotate + flip + rotate + flip + JPEG): <strong>4.0x ratio</strong></li>
+          <li>Round-trip inverse: detected despite 97.5% pixel damage</li>
+          <li>Fingerprint Jaccard: 0.72 after full chain</li>
+        </ul>
+      </div>
+
+      <div class="card attack-card">
+        <div class="attack-icon">&#x2702;</div>
+        <h3>Slice &amp; Stitch</h3>
+        <div class="attack-result pass">SURVIVED</div>
+        <ul>
+          <li>Image sliced into 4 quadrants, each re-encoded JPEG Q85</li>
+          <li>Individual fragments: detection breaks (too few markers)</li>
+          <li>Stitched back: <strong>detection returns</strong> (3.6x, p=0.001)</li>
+          <li>Stitched + JPEG Q75: still detected (3.4x, p=0.003)</li>
+          <li>Stitch seams forensically visible (3.3x seam ratio)</li>
+        </ul>
+        <p class="attack-quote">"The attack undoes itself on reassembly."</p>
+      </div>
+
+      <div class="card attack-card">
+        <div class="attack-icon">&#x2922;</div>
+        <h3>Scale &amp; Resize</h3>
+        <div class="attack-result pass">SURVIVED</div>
+        <ul>
+          <li>1024px: strong detection through full cascade (3.4x&rarr;2.5x)</li>
+          <li>2048px: amplifying variance ratio 3.7 &rarr; 9.3</li>
+          <li>Resize to 50%, 25%, even 12%: <strong>detected</strong></li>
+          <li>Resize + WebP transcoding: detected at all sizes</li>
+          <li>Fingerprint Jaccard &gt;0.47 across all transforms</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fingerprint-table">
+      <h3>Fingerprint Stability</h3>
+      <p>The disruption map &mdash; the fingerprint &mdash; survives every transform we tested.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Transform</th><th>Hamming Distance</th><th>Jaccard Similarity</th><th>Matchable</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>JPEG Q95 (identity)</td><td>0.0%</td><td>1.000</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q85</td><td>13.8%</td><td>0.594</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q75</td><td>13.5%</td><td>0.593</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q60</td><td>16.5%</td><td>0.544</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q40</td><td>14.5%</td><td>0.604</td><td class="yes">YES</td></tr>
+            <tr><td>WebP Q95</td><td>16.5%</td><td>0.591</td><td class="yes">YES</td></tr>
+            <tr><td>WebP Q80</td><td>18.7%</td><td>0.472</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q85 &rarr; WebP Q80</td><td>17.9%</td><td>0.490</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q95 &rarr; Q85 &rarr; Q75</td><td>15.5%</td><td>0.571</td><td class="yes">YES</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- THREE LAYERS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section" id="layers">
+  <div class="container">
+    <h2>Three Detection Layers</h2>
+    <p class="lead">Defense in depth. Each layer operates independently. Together they compound.</p>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-num">L1</div>
+        <div class="layer-body">
+          <h3>DQT Prime Tables</h3>
+          <p>Replace JPEG quantization table entries with nearest primes. The table itself is the provenance signal. Survives re-encoding as double-quantization artifacts.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">L2</div>
+        <div class="layer-body">
+          <h3>Compound Markers</h3>
+          <p>Twin-prime markers at known positions. Detection compares prime-gap hit rate at marker vs. control positions in the same image. Compound strategies (twin + magic sentinel + rare basket) collapse false positive probability.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">L3</div>
+        <div class="layer-body">
+          <h3>Rare Basket</h3>
+          <p>Position pattern derived from 256-bit seed via HMAC-SHA512. Enables attribution through Jaccard similarity at corpus scale. The fingerprint, not the signal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- UNIVERSALITY -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt" id="universal">
+  <div class="container">
+    <h2>Beyond JPEG</h2>
+    <p class="lead">The fuse is engineering. The fire is physics.</p>
+    <p>Any codec that uses a <strong>partition &rarr; transform &rarr; quantize</strong> pipeline is susceptible. The mechanism is universal:</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Images</h3>
+        <p>JPEG, WebP, HEIF &mdash; all use block-based DCT or wavelet quantization. Tested and confirmed across JPEG and WebP with cross-codec transcoding.</p>
+      </div>
+      <div class="card">
+        <h3>Audio</h3>
+        <p>MP3, AAC, Opus &mdash; frequency-domain quantization in sub-band partitions. Initial MP3 testing has exceeded expectations.</p>
+      </div>
+      <div class="card">
+        <h3>Video</h3>
+        <p>H.264, H.265, AV1 &mdash; block-based motion-compensated DCT quantization. The same thermodynamic tax applies per-frame.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <p class="footer-title">Granite Under Sandstone</p>
+        <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+        <p>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-sep">&middot;</span>
+        <span>BSD 2-Clause License</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

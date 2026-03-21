@@ -1,0 +1,17 @@
+# Test images (DIV2K samples, large binaries)
+granite/test-images/
+
+# Generated results
+granite/pgps_results/
+granite/results/
+pgps_results/
+
+# Python
+__pycache__/
+*.pyc
+
+# Claude Code local settings
+.claude/
+
+# OS
+.DS_Store
