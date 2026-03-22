@@ -134,7 +134,7 @@ modified_pixels, metadata = smart_embed(pixels, profile, seed=42)</code></pre>
 config = MARKER_TYPES["compound"]  # Full: twin + magic + rare basket
 # Also: "single_basic", "single_rare", "twin", "magic"
 
-modified_pixels, markers = embed_compound(pixels, config, seed=42)</code></pre>
+modified_pixels, markers = embed_compound(pixels, config, variable_offset=42)</code></pre>
 
     <h3>encode_prime_jpeg() &mdash; Layer 1 DQT</h3>
     <p>Encodes a JPEG with prime-shifted quantization tables. The table itself is the signal &mdash; no pixel-space markers needed for this layer.</p>

@@ -99,7 +99,7 @@ from compound_markers import embed_compound, MARKER_TYPES
 config = MARKER_TYPES["compound"]  # Full compound: twin + magic + rare basket
 # Or: "single_basic", "single_rare", "twin", "magic"
 
-modified_pixels, markers = embed_compound(pixels, config, seed=42)
+modified_pixels, markers = embed_compound(pixels, config, variable_offset=42)
 ```
 
 **Returns:**
