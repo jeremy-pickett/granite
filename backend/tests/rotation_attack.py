@@ -188,7 +188,7 @@ def run_test():
     # Generate and embed
     print(f"\n[1] Generating {SIZE}x{SIZE} image and embedding...")
     pixels = gen_photo(SIZE)
-    embedded, markers = embed_compound(pixels, TWIN_CONFIG, seed=42)
+    embedded, markers = embed_compound(pixels, TWIN_CONFIG, variable_offset=42)
     print(f"    {len(markers)} markers embedded")
 
     # JPEG encode baseline

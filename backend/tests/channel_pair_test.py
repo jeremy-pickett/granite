@@ -205,7 +205,7 @@ print("RGB CHANNEL PAIR INDEPENDENCE TEST")
 print("=" * 90)
 
 pixels = gen_photo(SIZE)
-_, markers = embed_compound(pixels, config, seed=42)
+_, markers = embed_compound(pixels, config, variable_offset=42)
 print(f"\n{SIZE}x{SIZE} image, {len(markers)} marker positions")
 
 # =========================================================================
@@ -215,7 +215,7 @@ print("If independent, R-B and G-B should show NO enrichment.")
 print(f"{'='*90}")
 
 # Standard embed uses (0,1) = R-G
-embedded_rg, _ = embed_compound(pixels, config, seed=42)
+embedded_rg, _ = embed_compound(pixels, config, variable_offset=42)
 jpeg_rg = decode(to_jpeg(embedded_rg, 95))
 
 print(f"\n  {'Pair':>8s}  {'M_pass':>8s}  {'M_rate':>8s}  {'C_rate':>8s}  "

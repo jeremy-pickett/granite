@@ -233,7 +233,7 @@ def test_one_image(pixels, fname, work_dir):
     prime_jpeg_data = to_prime_jpeg(pixels, quality=95)
     prime_pixels = decode_jpeg(prime_jpeg_data)
 
-    embedded_pixels, markers = embed_compound(prime_pixels, TWIN_CONFIG, seed=42)
+    embedded_pixels, markers = embed_compound(prime_pixels, TWIN_CONFIG, variable_offset=42)
     result["n_markers_embedded"] = len(markers)
 
     if len(markers) < 20:

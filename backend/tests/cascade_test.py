@@ -135,7 +135,7 @@ def run_cascade(output_dir: str):
         marker_results = {}
         for mname, mconfig in MARKER_CONFIGS.items():
             try:
-                embedded_pixels, markers = embed_compound(prime_pixels, mconfig, seed=42)
+                embedded_pixels, markers = embed_compound(prime_pixels, mconfig, variable_offset=42)
                 marker_results[mname] = {
                     "pixels": embedded_pixels,
                     "markers": markers,

@@ -205,7 +205,7 @@ def test_capacity_and_cascade(output_dir):
         )
 
         try:
-            embedded, markers = embed_compound(pixels, config, seed=42)
+            embedded, markers = embed_compound(pixels, config, variable_offset=42)
         except ValueError as e:
             print(f"  EMBED FAILED: {e}")
             continue
@@ -305,7 +305,7 @@ def test_resize(output_dir):
         )
 
         try:
-            embedded, markers = embed_compound(pixels, config, seed=42)
+            embedded, markers = embed_compound(pixels, config, variable_offset=42)
         except ValueError as e:
             print(f"  EMBED FAILED: {e}")
             continue
@@ -473,7 +473,7 @@ def test_fingerprint_stability(output_dir):
         n_markers=800,
     )
 
-    embedded, markers = embed_compound(pixels, config, seed=42)
+    embedded, markers = embed_compound(pixels, config, variable_offset=42)
     gen0_px = decode(to_jpeg(embedded, 95))
 
     # Reference disruption map
@@ -550,8 +550,8 @@ def test_seed_separation(output_dir):
     )
 
     # Embed with two different seeds
-    emb_a, markers_a = embed_compound(pixels, config, seed=42)
-    emb_b, markers_b = embed_compound(pixels, config, seed=137)
+    emb_a, markers_a = embed_compound(pixels, config, variable_offset=42)
+    emb_b, markers_b = embed_compound(pixels, config, variable_offset=137)
 
     print(f"\n  Image: {size}x{size}")
     print(f"  Seed A (42):  {len(markers_a)} markers")

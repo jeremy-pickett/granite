@@ -139,7 +139,7 @@ def run_attack():
     pixels = gen_photo(SIZE)
 
     print(f"[2] Embedding twin markers...")
-    embedded, markers = embed_compound(pixels, TWIN_CONFIG, seed=42)
+    embedded, markers = embed_compound(pixels, TWIN_CONFIG, variable_offset=42)
     print(f"    {len(markers)} markers embedded")
 
     # Step 3: JPEG encode (gen 0)

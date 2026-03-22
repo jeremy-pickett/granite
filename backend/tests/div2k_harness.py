@@ -118,7 +118,7 @@ def test_one_image(pixels: np.ndarray, image_name: str,
 
     # --- Step 2: Embed twin markers ---
     try:
-        embedded_pixels, markers = embed_compound(prime_pixels, TWIN_CONFIG, seed=42)
+        embedded_pixels, markers = embed_compound(prime_pixels, TWIN_CONFIG, variable_offset=42)
         result["n_markers_embedded"] = len(markers)
     except Exception as e:
         result["error"] = f"Embedding failed: {e}"

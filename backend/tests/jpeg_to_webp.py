@@ -133,15 +133,15 @@ def run_jpeg_to_webp(output_dir: str):
     prime_pixels = np.array(Image.open(io.BytesIO(prime_data)).convert("RGB"))
 
     # Embed twins
-    twin_pixels, twin_markers = embed_compound(prime_pixels, TWIN_CONFIG, seed=42)
+    twin_pixels, twin_markers = embed_compound(prime_pixels, TWIN_CONFIG, variable_offset=42)
     print(f"Embedded {len(twin_markers)} twin markers")
 
     # Embed magic (separate image for independent measurement)
-    magic_pixels, magic_markers = embed_compound(prime_pixels, MAGIC_CONFIG, seed=42)
+    magic_pixels, magic_markers = embed_compound(prime_pixels, MAGIC_CONFIG, variable_offset=42)
     print(f"Embedded {len(magic_markers)} magic markers")
 
     # Embed compound
-    comp_pixels, comp_markers = embed_compound(prime_pixels, COMPOUND_CONFIG, seed=42)
+    comp_pixels, comp_markers = embed_compound(prime_pixels, COMPOUND_CONFIG, variable_offset=42)
     print(f"Embedded {len(comp_markers)} compound markers")
 
     # Re-encode as JPEG Q95 (generation 0)
