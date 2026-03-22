@@ -156,3 +156,8 @@ code {
   background: var(--surface-2);
   color: var(--text-dim);
 }
+
+.doc-tag.addendum {
+  background: var(--fire-glow);
+  color: var(--fire);
+}
