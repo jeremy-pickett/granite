@@ -231,7 +231,7 @@ def test_one_image(pixels, fname):
         n_markers=n_req,
     )
 
-    marked_pixels, markers = embed_compound(prime_pixels, config, seed=42)
+    marked_pixels, markers = embed_compound(prime_pixels, config, variable_offset=42)
     n_actual = len(markers)
     result["n_actual"]  = n_actual
     result["embed_eff"] = round(n_actual / max(n_req, 1), 4)

@@ -78,15 +78,22 @@ def gen_photo(size, seed=42):
     rng = np.random.RandomState(seed)
     h = w = size
     img = np.zeros((h, w, 3), dtype=np.float64)
-    n_blobs = max(10, size // 50)
+    weight = np.zeros((h, w), dtype=np.float64)
+    # Fewer large blobs to maintain dynamic range at large sizes
+    n_blobs = max(10, min(30, size // 50))
     for _ in range(n_blobs):
         cy, cx = rng.randint(0, h), rng.randint(0, w)
-        sy, sx = rng.uniform(size * 0.04, size * 0.3), rng.uniform(size * 0.04, size * 0.3)
-        color = rng.uniform(50, 220, 3)
+        sy, sx = rng.uniform(size * 0.04, size * 0.2), rng.uniform(size * 0.04, size * 0.2)
+        color = rng.uniform(20, 240, 3)
         yy, xx = np.ogrid[:h, :w]
         mask = np.exp(-0.5 * (((yy - cy) / sy)**2 + ((xx - cx) / sx)**2))
+        weight += mask
         for c in range(3):
             img[:, :, c] += mask * color[c]
+    # Weighted average — prevents saturation at large sizes
+    weight = np.maximum(weight, 1e-10)
+    for c in range(3):
+        img[:, :, c] /= weight
     img = np.clip(img, 0, 255)
     noise = rng.normal(0, 3, img.shape)
     return np.clip(img + noise, 0, 255).astype(np.uint8)

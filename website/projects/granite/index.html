@@ -216,23 +216,44 @@
     </div>
 
     <div class="fingerprint-table">
-      <h3>Fingerprint Stability</h3>
-      <p>The disruption map &mdash; the fingerprint &mdash; survives every transform we tested.</p>
+      <h3>Marker Capacity</h3>
+      <p>Embedding surface scales with image resolution. Saturation stays well under 10%.</p>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Transform</th><th>Hamming Distance</th><th>Jaccard Similarity</th><th>Matchable</th></tr>
+            <tr><th>Resolution</th><th>Pixels</th><th>Markers</th><th>Saturation</th></tr>
           </thead>
           <tbody>
-            <tr><td>JPEG Q95 (identity)</td><td>0.0%</td><td>1.000</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q85</td><td>13.8%</td><td>0.594</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q75</td><td>13.5%</td><td>0.593</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q60</td><td>16.5%</td><td>0.544</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q40</td><td>14.5%</td><td>0.604</td><td class="yes">YES</td></tr>
-            <tr><td>WebP Q95</td><td>16.5%</td><td>0.591</td><td class="yes">YES</td></tr>
-            <tr><td>WebP Q80</td><td>18.7%</td><td>0.472</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q85 &rarr; WebP Q80</td><td>17.9%</td><td>0.490</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q95 &rarr; Q85 &rarr; Q75</td><td>15.5%</td><td>0.571</td><td class="yes">YES</td></tr>
+            <tr><td>512 &times; 512</td><td>262,144</td><td>248</td><td>6.1%</td></tr>
+            <tr><td>1024 &times; 1024</td><td>1,048,576</td><td>999</td><td>6.1%</td></tr>
+            <tr><td>2048 &times; 2048</td><td>4,194,304</td><td>1,129</td><td>1.7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="fingerprint-table">
+      <h3>Fingerprint Stability</h3>
+      <p>The disruption map &mdash; the fingerprint &mdash; survives every transform we tested. 11/11 matchable.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Transform</th><th>Ones</th><th>Hamming Distance</th><th>Jaccard Similarity</th><th>Matchable</th></tr>
+          </thead>
+          <tbody class="fp-table-body">
+            <tr><td>JPEG Q95 (identity)</td><td>122</td><td class="hamming-0">0.0%</td><td class="jaccard-perfect">1.000</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q85</td><td>98</td><td>13.8%</td><td>0.594</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q75</td><td>93</td><td>13.5%</td><td>0.593</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q60</td><td>105</td><td>16.5%</td><td>0.544</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q40</td><td>117</td><td>14.5%</td><td>0.604</td><td class="yes">YES</td></tr>
+            <tr class="table-separator"><td colspan="5"></td></tr>
+            <tr><td>WebP Q95</td><td>139</td><td>16.5%</td><td>0.591</td><td class="yes">YES</td></tr>
+            <tr><td>WebP Q80</td><td>90</td><td>18.7%</td><td>0.472</td><td class="yes">YES</td></tr>
+            <tr><td>WebP Q60</td><td>96</td><td>17.2%</td><td>0.514</td><td class="yes">YES</td></tr>
+            <tr class="table-separator"><td colspan="5"></td></tr>
+            <tr><td>JPEG Q85 &rarr; WebP Q80</td><td>91</td><td>17.9%</td><td>0.490</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q75 &rarr; WebP Q60</td><td>93</td><td>18.4%</td><td>0.483</td><td class="yes">YES</td></tr>
+            <tr><td>JPEG Q95 &rarr; Q85 &rarr; Q75</td><td>109</td><td>15.5%</td><td>0.571</td><td class="yes">YES</td></tr>
           </tbody>
         </table>
       </div>
