@@ -1,14 +1,18 @@
 # Test images (DIV2K samples, large binaries)
-granite/test-images/
+backend/test-images/
 
 # Generated results
-granite/pgps_results/
-granite/results/
+backend/pgps_results/
+backend/results/
 pgps_results/
 
 # Python
 __pycache__/
 *.pyc
+
+# Duplicate scripts and artifacts in docs (Drive dumps)
+backend/docs/*.py
+backend/docs/*.log
 
 # Claude Code local settings
 .claude/

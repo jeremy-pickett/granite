@@ -20,7 +20,7 @@ Outputs a VERDICT.txt that says one of three things:
 ## Repository Structure
 
 ```
-granite/
+backend/
 ├── src/                        # Core library
 │   ├── pgps_detector.py        # Core detector
 │   ├── compound_markers.py     # Twin/magic markers
@@ -68,7 +68,7 @@ pip3 install Pillow numpy scipy matplotlib
 
 ```bash
 git clone https://github.com/jeremypickett/granite-under-sandstone.git
-cd granite-under-sandstone/granite
+cd granite-under-sandstone/backend
 ```
 
 ### Step 4: Download DIV2K (or use included test images)
@@ -90,7 +90,7 @@ unzip DIV2K_valid_HR.zip
 ### Step 5: Run it
 
 ```bash
-cd granite-under-sandstone/granite
+cd granite-under-sandstone/backend
 
 # Quick sanity check with included test images (10 images, ~10 seconds)
 python3 tests/div2k_harness_v2.py -i test-images -o results -n 10

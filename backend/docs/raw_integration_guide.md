@@ -12,11 +12,11 @@ This guide shows how to embed provenance signals into images and detect them lat
 pip install Pillow numpy scipy
 ```
 
-Your project needs the `granite/src/` directory on `sys.path`:
+Your project needs the `backend/src/` directory on `sys.path`:
 
 ```python
 import sys
-sys.path.insert(0, "/path/to/granite/src")
+sys.path.insert(0, "/path/to/backend/src")
 ```
 
 ---
@@ -351,7 +351,7 @@ import json
 import numpy as np
 from PIL import Image
 
-sys.path.insert(0, "/path/to/granite/src")
+sys.path.insert(0, "/path/to/backend/src")
 
 from smart_embedder import smart_embed, PROFILES
 from dqt_prime import encode_prime_jpeg, detect_prime_dqt

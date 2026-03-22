@@ -22,16 +22,16 @@ There is no unit test suite or pytest configuration. Tests are experimental harn
 **Main validation test (The Granite Test):**
 ```bash
 # Quick sanity check (5 images)
-python granite/tests/div2k_harness_v2.py -i /path/to/DIV2K_valid_HR -o results -n 5
+python backend/tests/div2k_harness_v2.py -i /path/to/DIV2K_valid_HR -o results -n 5
 
 # Validation set (100 images)
-python granite/tests/div2k_harness_v2.py -i /path/to/DIV2K_valid_HR -o results
+python backend/tests/div2k_harness_v2.py -i /path/to/DIV2K_valid_HR -o results
 
 # Full training set (800 images)
-python granite/tests/div2k_harness_v2.py -i /path/to/DIV2K_train_HR -o results
+python backend/tests/div2k_harness_v2.py -i /path/to/DIV2K_train_HR -o results
 ```
 
-**Other test harnesses** (all in `granite/tests/`):
+**Other test harnesses** (all in `backend/tests/`):
 - `cascade_test.py` — Multi-generation JPEG cascade survival
 - `scale_test.py` — Scale/resize/fingerprint stability
 - `channel_pair_test.py` — RGB channel pair independence
@@ -52,7 +52,7 @@ No linting or formatting configuration exists.
 
 3. **Layer 3 — Rare Basket** (via `src/smart_embedder.py`): Position pattern derived from 256-bit seed via HMAC-SHA512, enabling attribution through Jaccard similarity at corpus scale.
 
-### Core Modules (`granite/src/`)
+### Core Modules (`backend/src/`)
 
 - **`pgps_detector.py`** — Foundation: prime utilities (sieve), sampling strategies, distance extraction, statistical tests (chi-squared, KS). Entry point for blind aggregate detection.
 - **`compound_markers.py`** — Marker embedding strategies: Rare Basket, Twin Markers, Magic Sentinel, and Compound (all three combined).

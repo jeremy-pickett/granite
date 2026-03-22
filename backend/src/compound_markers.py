@@ -150,14 +150,28 @@ MARKER_TYPES = {
 # =============================================================================
 
 def embed_compound(pixels: np.ndarray, config: MarkerConfig,
-                    seed: int = 42) -> tuple[np.ndarray, list]:
+                    variable_offset: int = 42) -> tuple[np.ndarray, list]:
     """
     Embed compound markers according to config.
     Returns (modified_pixels, marker_metadata_list).
+
+    variable_offset controls which positions are selected from the eligible
+    pool and which prime is assigned to each position.  The same image
+    embedded with different variable_offsets produces different marker
+    positions and prime assignments, even with identical config.
+
+    For Layer BC (manifest-based) detection, the variable_offset used at
+    embed time must be known — store it in the sidecar receipt alongside
+    the image hash, floor, and density.  Layer D (blind spatial) detection
+    requires no knowledge of the variable_offset.
+
+    The default value of 42 is used for research and testing.  Production
+    embeddings should use a unique value per image and record it in the
+    receipt.
     """
     h, w, c = pixels.shape
     modified = pixels.copy().astype(np.int16)
-    rng = np.random.RandomState(seed)
+    rng = np.random.RandomState(variable_offset)
 
     # Build basket
     if config.use_rare_basket:
@@ -467,7 +481,7 @@ def run_compound_test(output_dir: str):
 
         # Embed
         try:
-            embedded, markers = embed_compound(pixels, config, seed=42)
+            embedded, markers = embed_compound(pixels, config, variable_offset=42)
         except ValueError as e:
             print(f"  EMBED FAILED: {e}")
             continue
