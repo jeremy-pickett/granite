@@ -50,39 +50,6 @@ MAGIC_TOLERANCE = 2  # Allow ±2 for JPEG survival
 # Fuzzy prime tolerance for post-JPEG detection
 PRIME_TOLERANCE = 2
 
-# =============================================================================
-# MERSENNE SENTINEL CONSTANTS
-# =============================================================================
-#
-# Mersenne primes in the 8-bit range (2^n - 1): {3, 7, 31, 127}
-# These bracket marker sections as entry/exit canaries.
-#
-# CONTRACT: for every entry sentinel there is a corresponding exit sentinel.
-# Broken contract = evidence of tampering.  Missing entry = head removed.
-# Missing exit = tail removed.  Unpaired entries at section N with missing
-# N-1, N-2 exits = systematic boundary-aware removal (adversary knew the
-# structure).  Interior marker count outside expected range = injection or
-# deletion between sentinels.
-#
-# SENTINEL_CANARY_RATIO is a PROTOCOL CONSTANT, not a user config.
-# Changing it per-image breaks the matching service's ability to index
-# the structure.  If this value must change, bump the protocol version.
-# Exposing this as a dial is offering the user a way to silently opt out
-# of the network effect — do not do that.
-#
-MERSENNE_BASKET     = [3, 7, 31, 127]  # All Mersenne primes <= 255
-CANARY_WIDTH        = 2                # Fuzzy window for sentinel match (+-N)
-                                        # Start at 2 for testing — widens the
-                                        # survival window without meaningfully
-                                        # raising false positive rate because
-                                        # detection requires BOTH a fuzzy
-                                        # Mersenne AND an adjacent fuzzy
-                                        # prime-gap marker.  Joint P(FP) is
-                                        # approximately P(Mersenne_fuzzy) *
-                                        # P(prime_fuzzy) ~ 0.05 * 0.06 = 0.003.
-SENTINEL_CANARY_RATIO = 8              # Interior markers per section
-                                        # (one sentinel pair per 8 markers)
-
 
 # =============================================================================
 # RARE BASKET — Primes maximally distant from quant grids and each other
@@ -176,365 +143,6 @@ MARKER_TYPES = {
         use_rare_basket=True,
     ),
 }
-
-
-# =============================================================================
-# MERSENNE SENTINEL EMBEDDING + DETECTION
-# =============================================================================
-
-def _embed_sentinel(modified: np.ndarray, r: int, col: int,
-                    mersenne: int, ch_a: int = 0, ch_b: int = 1) -> bool:
-    """
-    Embed a single Mersenne sentinel at (r, col) by setting |ch_a - ch_b| = mersenne.
-    Returns True if successfully placed.
-    """
-    h, w = modified.shape[:2]
-    if r >= h or col >= w:
-        return False
-    val_a = int(modified[r, col, ch_a])
-    opt1 = val_a - mersenne
-    opt2 = val_a + mersenne
-    candidates = [v for v in [opt1, opt2] if 20 <= v <= 235]
-    if not candidates:
-        return False
-    new_b = min(candidates, key=lambda x: abs(x - int(modified[r, col, ch_b])))
-    modified[r, col, ch_b] = new_b
-    return True
-
-
-def place_sentinels(modified: np.ndarray, selected_positions: list,
-                    rng: np.random.RandomState,
-                    ch_a: int = 0, ch_b: int = 1) -> list:
-    """
-    Divide selected_positions into sections of SENTINEL_CANARY_RATIO markers
-    and bracket each section with Mersenne entry/exit sentinels.
-
-    Sentinels are placed at positions immediately before the first marker
-    and immediately after the last marker of each section, drawn from the
-    same eligible position pool but reserved exclusively for sentinel use.
-
-    Returns list of sentinel metadata dicts:
-        {type: 'entry'|'exit', section: int, row: int, col: int, mersenne: int}
-    """
-    n = len(selected_positions)
-    if n == 0:
-        return []
-
-    n_sections = max(1, n // SENTINEL_CANARY_RATIO)
-    section_size = n // n_sections
-
-    sentinels = []
-    for sec_idx in range(n_sections):
-        start = sec_idx * section_size
-        end   = start + section_size if sec_idx < n_sections - 1 else n
-
-        # Entry sentinel: position just before section start
-        # Use the position at index (start - 1) if available, else start
-        entry_pos_idx = max(0, start - 1)
-        exit_pos_idx  = min(n - 1, end)
-
-        for role, pos_idx in [('entry', entry_pos_idx), ('exit', exit_pos_idx)]:
-            r, col, _ = selected_positions[pos_idx]
-            # Sentinel sits immediately adjacent to the marker — col-1 for
-            # entry (marker is to the right), col+1 for exit (marker to left).
-            # Strict adjacency is the detection signal: a fuzzy Mersenne that
-            # is NOT next to a fuzzy prime-gap is just noise.
-            sentinel_col = col - 1 if role == 'entry' else col + 1
-            sentinel_col = max(0, min(modified.shape[1] - 1, sentinel_col))
-
-            mersenne = int(rng.choice(MERSENNE_BASKET))
-            placed   = _embed_sentinel(modified, r, sentinel_col, mersenne, ch_a, ch_b)
-
-            sentinels.append({
-                "type":     role,
-                "section":  sec_idx,
-                "row":      int(r),
-                "col":      int(sentinel_col),
-                "mersenne": mersenne,
-                "placed":   placed,
-            })
-
-    return sentinels
-
-
-def _is_fuzzy_mersenne(d: int) -> bool:
-    """True if channel distance d is within CANARY_WIDTH of any Mersenne prime."""
-    return any(abs(d - m) <= CANARY_WIDTH for m in MERSENNE_BASKET)
-
-
-def _is_fuzzy_prime(d: int, prime_lookup: np.ndarray,
-                    floor: int, tol: int) -> bool:
-    """True if d is within tol of any prime >= floor."""
-    for offset in range(-tol, tol + 1):
-        check = d + offset
-        if 0 <= check <= 255 and check >= floor and prime_lookup[check]:
-            return True
-    return False
-
-
-def _classify_sections(section_results: list) -> dict:
-    """
-    Given a list of section dicts with 'status' field, compute tamper
-    classification and run-length patterns.
-    """
-    n_intact     = sum(1 for s in section_results if s["status"] == "intact")
-    n_entry_only = sum(1 for s in section_results if s["status"] == "exit_missing")
-    n_exit_only  = sum(1 for s in section_results if s["status"] == "entry_missing")
-    n_both_dead  = sum(1 for s in section_results if s["status"] == "both_missing")
-    total        = len(section_results) or 1
-    tamper_detected = (n_entry_only + n_exit_only + n_both_dead) > 0
-
-    consecutive_entry_only = 0
-    run = 0
-    for s in section_results:
-        run = run + 1 if s["status"] == "exit_missing" else 0
-        consecutive_entry_only = max(consecutive_entry_only, run)
-
-    consecutive_exit_only = 0
-    run = 0
-    for s in reversed(section_results):
-        run = run + 1 if s["status"] == "entry_missing" else 0
-        consecutive_exit_only = max(consecutive_exit_only, run)
-
-    if not tamper_detected:
-        tamper_class = "none"
-    elif n_both_dead == total:
-        tamper_class = "full_wipe"
-    elif consecutive_entry_only >= 3:
-        tamper_class = "tail_sweep"
-    elif consecutive_exit_only >= 3:
-        tamper_class = "head_sweep"
-    elif n_entry_only > n_exit_only * 2:
-        tamper_class = "tail_truncation"
-    elif n_exit_only > n_entry_only * 2:
-        tamper_class = "head_truncation"
-    else:
-        tamper_class = "scattered"
-
-    return {
-        "n_sections":             total,
-        "n_intact":               n_intact,
-        "n_entry_only":           n_entry_only,
-        "n_exit_only":            n_exit_only,
-        "n_both_dead":            n_both_dead,
-        "intact_pct":             round(n_intact / total * 100, 1),
-        "tamper_detected":        tamper_detected,
-        "tamper_class":           tamper_class,
-        "consecutive_entry_only": consecutive_entry_only,
-        "consecutive_exit_only":  consecutive_exit_only,
-        "sentinel_canary_ratio":  SENTINEL_CANARY_RATIO,
-    }
-
-
-def detect_sentinels_blind(pixels: np.ndarray,
-                            floor: int = 43,
-                            ch_a: int = 0,
-                            ch_b: int = 1,
-                            prime_tol: int = 2) -> dict:
-    """
-    BLIND SENTINEL SCAN — no manifest required.
-
-    Scans every eligible grid position looking for the structural signature:
-      [fuzzy_Mersenne] [fuzzy_prime_marker]   → entry canary
-      [fuzzy_prime_marker] [fuzzy_Mersenne]   → exit canary
-
-    A fuzzy Mersenne on its own is just a number.  It only becomes a canary
-    when it is IMMEDIATELY ADJACENT to a fuzzy prime-gap marker.  This two-
-    position joint requirement is what makes the signal robust against noise:
-
-      P(false canary) ≈ P(fuzzy_Mersenne) × P(adjacent_fuzzy_prime)
-                      ≈ 0.05 × 0.06 ≈ 0.003 per position
-
-    Detected canaries are then grouped into sections by proximity (positions
-    within SENTINEL_CANARY_RATIO * WINDOW_W pixels of each other) and the
-    entry/exit contract is evaluated.
-
-    This is the 90% case — the defender who received the image with no
-    receipt, no manifest, no knowledge of the seed.  The scanner finds the
-    structural skeleton of the embedding and evaluates whether it is intact.
-
-    Returns:
-        canaries_found     — list of {type, row, col, mersenne_approx, marker_d}
-        section_results    — per-section contract status
-        tamper_detected    — bool
-        tamper_class       — classification string
-        ... plus full _classify_sections output
-    """
-    h, w, _ = pixels.shape
-    prime_lookup = build_prime_lookup(BIT_DEPTH)
-
-    canaries = []
-    all_pos  = sample_positions_grid(h, w, WINDOW_W)
-
-    for pos in all_pos:
-        r   = int(pos[0]) + 3
-        col = int(pos[1]) + 3
-        if r >= h or col >= w:
-            continue
-
-        d_here = abs(int(pixels[r, col,   ch_a]) - int(pixels[r, col,   ch_b]))
-
-        # Check left: sentinel at col-1, marker at col
-        if col - 1 >= 0:
-            d_left = abs(int(pixels[r, col-1, ch_a]) - int(pixels[r, col-1, ch_b]))
-            if (_is_fuzzy_mersenne(d_left) and
-                    _is_fuzzy_prime(d_here, prime_lookup, floor, prime_tol)):
-                canaries.append({
-                    "type":          "entry",
-                    "row":           r,
-                    "col_sentinel":  col - 1,
-                    "col_marker":    col,
-                    "mersenne_approx": d_left,
-                    "marker_d":      d_here,
-                })
-
-        # Check right: marker at col, sentinel at col+1
-        if col + 1 < w:
-            d_right = abs(int(pixels[r, col+1, ch_a]) - int(pixels[r, col+1, ch_b]))
-            if (_is_fuzzy_prime(d_here, prime_lookup, floor, prime_tol) and
-                    _is_fuzzy_mersenne(d_right)):
-                canaries.append({
-                    "type":          "exit",
-                    "row":           r,
-                    "col_sentinel":  col + 1,
-                    "col_marker":    col,
-                    "mersenne_approx": d_right,
-                    "marker_d":      d_here,
-                })
-
-    if not canaries:
-        return {
-            "canaries_found":  [],
-            "n_canaries":      0,
-            "n_entries":       0,
-            "n_exits":         0,
-            "section_results": [],
-            "tamper_detected": False,
-            "tamper_class":    "none",
-            "n_sections":      0,
-            "n_intact":        0,
-            "n_entry_only":    0,
-            "n_exit_only":     0,
-            "n_both_dead":     0,
-            "intact_pct":      0.0,
-            "sentinel_canary_ratio": SENTINEL_CANARY_RATIO,
-        }
-
-    n_entries = sum(1 for c in canaries if c["type"] == "entry")
-    n_exits   = sum(1 for c in canaries if c["type"] == "exit")
-
-    # Group canaries into sections by proximity.
-    # Sort by raster order (row, col_sentinel) then group by gap.
-    canaries.sort(key=lambda c: (c["row"], c["col_sentinel"]))
-    proximity_threshold = SENTINEL_CANARY_RATIO * WINDOW_W * 2
-
-    sections = []
-    current  = {"entries": [], "exits": []}
-    last_pos = None
-
-    for c in canaries:
-        pos = c["row"] * w + c["col_sentinel"]
-        if last_pos is not None and (pos - last_pos) > proximity_threshold:
-            sections.append(current)
-            current = {"entries": [], "exits": []}
-        key = "entries" if c["type"] == "entry" else "exits"
-        current[key].append(c)
-        last_pos = pos
-    if current["entries"] or current["exits"]:
-        sections.append(current)
-
-    section_results = []
-    for sec_idx, sec in enumerate(sections):
-        has_entry = len(sec["entries"]) > 0
-        has_exit  = len(sec["exits"])   > 0
-        if has_entry and has_exit:
-            status = "intact"
-        elif has_entry:
-            status = "exit_missing"
-        elif has_exit:
-            status = "entry_missing"
-        else:
-            status = "both_missing"
-        section_results.append({
-            "section":  sec_idx,
-            "status":   status,
-            "n_entries":len(sec["entries"]),
-            "n_exits":  len(sec["exits"]),
-        })
-
-    classification = _classify_sections(section_results)
-
-    return {
-        "canaries_found":  canaries,
-        "n_canaries":      len(canaries),
-        "n_entries":       n_entries,
-        "n_exits":         n_exits,
-        "section_results": section_results,
-        **classification,
-    }
-
-
-def detect_sentinels(pixels: np.ndarray, sentinels: list,
-                     ch_a: int = 0, ch_b: int = 1) -> dict:
-    """
-    MANIFEST SENTINEL DETECTION.
-
-    Checks known sentinel positions from the embed receipt.  Faster and more
-    precise than the blind scan, but requires the manifest.  Use this for
-    verification at ingest when you hold the receipt.  Use detect_sentinels_blind
-    for forensic analysis when the receipt is unavailable — which is 90% of
-    real-world cases.
-
-    Returns tamper assessment dict with per-section breakdown.
-    """
-    h, w, _ = pixels.shape
-    from collections import defaultdict
-    by_section = defaultdict(dict)
-
-    for s in sentinels:
-        if not s.get("placed", True):
-            continue
-        r, col = s["row"], s["col"]
-        if r >= h or col >= w:
-            continue
-        actual_d = abs(int(pixels[r, col, ch_a]) - int(pixels[r, col, ch_b]))
-        survived = abs(actual_d - s["mersenne"]) <= CANARY_WIDTH
-        by_section[s["section"]][s["type"]] = {
-            "row":      r,
-            "col":      col,
-            "mersenne": s["mersenne"],
-            "actual_d": actual_d,
-            "survived": survived,
-        }
-
-    n_sections = max(by_section.keys()) + 1 if by_section else 0
-    section_results = []
-
-    for sec_idx in range(n_sections):
-        sec    = by_section.get(sec_idx, {})
-        entry  = sec.get("entry")
-        exit_  = sec.get("exit")
-        entry_ok = entry is not None and entry["survived"]
-        exit_ok  = exit_  is not None and exit_["survived"]
-
-        if entry_ok and exit_ok:
-            status = "intact"
-        elif entry_ok:
-            status = "exit_missing"
-        elif exit_ok:
-            status = "entry_missing"
-        else:
-            status = "both_missing"
-
-        section_results.append({
-            "section": sec_idx,
-            "status":  status,
-            "entry":   entry,
-            "exit":    exit_,
-        })
-
-    classification = _classify_sections(section_results)
-    return {"section_results": section_results, **classification}
 
 
 # =============================================================================
@@ -670,14 +278,7 @@ def embed_compound(pixels: np.ndarray, config: MarkerConfig,
         markers.append(marker_info)
 
     modified = np.clip(modified, 0, 255).astype(np.uint8)
-
-    # Place Mersenne sentinels bracketing each section of SENTINEL_CANARY_RATIO markers
-    # Do this after all marker pixels are finalised (sentinels work on a copy)
-    modified_int = modified.astype(np.int16)
-    sentinels = place_sentinels(modified_int, selected, rng, ch_a=0, ch_b=1)
-    modified  = np.clip(modified_int, 0, 255).astype(np.uint8)
-
-    return modified, markers, sentinels
+    return modified, markers
 
 
 # =============================================================================
@@ -685,7 +286,7 @@ def embed_compound(pixels: np.ndarray, config: MarkerConfig,
 # =============================================================================
 
 def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
-                     sentinels: list = None) -> dict:
+                     ) -> dict:
     """
     Layer 2 compound detection. At each known marker position, check
     whether ALL conditions of the compound marker are satisfied.
@@ -818,11 +419,6 @@ def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
             except:
                 pass
 
-    # Sentinel tamper assessment (if manifest provided)
-    sentinel_result = None
-    if sentinels:
-        sentinel_result = detect_sentinels(pixels, sentinels)
-
     return {
         "marker_total": marker_total,
         "marker_compound_pass": marker_pass,
@@ -841,7 +437,6 @@ def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
         "binomial_pvalue": binom_p,
         "detected_chi2": chi2_p < 0.01 and marker_rate > control_rate,
         "detected_binom": binom_p < 0.01,
-        "sentinel": sentinel_result,
     }
 
 
@@ -886,7 +481,7 @@ def run_compound_test(output_dir: str):
 
         # Embed
         try:
-            embedded, markers, sentinels = embed_compound(pixels, config, variable_offset=42)
+            embedded, markers = embed_compound(pixels, config, variable_offset=42)
         except ValueError as e:
             print(f"  EMBED FAILED: {e}")
             continue
