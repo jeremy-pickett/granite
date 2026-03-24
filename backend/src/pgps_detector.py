@@ -57,13 +57,12 @@ def build_prime_set(bit_depth: int = 8) -> set:
     return set(primes.tolist())
 
 
-def build_prime_lookup(bit_depth: int = 8, min_prime: int = 0) -> np.ndarray:
-    """Boolean array: index d -> True if d is prime and >= min_prime."""
+def build_prime_lookup(bit_depth: int = 8) -> np.ndarray:
+    """Boolean array: index d -> True if d is prime. For vectorized ops."""
     max_val = (1 << bit_depth) - 1
     lookup = np.zeros(max_val + 1, dtype=bool)
     for p in sieve_of_eratosthenes(max_val):
-        if p >= min_prime:
-            lookup[p] = True
+        lookup[p] = True
     return lookup
 
 

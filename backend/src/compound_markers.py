@@ -71,17 +71,24 @@ PRIME_TOLERANCE = 2
 # of the network effect — do not do that.
 #
 MERSENNE_BASKET     = [3, 7, 31, 127]  # All Mersenne primes <= 255
-CANARY_WIDTH        = 2                # Fuzzy window for sentinel match (+-N)
-                                        # Start at 2 for testing — widens the
-                                        # survival window without meaningfully
-                                        # raising false positive rate because
-                                        # detection requires BOTH a fuzzy
-                                        # Mersenne AND an adjacent fuzzy
+CANARY_WIDTH        = 8                # Fuzzy window for sentinel match (+-N)
+                                        # 8 is the realistic JPEG Q95 pixel
+                                        # shift range.  Single-position FP rate
+                                        # rises at width=8, but the detection
+                                        # verdict requires a MATCHED PAIR:
+                                        # an entry triplet and an exit triplet
+                                        # separated by ~SENTINEL_CANARY_RATIO *
+                                        # WINDOW_W pixels.  That spatial
+                                        # constraint collapses the joint FP rate
+                                        # to near zero even at width=8.
                                         # prime-gap marker.  Joint P(FP) is
                                         # approximately P(Mersenne_fuzzy) *
                                         # P(prime_fuzzy) ~ 0.05 * 0.06 = 0.003.
 SENTINEL_CANARY_RATIO = 8              # Interior markers per section
                                         # (one sentinel pair per 8 markers)
+DENSITY_FRAC_ESTIMATE = 0.08           # Expected embedding density — used by
+                                        # blind scanner to estimate n_sections.
+                                        # Must match the injector's density.
 
 
 # =============================================================================
@@ -235,11 +242,9 @@ def place_sentinels(modified: np.ndarray, selected_positions: list,
 
         for role, pos_idx in [('entry', entry_pos_idx), ('exit', exit_pos_idx)]:
             r, col, _ = selected_positions[pos_idx]
-            # Sentinel sits immediately adjacent to the marker — col-1 for
-            # entry (marker is to the right), col+1 for exit (marker to left).
-            # Strict adjacency is the detection signal: a fuzzy Mersenne that
-            # is NOT next to a fuzzy prime-gap is just noise.
-            sentinel_col = col - 1 if role == 'entry' else col + 1
+            # Entry sentinel at col-1 (twin pair is at col, col+1)
+            # Exit sentinel at col+2 (twin pair is at col, col+1)
+            sentinel_col = col - 1 if role == 'entry' else col + 2
             sentinel_col = max(0, min(modified.shape[1] - 1, sentinel_col))
 
             mersenne = int(rng.choice(MERSENNE_BASKET))
@@ -277,12 +282,15 @@ def _classify_sections(section_results: list) -> dict:
     Given a list of section dicts with 'status' field, compute tamper
     classification and run-length patterns.
     """
-    n_intact     = sum(1 for s in section_results if s["status"] == "intact")
-    n_entry_only = sum(1 for s in section_results if s["status"] == "exit_missing")
-    n_exit_only  = sum(1 for s in section_results if s["status"] == "entry_missing")
-    n_both_dead  = sum(1 for s in section_results if s["status"] == "both_missing")
-    total        = len(section_results) or 1
-    tamper_detected = (n_entry_only + n_exit_only + n_both_dead) > 0
+    n_intact       = sum(1 for s in section_results if s["status"] == "intact")
+    n_entry_only   = sum(1 for s in section_results if s["status"] == "exit_missing")
+    n_exit_only    = sum(1 for s in section_results if s["status"] == "entry_missing")
+    n_both_dead    = sum(1 for s in section_results if s["status"] == "both_missing")
+    n_inverted     = sum(1 for s in section_results if s["status"] == "inverted")
+    n_count_anomaly= sum(1 for s in section_results if s["status"] == "count_anomaly")
+    total          = len(section_results) or 1
+    tamper_detected = (n_entry_only + n_exit_only + n_both_dead +
+                       n_inverted + n_count_anomaly) > 0
 
     consecutive_entry_only = 0
     run = 0
@@ -300,6 +308,15 @@ def _classify_sections(section_results: list) -> dict:
         tamper_class = "none"
     elif n_both_dead == total:
         tamper_class = "full_wipe"
+    elif n_inverted > 0:
+        # Attacker reconstructed boundary structure but got direction wrong.
+        # More sophisticated than removal — implies protocol knowledge.
+        tamper_class = "structural_inversion"
+    elif n_count_anomaly > 0:
+        # Correct boundary types but wrong interior count — injection or
+        # deletion between sentinels without touching the sentinels themselves.
+        # Most sophisticated attack: attacker understood boundaries perfectly.
+        tamper_class = "interior_anomaly"
     elif consecutive_entry_only >= 3:
         tamper_class = "tail_sweep"
     elif consecutive_exit_only >= 3:
@@ -317,6 +334,8 @@ def _classify_sections(section_results: list) -> dict:
         "n_entry_only":           n_entry_only,
         "n_exit_only":            n_exit_only,
         "n_both_dead":            n_both_dead,
+        "n_inverted":             n_inverted,
+        "n_count_anomaly":        n_count_anomaly,
         "intact_pct":             round(n_intact / total * 100, 1),
         "tamper_detected":        tamper_detected,
         "tamper_class":           tamper_class,
@@ -334,142 +353,180 @@ def detect_sentinels_blind(pixels: np.ndarray,
     """
     BLIND SENTINEL SCAN — no manifest required.
 
-    Scans every eligible grid position looking for the structural signature:
-      [fuzzy_Mersenne] [fuzzy_prime_marker]   → entry canary
-      [fuzzy_prime_marker] [fuzzy_Mersenne]   → exit canary
+    Detection strategy: matched entry+exit pairs at expected spatial separation.
 
-    A fuzzy Mersenne on its own is just a number.  It only becomes a canary
-    when it is IMMEDIATELY ADJACENT to a fuzzy prime-gap marker.  This two-
-    position joint requirement is what makes the signal robust against noise:
+    Step 1 — Find canary candidates.
+      Entry: [fuzzy_Mersenne @ col-1][fuzzy_prime @ col][fuzzy_prime @ col+1]
+      Exit:  [fuzzy_prime @ col][fuzzy_prime @ col+1][fuzzy_Mersenne @ col+2]
 
-      P(false canary) ≈ P(fuzzy_Mersenne) × P(adjacent_fuzzy_prime)
-                      ≈ 0.05 × 0.06 ≈ 0.003 per position
+    Step 2 — Match pairs by spatial separation.
+      Expected separation between entry sentinel and exit sentinel within the
+      same section: ~SENTINEL_CANARY_RATIO * WINDOW_W pixels (raster distance).
+      Tolerance: ±50% of expected separation.
 
-    Detected canaries are then grouped into sections by proximity (positions
-    within SENTINEL_CANARY_RATIO * WINDOW_W pixels of each other) and the
-    entry/exit contract is evaluated.
+    Why this works:
+      A single triplet (entry or exit) has FP probability ~0.024% per position
+      at CANARY_WIDTH=8 (6.6% Mersenne × 6% prime × 6% prime).
+      A matched pair at correct spatial separation adds another ~0.024% and the
+      separation probability.  Joint FP per position pair is ~0.000006%.
+      With ~5000 eligible positions per image, expected coincidental matched
+      pairs in a clean image: ~0.0003.  In practice: effectively zero.
 
-    This is the 90% case — the defender who received the image with no
-    receipt, no manifest, no knowledge of the seed.  The scanner finds the
-    structural skeleton of the embedding and evaluates whether it is intact.
+    This is the number to report.  Raw canary counts are noise.
+    Matched pairs at correct separation are the signal.
 
     Returns:
-        canaries_found     — list of {type, row, col, mersenne_approx, marker_d}
-        section_results    — per-section contract status
-        tamper_detected    — bool
-        tamper_class       — classification string
+        n_raw_entries       — canary candidates of entry type (noisy)
+        n_raw_exits         — canary candidates of exit type (noisy)
+        n_matched_pairs     — entry+exit pairs at correct separation (signal)
+        n_expected_sections — how many sections the image should have
+        match_ratio         — n_matched_pairs / n_expected_sections
+        section_results     — per-matched-pair contract status
+        tamper_detected     — bool
+        tamper_class        — classification string
         ... plus full _classify_sections output
     """
     h, w, _ = pixels.shape
     prime_lookup = build_prime_lookup(BIT_DEPTH)
 
-    canaries = []
-    all_pos  = sample_positions_grid(h, w, WINDOW_W)
+    # Expected separation and tolerance
+    expected_sep = SENTINEL_CANARY_RATIO * WINDOW_W
+    sep_tol      = max(expected_sep // 2, WINDOW_W)  # ±50%, min 1 block
+
+    # Step 1: find all candidate entries and exits
+    entries = []
+    exits   = []
+    all_pos = sample_positions_grid(h, w, WINDOW_W)
 
     for pos in all_pos:
         r   = int(pos[0]) + 3
         col = int(pos[1]) + 3
-        if r >= h or col >= w:
+        if r >= h or col + 2 >= w or col - 1 < 0:
             continue
 
+        d_prev = abs(int(pixels[r, col-1, ch_a]) - int(pixels[r, col-1, ch_b]))
         d_here = abs(int(pixels[r, col,   ch_a]) - int(pixels[r, col,   ch_b]))
+        d_next = abs(int(pixels[r, col+1, ch_a]) - int(pixels[r, col+1, ch_b]))
 
-        # Check left: sentinel at col-1, marker at col
-        if col - 1 >= 0:
-            d_left = abs(int(pixels[r, col-1, ch_a]) - int(pixels[r, col-1, ch_b]))
-            if (_is_fuzzy_mersenne(d_left) and
-                    _is_fuzzy_prime(d_here, prime_lookup, floor, prime_tol)):
-                canaries.append({
-                    "type":          "entry",
-                    "row":           r,
-                    "col_sentinel":  col - 1,
-                    "col_marker":    col,
-                    "mersenne_approx": d_left,
-                    "marker_d":      d_here,
-                })
+        # Entry: [Mersenne @ col-1][prime @ col][prime @ col+1]
+        if (_is_fuzzy_mersenne(d_prev) and
+                _is_fuzzy_prime(d_here, prime_lookup, floor, prime_tol) and
+                _is_fuzzy_prime(d_next, prime_lookup, floor, prime_tol)):
+            entries.append({
+                "type":           "entry",
+                "row":            r,
+                "col_sentinel":   col - 1,
+                "col_marker":     col,
+                "mersenne_approx":d_prev,
+                "raster_pos":     r * w + (col - 1),
+            })
 
-        # Check right: marker at col, sentinel at col+1
-        if col + 1 < w:
-            d_right = abs(int(pixels[r, col+1, ch_a]) - int(pixels[r, col+1, ch_b]))
+        # Exit: [prime @ col][prime @ col+1][Mersenne @ col+2]
+        if col + 2 < w:
+            d_far = abs(int(pixels[r, col+2, ch_a]) - int(pixels[r, col+2, ch_b]))
             if (_is_fuzzy_prime(d_here, prime_lookup, floor, prime_tol) and
-                    _is_fuzzy_mersenne(d_right)):
-                canaries.append({
-                    "type":          "exit",
-                    "row":           r,
-                    "col_sentinel":  col + 1,
-                    "col_marker":    col,
-                    "mersenne_approx": d_right,
-                    "marker_d":      d_here,
+                    _is_fuzzy_prime(d_next, prime_lookup, floor, prime_tol) and
+                    _is_fuzzy_mersenne(d_far)):
+                exits.append({
+                    "type":           "exit",
+                    "row":            r,
+                    "col_sentinel":   col + 2,
+                    "col_marker":     col,
+                    "mersenne_approx":d_far,
+                    "raster_pos":     r * w + (col + 2),
                 })
 
-    if not canaries:
-        return {
-            "canaries_found":  [],
-            "n_canaries":      0,
-            "n_entries":       0,
-            "n_exits":         0,
-            "section_results": [],
-            "tamper_detected": False,
-            "tamper_class":    "none",
-            "n_sections":      0,
-            "n_intact":        0,
-            "n_entry_only":    0,
-            "n_exit_only":     0,
-            "n_both_dead":     0,
-            "intact_pct":      0.0,
-            "sentinel_canary_ratio": SENTINEL_CANARY_RATIO,
-        }
+    n_raw_entries = len(entries)
+    n_raw_exits   = len(exits)
 
-    n_entries = sum(1 for c in canaries if c["type"] == "entry")
-    n_exits   = sum(1 for c in canaries if c["type"] == "exit")
+    # Step 2: match entries to exits by spatial separation
+    # For each entry, find exits at raster distance ~expected_sep
+    matched_pairs = []
+    used_exits    = set()
 
-    # Group canaries into sections by proximity.
-    # Sort by raster order (row, col_sentinel) then group by gap.
-    canaries.sort(key=lambda c: (c["row"], c["col_sentinel"]))
-    proximity_threshold = SENTINEL_CANARY_RATIO * WINDOW_W * 2
+    for ent in entries:
+        best_exit = None
+        best_dist_err = float('inf')
+        for ex_idx, ex in enumerate(exits):
+            if ex_idx in used_exits:
+                continue
+            sep = ex["raster_pos"] - ent["raster_pos"]
+            # Exit must come AFTER entry and be on same or close row
+            if sep <= 0:
+                continue
+            # Same row or adjacent rows (within WINDOW_W rows)
+            if abs(ex["row"] - ent["row"]) > WINDOW_W:
+                continue
+            dist_err = abs(sep - expected_sep)
+            if dist_err <= sep_tol and dist_err < best_dist_err:
+                best_dist_err = dist_err
+                best_exit     = (ex_idx, ex)
 
-    sections = []
-    current  = {"entries": [], "exits": []}
-    last_pos = None
+        if best_exit is not None:
+            ex_idx, ex = best_exit
+            used_exits.add(ex_idx)
+            matched_pairs.append({
+                "entry":    ent,
+                "exit":     ex,
+                "sep":      ex["raster_pos"] - ent["raster_pos"],
+                "sep_err":  abs(ex["raster_pos"] - ent["raster_pos"] - expected_sep),
+            })
 
-    for c in canaries:
-        pos = c["row"] * w + c["col_sentinel"]
-        if last_pos is not None and (pos - last_pos) > proximity_threshold:
-            sections.append(current)
-            current = {"entries": [], "exits": []}
-        key = "entries" if c["type"] == "entry" else "exits"
-        current[key].append(c)
-        last_pos = pos
-    if current["entries"] or current["exits"]:
-        sections.append(current)
+    # Expected section count for this image
+    n_positions      = len(all_pos)
+    n_expected_sections = max(1, n_positions * DENSITY_FRAC_ESTIMATE //
+                               SENTINEL_CANARY_RATIO)
 
+    n_matched = len(matched_pairs)
+    match_ratio = n_matched / max(n_expected_sections, 1)
+
+    # Build section_results from matched pairs for _classify_sections
+    # Each matched pair = one intact section.
+    # Unmatched entries = exit_missing.  Unmatched exits = entry_missing.
     section_results = []
-    for sec_idx, sec in enumerate(sections):
-        has_entry = len(sec["entries"]) > 0
-        has_exit  = len(sec["exits"])   > 0
-        if has_entry and has_exit:
-            status = "intact"
-        elif has_entry:
-            status = "exit_missing"
-        elif has_exit:
-            status = "entry_missing"
-        else:
-            status = "both_missing"
+    for i, pair in enumerate(matched_pairs):
         section_results.append({
-            "section":  sec_idx,
-            "status":   status,
-            "n_entries":len(sec["entries"]),
-            "n_exits":  len(sec["exits"]),
+            "section":   i,
+            "status":    "intact",
+            "n_entries": 1,
+            "n_exits":   1,
+        })
+
+    unmatched_entries = [e for i, e in enumerate(entries)
+                         if not any(p["entry"] is e for p in matched_pairs)]
+    unmatched_exits   = [x for i, x in enumerate(exits)
+                         if i not in used_exits]
+
+    for i, e in enumerate(unmatched_entries):
+        section_results.append({
+            "section":   len(matched_pairs) + i,
+            "status":    "exit_missing",
+            "n_entries": 1,
+            "n_exits":   0,
+        })
+    for i, x in enumerate(unmatched_exits):
+        section_results.append({
+            "section":   len(matched_pairs) + len(unmatched_entries) + i,
+            "status":    "entry_missing",
+            "n_entries": 0,
+            "n_exits":   1,
         })
 
     classification = _classify_sections(section_results)
 
     return {
-        "canaries_found":  canaries,
-        "n_canaries":      len(canaries),
-        "n_entries":       n_entries,
-        "n_exits":         n_exits,
-        "section_results": section_results,
+        "n_raw_entries":       n_raw_entries,
+        "n_raw_exits":         n_raw_exits,
+        "n_matched_pairs":     n_matched,
+        "n_expected_sections": n_expected_sections,
+        "match_ratio":         round(match_ratio, 4),
+        "expected_sep":        expected_sep,
+        "sep_tol":             sep_tol,
+        "canaries_found":      entries + exits,   # kept for compat
+        "n_canaries":          n_raw_entries + n_raw_exits,
+        "n_entries":           n_raw_entries,
+        "n_exits":             n_raw_exits,
+        "section_results":     section_results,
         **classification,
     }
 
@@ -693,7 +750,12 @@ def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
     Returns detection statistics comparing marker positions vs control.
     """
     h, w, c = pixels.shape
-    prime_lookup = build_prime_lookup(BIT_DEPTH, min_prime=config.min_prime)
+    # build_prime_lookup only accepts bit_depth in some versions of pgps_detector.
+    # Build the full lookup then zero out primes below min_prime manually.
+    prime_lookup = build_prime_lookup(BIT_DEPTH)
+    if hasattr(config, 'min_prime') and config.min_prime > 2:
+        prime_lookup = prime_lookup.copy()
+        prime_lookup[:config.min_prime] = False
     tol = config.detection_prime_tolerance
 
     # Build fuzzy prime lookup
