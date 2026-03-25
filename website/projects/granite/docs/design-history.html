@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design History &mdash; Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html">History</a>
+      <a href="index.html" class="active">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Design History</p>
+    <h1>How We Got Here</h1>
+    <p class="hero-subtitle">Why Every Assumption Got Tested</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>The Original Question</h2>
+    <p>The original question was narrow: can you embed a signal in an image that survives the kind of aggressive JPEG compression that social media platforms apply, and can you detect that signal later without knowing where it was placed?</p>
+    <p>The &ldquo;without knowing where&rdquo; part was the constraint that made everything else interesting. A watermark you can only verify if you have the original embed receipt is useful for private provenance chains. It is not useful for detecting whether an image circulating on the internet was marked before it got there. I wanted the second thing.</p>
+    <p>The hypothesis was that prime-gap distributions in pixel channel differences are statistically distinctive enough to survive compression. That hypothesis was wrong in the way it was stated, and figuring out <em>how</em> it was wrong led to the actual result.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Wrong Assumption 1: Frequency Detection Would Work</h2>
+    <p>The initial design used a KS test on channel-distance distributions. Mark an image, compress it, scan the distances at all eligible grid positions, compare against an unmarked version of the same image. If the distributions differ significantly, the image was marked.</p>
+    <p>It worked at gen0 (immediately after embedding) and at gen1 (one re-encode). At gen4 (Q40, four generations of compression), the frequency detector was at 6-8% &mdash; essentially random.</p>
+    <p>But while we were watching the frequency signal die, we noticed something in the local spatial variance measurements: the numbers were going <em>up</em> under compression, not down. At gen0, the local variance ratio (marked / unmarked) was around 1.05. At gen4 it was 1.18. <strong>The adversary who compresses to destroy the frequency signal is building the spatial variance detection signal.</strong></p>
+    <p>The mechanism: when JPEG quantizes a DCT coefficient that was deliberately perturbed to satisfy a prime-gap constraint, the quantization decision propagates into adjacent pixels through the inverse DCT. The prime-gap perturbation creates a spatial anomaly that compression smears outward, making it <em>more</em> detectable in the spatial domain than it was before compression. Granite under sandstone.</p>
+    <p>This changed the entire detection architecture. Layer D: a blind KS test on local spatial variance and channel-difference variance distributions. At the validated operating point &mdash; floor 43, 8% of eligible grid positions &mdash; Layer D achieves 90%+ blind detection after Q40 on a 500-image DIV2K corpus. Layer D is the paper.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Wrong Assumption 2: Density Means Markers, Not Fraction</h2>
+    <p>Hardcoded <code>n_markers = 2000</code> produced inconsistent results across image sizes. Fixed by expressing density as <code>n_markers = ceil(grid_capacity &times; density_frac)</code>. The density sweep showed detection saturates at 8-10%. Below 8%, spatial detection degrades. Above 12%, PSNR cost rises without detection benefit. 8% is the stable operating point.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Wrong Assumption 3: Compound Detection Would Improve With OR Logic</h2>
+    <p>Layer BC frequency signal is destroyed at Q40. OR logic exposed this rather than fixed it &mdash; control rate was higher than marker rate with OR. Reverted to AND. Layer BC is a gen0-gen2 detector. This is an honest result, not a failure.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Wrong Assumption 4: Sentinels Can Survive a Prime Re-encode</h2>
+    <p>Embedding sentinels then calling <code>encode_prime_jpeg</code> destroyed the sentinels before cascade started. Layer A (prime DQT tables, container domain) and Layer E (Mersenne sentinels, pixel domain) are different operations in different domains. Do not conflate them. Gen0 pipeline: <code>encode_prime_jpeg(original)</code> &rarr; embed sentinels &rarr; <code>to_jpeg(marked)</code>. Not <code>encode_prime_jpeg(marked)</code>.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Wrong Assumption 5: Adjacency Is Sufficient for Canary Detection</h2>
+    <p>Two-position <code>[Mersenne][prime]</code> pairs: SNR &lt; 1.0 on 500-image corpus. Natural images produce them by coincidence. Fix: matched entry+exit pairs at <code>SENTINEL_CANARY_RATIO &times; WINDOW_W</code> pixels of raster separation. Spatial constraint collapses joint FP rate to near zero.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Wrong Assumption 6: Absolute Mersenne Values Survive JPEG</h2>
+    <p class="lead"><strong>This is the major architectural breakthrough of March 2026.</strong></p>
+    <p>The sentinel drift characterizer measured actual drift across 50 images:</p>
+    <pre>DRIFT DISTRIBUTION AT Q95 (G0, first encode):
+  mean drift: 33.07 counts
+  p50:  17.0   p95: 116.0   max: 127.0 &mdash; THE MERSENNE VALUE ITSELF
+
+SURVIVAL RATE AT CANARY_WIDTH=8:   32% at G0
+SURVIVAL RATE AT CANARY_WIDTH=116: 95% at G0</pre>
+    <p>The max drift of 127 is not noise. JPEG is consistently zeroing out <code>|R-G| = 127</code> to <code>|R-G| = 0</code>. This is chroma neutralization, not wrapping.</p>
+    <p><strong>M=127 is JPEG&rsquo;s chroma gravity well, not a wrapping boundary.</strong></p>
+    <p>Note on boundary intuition: the instinct to test at boundary values is correct. 127 is a boundary &mdash; the maximum signed 8-bit value, the maximum single-channel Mersenne prime. The test revealed the mechanism: JPEG treats large chroma differences as high-frequency noise to be eliminated. The boundary is real and exploitable, just not in the direction of wrapping. It is the edge of what JPEG will preserve.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>The Solution: Relational Encoding Within DCT Blocks</h2>
+    <p><strong>Core insight:</strong> JPEG quantization error is spatially correlated within 8&times;8 DCT blocks. Both positions drift by approximately &delta;. The difference <code>d(p2) - d(p1)</code> drifts by <code>&delta;2 - &delta;1 &asymp; 0</code>. The differential survives when the absolute values do not.</p>
+    <p><strong>Same-block correlation test across 50 images, all 60 parameter combinations:</strong></p>
+    <pre>ALL 60 COMBINATIONS VERDICT: RELATIONAL WORKS &#x2713;  (p=0.0 throughout)
+
+M=31, sep=1, G4 (Q40):  corr=0.9619  rel_residual=2.44  both_cat=0.8%
+M=7,  sep=1, G4 (Q40):  corr=0.9425  rel_residual=2.42  both_cat=3.6%
+M=127,sep=1, G4 (Q40):  corr=0.9707  rel_residual=3.40  both_cat=97.6%</pre>
+    <p>M=127 both_cat=97.6%: JPEG zeroes both pixels simultaneously. Differential (0-0=0) survives but anchor is invisible in blind mode. Permanently excluded.</p>
+    <p>M=31 both_cat=0.8%: anchor survives, differential survives. Production entry value.<br>
+    M=7 both_cat=3.6%: same. Production exit value.<br>
+    REL_WIDTH=6 captures 95%+ of relational residuals at G4.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>The Spanning Architecture: 24/16/8-bit Tiered Detection</h2>
+    <p>Rather than hoping for natural block cohabitation, deliberately embed across a multi-pixel span within the same 8&times;8 DCT block. All pixels in the span drift together (correlated). Differential across the span is preserved.</p>
+    <pre>TIER_24 &mdash; 5-pixel span (primary):
+  [p-2][p-1][ANCHOR][p+1][p+2]  same row, same DCT block
+  Anchor: d = M31 (entry) or M7 (exit)
+  Flanking: d = anchor_value (target differential = 0)
+  Detect: anchor within ANCHOR_TOL + &ge;3 flanking within DIFF_TOL
+
+TIER_16 &mdash; 3-pixel span (boundary fallback):
+  [p-1][ANCHOR][p+1]  when p&plusmn;2 crosses block boundary
+
+TIER_8 &mdash; anchor only (edge fallback):
+  [ANCHOR]  at image edges only</pre>
+    <p><strong>Calibrated tolerances (from correlation test data):</strong></p>
+    <pre>SENTINEL_MERSENNE_ENTRY = 31    # M=127 excluded permanently
+SENTINEL_MERSENNE_EXIT  = 7
+TIER_24_ANCHOR_TOL      = 64    # wide: anchor is findability, not verification
+TIER_24_DIFF_TOL        = 6     # tight: differential is the real signal
+TIER_16_ANCHOR_TOL      = 64
+TIER_16_DIFF_TOL        = 8
+TIER_8_ANCHOR_TOL       = 16</pre>
+    <p><strong>Validated across 500 DIV2K images, cascade Q95&rarr;Q85&rarr;Q75&rarr;Q60&rarr;Q40:</strong></p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Gen</th><th>Q</th><th>T24%</th><th>T16%</th><th>T8%</th><th>Overall%</th><th>T24 demoted%</th></tr></thead>
+      <tbody>
+        <tr><td>G0</td><td>95</td><td>99.2%</td><td>1.4%</td><td>0.3%</td><td>99.2%</td><td>14.3%</td></tr>
+        <tr><td>G1</td><td>85</td><td>98.2%</td><td>1.4%</td><td>0.3%</td><td>98.2%</td><td>8.6%</td></tr>
+        <tr><td>G2</td><td>75</td><td>98.0%</td><td>1.4%</td><td>0.1%</td><td>98.0%</td><td>8.5%</td></tr>
+        <tr><td>G3</td><td>60</td><td>98.3%</td><td>1.4%</td><td>0.2%</td><td>98.3%</td><td>14.4%</td></tr>
+        <tr><td>G4</td><td>40</td><td>98.6%</td><td>1.4%</td><td>0.2%</td><td>98.6%</td><td>28.4%</td></tr>
+      </tbody>
+    </table></div>
+    <p>28.4% T24_demoted at G4 means graceful demotion is working. These sentinels are detected at lower tier, not lost. Effective detection any tier: &gt;99%.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Position-Based Payload (Layer F) &mdash; Validated</h2>
+    <p>v1 of Layer F encoded payload in the differential between flanking pixel channel differences and the anchor. Failed because the same correlation property that makes the sentinel relational (Pearson r=0.96, mean rel_residual=2.44 at Q40) means JPEG makes same-block pixels drift together. We proved 0 is preserved. We then asked it to encode 48. Those are directly opposite requirements.</p>
+    <p>v2 is architectural, not parametric. <strong>JPEG corrupts pixel values. It cannot corrupt pixel positions.</strong> A sentinel placed at column 47 is at column 47 after any number of JPEG re-encodes. The payload is encoded in the offset of the sentinel from its natural section boundary position.</p>
+    <pre>offset  0 &rarr; bits 00
+offset +1 &rarr; bits 01
+offset +2 &rarr; bits 10
+offset -1 &rarr; bits 11</pre>
+    <p>2 bits per section &times; ~108 sections per image = 216 raw bits. With a 24-bit payload, each bit position gets 9 votes. Majority vote fails only if more than 4 of 9 votes are corrupted.</p>
+    <p><strong>Validated result: 800/800 images, 100% CID match, 100% hash match, unanimous margins (1.000), at Q40. Zero uncertain bits.</strong></p>
+    <p class="lead"><em>Positions survive JPEG. Values do not.</em></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>The Detection Harness and the Gap</h2>
+    <p>With all layers validated individually, we built a detection harness that runs every layer against the same image, computes per-layer scores, and combines them into a single provenance score.</p>
+    <p><strong>Scoring design: non-zero denominator.</strong> The first version penalized images for the absence of layers that were never supposed to fire. Layer A (DQT) is 0.0 after any re-encode by design. Layer BC is 0.0 when the compound detector is run through a pipeline that double-encodes. Including these zeros in the denominator produced systematically deflated scores &mdash; marked images classifying as State C rather than B.</p>
+    <p>The fix: denominator = count of layers with non-zero scores only. A layer scoring 0.0 means it has no active signal, not that it detected absence. This is the same distinction as &ldquo;absence of evidence&rdquo; versus &ldquo;evidence of absence.&rdquo;</p>
+    <pre>Marked corpus:    50 images, mean combined = 0.9988, State B = 50/50 (100%)
+Clean baseline:   50 images, mean combined = 0.0000, false positives = 0/50 (0%)
+Gap:              0.9988
+Separation:       CLEAR &mdash; distributions do not touch</pre>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Layer D: Two Failure Modes and the Architectural Fix</h2>
+    <p>Layer D was the blind spatial variance detector &mdash; the only layer that fires without a manifest. It had two sequential failure modes.</p>
+    <p><strong>Layer D v1 failure: JPEG blocking artifact.</strong> Compared |R-G| variance at 8-pixel grid positions vs random off-grid positions. JPEG DCT blocks are also 8 pixels wide. Block boundary artifacts naturally elevate variance at grid-aligned positions in every JPEG, marked or not. Clean images scored 0.89. The test measured the compression artifact, not the signal.</p>
+    <p><strong>Layer D v2 failure: natural chromatic asymmetry.</strong> To cancel the JPEG artifact, v2 compared |R-G| variance vs |R-B| variance at the <em>same</em> grid positions. The flaw: natural photographs have chromatic content. In almost every natural image, R&ne;G&ne;B, so |R-G| &ne; |R-B| by construction. Clean images scored 0.98. The test measured the image&rsquo;s own color, not the signal.</p>
+    <p>Only image 0014 scored 0.0 in the v2 clean baseline &mdash; because it happened to be nearly desaturated, making R&asymp;G&asymp;B. One image out of fifty. That&rsquo;s not a detector. That&rsquo;s a color saturation meter.</p>
+    <p><strong>The architectural fix: Layer D is corroborating evidence, not primary evidence.</strong></p>
+    <p>Layer D fires on pixel statistics alone. In the absence of any manifest evidence, it has no anchor &mdash; it cannot distinguish &ldquo;this image has our signal&rdquo; from &ldquo;this image has natural chromatic content.&rdquo; It is therefore excluded from the combined score unless at least one manifest-mode layer (A, BC, E, or F) is also non-zero.</p>
+    <pre>Clean image:  A=0, BC=0, E=0, F=0 &rarr; no manifest &rarr; Layer D excluded &rarr; score = 0.0
+Marked image: A=1, E=1, F=1 &rarr; manifest present &rarr; Layer D included &rarr; score &asymp; 0.999</pre>
+    <p>This single constraint collapses the false positive rate from 98% to 0%.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Updated Layer Summary</h2>
+    <pre>Layer A (container):  DQT prime tables &mdash; G0 only by design
+Layer BC (frequency): twin prime compound markers &mdash; G0-G2
+Layer D (spatial):    channel-controlled KS &mdash; corroborating only, requires manifest
+Layer E (sentinel):   spanning relational Mersenne &mdash; 98.6% at G4 (500 images)
+Layer F (payload):    position-offset, majority vote &mdash; 100% at Q40 (800 images)</pre>
+    <h2>Canonical Phrases</h2>
+    <p class="lead"><em>&ldquo;Granite under sandstone.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;Participation Over Permission.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;Proves Participation.&rdquo;</em> (NOT enforcement)</p>
+    <p class="lead"><em>&ldquo;The signal proves participation. The matching service proves identity.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;127 is not a wrapping boundary. It is JPEG&rsquo;s chroma gravity well.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;Positions survive JPEG. Values do not.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;Layer D is corroborating evidence, not primary evidence.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;Absence of evidence is not evidence of absence &mdash; but a layer scoring zero for the right reason should not penalize layers scoring one for the right reason.&rdquo;</em></p>
+    <p>Jeremy Pickett &mdash; March 2026</p>
+    <p class="lead"><em>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</em></p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div>
+      <div class="footer-title">Granite Under Sandstone</div>
+      <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <span class="footer-sep">/</span>
+      <a href="index.html">Docs</a>
+      <span class="footer-sep">/</span>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

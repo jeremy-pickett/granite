@@ -121,23 +121,23 @@
 <section class="section" id="results">
   <div class="container">
     <h2>Results</h2>
-    <p class="lead">800 real photographs. Four generations of JPEG compression. The signal gets <strong>louder</strong>, not quieter.</p>
+    <p class="lead">500&ndash;800 real photographs. Five generations of JPEG compression. Two independent detection layers survive Q40. The spatial signal gets <strong>louder</strong>, not quieter.</p>
 
     <div class="results-headline">
       <div class="stat">
-        <span class="stat-number">99.6%</span>
-        <span class="stat-label">Detection Rate</span>
-        <span class="stat-detail">Either channel pair, KS p&lt;0.05</span>
+        <span class="stat-number">98.6%</span>
+        <span class="stat-label">Sentinel Survival</span>
+        <span class="stat-detail">Spanning architecture at Q40 (500 images)</span>
       </div>
       <div class="stat">
-        <span class="stat-number">96.4%</span>
-        <span class="stat-label">G-B Channel</span>
-        <span class="stat-detail">Best single channel pair</span>
+        <span class="stat-number">90%+</span>
+        <span class="stat-label">Blind Detection</span>
+        <span class="stat-detail">Spatial variance, no reference needed (500 images)</span>
       </div>
       <div class="stat">
-        <span class="stat-number">48.1%</span>
-        <span class="stat-label">Amplification</span>
-        <span class="stat-detail">Signal grows under compression</span>
+        <span class="stat-number">&gt;99%</span>
+        <span class="stat-label">Any-Tier Detection</span>
+        <span class="stat-detail">Including graceful tier demotion</span>
       </div>
     </div>
 
@@ -146,19 +146,58 @@
       <p class="caption">DIV2K validation: 800 images through Q95 &rarr; Q85 &rarr; Q75 &rarr; Q60 &rarr; Q40 cascade</p>
     </div>
 
-    <h3>The Cascade</h3>
-    <p>Each row is a JPEG re-encode at decreasing quality. The signal survives every generation.</p>
+    <h3>Layer Performance Across the Cascade</h3>
+    <p>Each layer has a validated operational range. Together they provide defense in depth from embedding through aggressive recompression.</p>
+
+    <h4>Layer D &mdash; Blind Spatial Variance Detection</h4>
+    <p>No reference image needed. The image is its own control group. Compression <em>amplifies</em> the variance anomaly at marker positions. Validated on 500 DIV2K images.</p>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Generation</th><th>Quality</th><th>G-B KS p&lt;0.05</th><th>R-G KS p&lt;0.05</th><th>G-B Variance Ratio</th></tr>
+          <tr><th>Generation</th><th>Quality</th><th>G-B KS p&lt;0.05</th><th>R-G KS p&lt;0.05</th><th>G-B Variance Ratio</th><th>Amplification</th></tr>
         </thead>
         <tbody>
-          <tr><td>Gen 0</td><td>Q95</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
-          <tr><td>Gen 1</td><td>Q85</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
-          <tr><td>Gen 2</td><td>Q75</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
-          <tr><td>Gen 3</td><td>Q60</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
-          <tr class="highlight-row"><td>Gen 4</td><td>Q40</td><td>96.4%</td><td>90.1%</td><td>1.16</td></tr>
+          <tr><td>Gen 0</td><td>Q95</td><td>96.4%</td><td>90.1%</td><td>1.05</td><td>&mdash;</td></tr>
+          <tr><td>Gen 1</td><td>Q85</td><td>96.4%</td><td>90.1%</td><td>1.09</td><td class="yes">YES</td></tr>
+          <tr><td>Gen 2</td><td>Q75</td><td>94.2%</td><td>87.5%</td><td>1.12</td><td class="yes">YES</td></tr>
+          <tr><td>Gen 3</td><td>Q60</td><td>91.8%</td><td>82.3%</td><td>1.15</td><td class="yes">YES</td></tr>
+          <tr class="highlight-row"><td>Gen 4</td><td>Q40</td><td>90%+</td><td>&mdash;</td><td>1.18</td><td class="yes">YES</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption" style="margin-top:-1rem">Variance ratio increases under compression &mdash; granite under sandstone. KS frequency detection degrades at Q60+ but spatial variance compensates.</p>
+
+    <h4>Layer E &mdash; Spanning Relational Sentinel</h4>
+    <p>Relational encoding within 8&times;8 DCT blocks. The differential between correlated pixels survives when absolute values do not. Validated on 500 DIV2K images.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Generation</th><th>Quality</th><th>T24 Intact</th><th>Demoted to T16/T8</th><th>Effective Detection</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gen 0</td><td>Q95</td><td>99.2%</td><td>14.3%</td><td>&gt;99%</td></tr>
+          <tr><td>Gen 1</td><td>Q85</td><td>98.2%</td><td>8.6%</td><td>&gt;99%</td></tr>
+          <tr><td>Gen 2</td><td>Q75</td><td>98.0%</td><td>8.5%</td><td>&gt;99%</td></tr>
+          <tr><td>Gen 3</td><td>Q60</td><td>98.3%</td><td>14.4%</td><td>&gt;99%</td></tr>
+          <tr class="highlight-row"><td>Gen 4</td><td>Q40</td><td>98.6%</td><td>28.4%</td><td>&gt;99%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption" style="margin-top:-1rem">28.4% T24 demotion at Q40 means graceful degradation, not failure &mdash; demoted sentinels are still detected at lower tier.</p>
+
+    <h4>Layer BC &mdash; Compound Frequency Markers</h4>
+    <p>Twin-prime compound markers at known positions. Effective at G0&ndash;G2. Frequency signal degrades under aggressive compression &mdash; this is an honest result, not a failure. Layer BC is a near-field detector.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Generation</th><th>Quality</th><th>G-B Detection</th><th>R-G Detection</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gen 0</td><td>Q95</td><td>96.4%</td><td>90.1%</td><td class="yes">STRONG</td></tr>
+          <tr><td>Gen 1</td><td>Q85</td><td>96.4%</td><td>90.1%</td><td class="yes">STRONG</td></tr>
+          <tr><td>Gen 2</td><td>Q75</td><td>~90%</td><td>~80%</td><td>DEGRADING</td></tr>
+          <tr><td>Gen 3</td><td>Q60</td><td>&mdash;</td><td>&mdash;</td><td>UNRELIABLE</td></tr>
+          <tr><td>Gen 4</td><td>Q40</td><td>&mdash;</td><td>&mdash;</td><td>NOT EFFECTIVE</td></tr>
         </tbody>
       </table>
     </div>
@@ -370,29 +409,43 @@
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section section-alt" id="layers">
   <div class="container">
-    <h2>Three Detection Layers</h2>
-    <p class="lead">Defense in depth. Each layer operates independently. Together they compound.</p>
+    <h2>Five Detection Layers</h2>
+    <p class="lead">Defense in depth. Each layer operates independently in a different domain, with a validated operational range. Together they compound.</p>
 
     <div class="layers">
       <div class="layer">
-        <div class="layer-num">L1</div>
+        <div class="layer-num">A</div>
         <div class="layer-body">
           <h3>DQT Prime Tables</h3>
-          <p>Replace JPEG quantization table entries with nearest primes. The table itself is the provenance signal. Survives re-encoding as double-quantization artifacts.</p>
+          <p>Replace JPEG quantization table entries with nearest primes. The table itself is the provenance signal. Container-level detection. <strong>Operational: G0 only</strong> &mdash; by design, the container signal does not survive re-encoding.</p>
         </div>
       </div>
       <div class="layer">
-        <div class="layer-num">L2</div>
+        <div class="layer-num">BC</div>
         <div class="layer-body">
-          <h3>Compound Markers</h3>
-          <p>Twin-prime markers at known positions. Detection compares prime-gap hit rate at marker vs. control positions in the same image. Compound strategies (twin + magic sentinel + rare basket) collapse false positive probability.</p>
+          <h3>Compound Frequency Markers</h3>
+          <p>Twin-prime markers at known positions. Detection compares prime-gap hit rate at marker vs. control positions in the same image. Compound strategies collapse false positive probability. <strong>Operational: G0&ndash;G2</strong> &mdash; frequency signal degrades under aggressive compression. 96.4% G-B detection at Q95, not reliable past Q60.</p>
         </div>
       </div>
       <div class="layer">
-        <div class="layer-num">L3</div>
+        <div class="layer-num">D</div>
         <div class="layer-body">
-          <h3>Rare Basket</h3>
-          <p>Position pattern derived from 256-bit key via HMAC-SHA512. Enables attribution through Jaccard similarity at corpus scale. The fingerprint, not the signal.</p>
+          <h3>Blind Spatial Variance</h3>
+          <p>KS test on local spatial variance and channel-difference variance distributions. The image is its own control group. No reference image needed. Compression <em>amplifies</em> the signal &mdash; the adversary who compresses to destroy the frequency signal is constructing the spatial variance detection signal. <strong>Operational: G0&ndash;G4</strong> &mdash; 90%+ blind detection at Q40 on 500 images. This is the paper.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">E</div>
+        <div class="layer-body">
+          <h3>Spanning Relational Sentinel</h3>
+          <p>Mersenne-prime anchors with correlated flanking pixels within 8&times;8 DCT blocks. The differential between positions survives when absolute values do not. Tiered detection (24/16/8-bit) degrades gracefully at block boundaries. <strong>Operational: G0&ndash;G4</strong> &mdash; 98.6% manifest survival at Q40, &gt;99% effective at any tier. Validated on 500 images.</p>
+        </div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">F</div>
+        <div class="layer-body">
+          <h3>Rare Basket / Attribution</h3>
+          <p>Position pattern derived from 256-bit key via HMAC-SHA512. Enables attribution through Jaccard similarity at corpus scale. The fingerprint, not the signal. Payload encoder (structured flanking data: creator ID, timestamp, section index) is architecturally ready but not yet validated at scale.</p>
         </div>
       </div>
     </div>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Addendum L: The Spanning Sentinel &mdash; Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html">History</a>
+      <a href="index.html" class="active">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Addendum L</p>
+    <h1>The Spanning Sentinel</h1>
+    <p class="hero-subtitle">When the Compressor Becomes the Custodian</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.1 Context</h2>
+    <blockquote>
+      <p>&ldquo;The adversary who compresses to destroy the frequency signal is constructing the spatial variance detection signal.&rdquo;</p>
+    </blockquote>
+    <p>The previous installments established a three-layer provenance architecture: prime quantization tables at the container level, twin prime-gap markers at the pixel level, and a blind spatial variance detector that strengthens under compression. That work answered the question <em>was this image marked?</em></p>
+    <p>The first sentinel addendum introduced the fourth layer: structural tamper detection using Mersenne primes as section brackets. It answered <em>was this marked image tampered with?</em></p>
+    <p>This addendum documents what happened when we tested that architecture at scale &mdash; what broke, why it broke, what we learned about JPEG that we didn&rsquo;t know going in, and what emerged from that failure that is more powerful than what we had designed.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>L.2 The Flat Line</h2>
+    <p>When the sentinel architecture was first tested across 500 images, the manifest intact percentage &mdash; the fraction of sentinel sections where both entry and exit survived compression &mdash; was 1.4%. Flat across all five generations, including generation zero. The sentinels were dying before the cascade started.</p>
+    <p>A 1.4% flat line is not a partial result. It is a clean null result. It means the architecture as designed was not detecting anything. It means the parameter we were trying to tune (<code>CANARY_WIDTH</code>, the fuzzy match window around the Mersenne value) was irrelevant to the actual failure mode.</p>
+    <p>The drift characterizer told us why.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.3 What JPEG Actually Does to a Value of 127</h2>
+    <p>The sentinel architecture placed markers at pixel positions where the channel difference <code>|R - G|</code> equaled a Mersenne prime. In the 8-bit range there are four: 3, 7, 31, 127. We used all four.</p>
+    <p>The drift characterizer measured the actual difference between the value we embedded and the value JPEG returned after decompression. Across 50 images and five quality levels:</p>
+    <pre>Mean absolute drift at Q95 (first encode): 33 counts
+p50:  17 counts
+p95: 116 counts
+Maximum drift observed: 127 counts</pre>
+    <p>The maximum drift of 127 is not statistical noise. It is the Mersenne value itself. We embedded <code>|R - G| = 127</code> and JPEG returned <code>|R - G| = 0</code>. The compressor made the channels equal.</p>
+    <p>This is not wrapping. JPEG is not LZW. There are no bit-field boundaries being crossed. What is happening is this: a channel difference of 127 represents the maximum possible single-channel color difference in 8-bit space. In the YCbCr color model that JPEG uses internally, this maps to a large chroma value &mdash; a strong color signal. At moderate-to-low quality levels, the chroma quantization table has large step sizes precisely because strong color differences in high-frequency spatial regions are what JPEG is designed to discard. The nearest quantization multiple for the large chroma coefficient is zero. The compressor rounds to it. The channels become equal. The channel difference goes to zero.</p>
+    <p>We did not place our sentinel at a random position. We placed it at the value that JPEG is most aggressively designed to erase.</p>
+    <p><strong>127 is JPEG&rsquo;s chroma gravity well.</strong></p>
+    <p>The survival table confirmed it clinically. At <code>CANARY_WIDTH = 8</code>, only 32% of embedded sentinels were detectable after a single Q95 encode. At <code>CANARY_WIDTH = 116</code>, you could recover 95% &mdash; but a window of 116 covers nearly the entire 8-bit range. A fuzzy Mersenne detector with window 116 is not a Mersenne detector. It is a noise generator.</p>
+    <p>There is no parameter setting that fixes absolute Mersenne detection. The architecture requires a different foundation.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>L.4 What JPEG Preserves</h2>
+    <p>The failure of absolute detection revealed something more interesting than what we had been looking for.</p>
+    <p>The drift characterizer&rsquo;s within-block correlation test &mdash; designed to ask whether pixels in the same 8&times;8 DCT block drift together &mdash; returned &ldquo;insufficient pairs.&rdquo; The grid stride of 8 pixels placed at most one sentinel per DCT block, so there were no same-block pairs to measure.</p>
+    <p>This was a test design flaw, not a finding. The hypothesis remained untested. We rebuilt the test to deliberately inject pairs of sentinel values at adjacent positions within the same 8&times;8 block, then measure whether their drift values were correlated.</p>
+    <p>The results across 50 images, tested for every Mersenne value, every pixel separation from 1 to 3, and every cascade generation, were unambiguous:</p>
+    <pre>ALL 60 COMBINATIONS: RELATIONAL WORKS &#x2713;
+Pearson correlation p-value throughout: 0.0</pre>
+    <p>The correlation for M=31 at sep=1 after Q40: <strong>0.9619</strong>. The mean relational residual &mdash; the difference between the two drifts &mdash; was <strong>2.44 counts</strong>.</p>
+    <p>When JPEG shifts a pixel&rsquo;s channel difference by &delta;, an adjacent pixel in the same DCT block shifts by approximately &delta; as well. Both positions experience the same DCT transform, the same quantization table, the same spatial frequency decomposition. Their drift values are nearly identical.</p>
+    <p>This means the <em>difference</em> between two channel differences within a block is nearly invariant under JPEG compression, even when both individual values drift by tens of counts. If we encode a sentinel as a relationship rather than a value &mdash; <code>d(p2) - d(p1) = Mersenne</code> &mdash; then after compression:</p>
+    <pre>(d(p2) + &delta;2) - (d(p1) + &delta;1) &asymp; Mersenne + 0 &asymp; Mersenne</pre>
+    <p>The differential survives. The absolute values are irrelevant.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.5 M=127 Is a Special Case Worth Examining</h2>
+    <p>The correlation data included a striking number for M=127 at sep=1 after Q40:</p>
+    <pre>both_catastrophic: 97.6%
+one_catastrophic:  0.4%</pre>
+    <p>97.6% of embedded M=127 pairs had <em>both</em> pixels drift catastrophically &mdash; both went to approximately zero. Only 0.4% had one pixel drift while the other survived. The differential (0 - 0 = 0) technically survives. The correlation for M=127 was actually the highest in the dataset: 0.9707.</p>
+    <p>This is a remarkable result. JPEG does not corrupt M=127 pairs randomly. It erases them coherently. Both pixels receive the same chroma neutralization decision simultaneously, because they share the same 2&times;2 chroma sample in the 4:2:0 subsampling scheme &mdash; the step that occurs before the DCT, before the quantization, before anything else we have been measuring.</p>
+    <p>The differential survives, but it survives as zero. A detector looking for a differential of zero cannot distinguish a deliberately embedded M=127 sentinel from any pair of naturally low-chroma adjacent pixels. M=127 is not a useful sentinel value even with relational encoding. It is permanently excluded from the sentinel basket.</p>
+    <p>M=31 and M=7 have catastrophic rates of 0.8% and 3.6% respectively. The absolute anchor survives. The differential survives. Both signals are present and detectable. These are the production sentinel values.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>L.6 The Spanning Architecture</h2>
+    <p>Relational encoding requires two positions in the same DCT block. The original grid stride of 8 pixels placed one position per block by design.</p>
+    <p>The solution was to treat the sentinel not as a single position but as a deliberate span of positions embedded within the same block:</p>
+    <pre>[p-2][p-1][ANCHOR][p+1][p+2]</pre>
+    <p>All five pixels in the same row. Same 8&times;8 DCT block. The anchor carries the Mersenne identity. The flanking pixels carry the same channel difference as the anchor &mdash; their differential from the anchor targets zero.</p>
+    <p>After compression, all five pixels drift by approximately the same &delta;. The anchor is still findable (absolute value near Mersenne). The flanking pixels are still verifiable (differential from anchor near zero). The structure is intact even when the individual absolute values have drifted by dozens of counts.</p>
+    <p>When the span approaches an image edge or a block boundary, the architecture degrades gracefully to a 3-pixel or 1-pixel span:</p>
+    <pre>TIER_24: [p-2][p-1][ANCHOR][p+1][p+2]  &mdash; primary
+TIER_16: [p-1][ANCHOR][p+1]             &mdash; boundary fallback
+TIER_8:  [ANCHOR]                        &mdash; edge fallback</pre>
+    <p>A TIER_24 sentinel that loses flanking pixels to boundary conditions reports as TIER_16. A TIER_16 that loses further reports as TIER_8. At no point does partial degradation become a detection failure &mdash; it becomes a tier demotion. Lower tier, still counted.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.7 The Numbers</h2>
+    <p>Tested across 500 images from the DIV2K high-resolution corpus, five cascade generations from Q95 to Q40:</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Generation</th><th>Quality</th><th>T24 intact</th><th>Demoted to T16/T8</th></tr></thead>
+      <tbody>
+        <tr><td>G0</td><td>95</td><td>99.2%</td><td>14.6%</td></tr>
+        <tr><td>G1</td><td>85</td><td>98.2%</td><td>8.9%</td></tr>
+        <tr><td>G2</td><td>75</td><td>98.0%</td><td>8.6%</td></tr>
+        <tr><td>G3</td><td>60</td><td>98.3%</td><td>14.6%</td></tr>
+        <tr><td>G4</td><td>40</td><td>98.6%</td><td>28.6%</td></tr>
+      </tbody>
+    </table></div>
+    <p>98.6% manifest survival at Q40. This is not a parameter we tuned to this value. This is what the architecture produces when M=31/M=7 are embedded at sep=1 within 8&times;8 blocks, detected with anchor tolerance of 64 counts and differential tolerance of 6 counts.</p>
+    <p>The G4 demotion rate of 28.4% means that at the most aggressive compression level, more than a quarter of TIER_24 sentinels lose some flanking pixels. They are still detected. They contribute to the matched-pair analysis at lower tier. Effective detection at any tier: greater than 99%.</p>
+    <p>This architecture survives five rounds of aggressive JPEG recompression with essentially no loss. The previous architecture survived zero.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>L.8 What the Image Becomes</h2>
+    <p>The spanning architecture currently uses flanking pixels to carry redundant information &mdash; each flanking pixel encodes the same channel difference as the anchor. The correlation property means they survive together.</p>
+    <p>But the correlation property also means each flanking pixel can carry <em>different</em> information and be recovered reliably. If the anchor establishes the frame &mdash; &ldquo;I am an entry sentinel of type M=31&rdquo; &mdash; then each flanking pixel can carry an 8-bit payload field:</p>
+    <pre>[anchor: entry/exit identity]
+[flank-1: section index]
+[flank-2: image hash fragment]
+[flank-3: creator identifier fragment]
+[flank-4: timestamp fragment]</pre>
+    <p>Each flanking pixel encodes <code>d_flank = d_anchor + payload_byte</code>. After JPEG, <code>d_flank - d_anchor &asymp; payload_byte &plusmn; 2-5 counts</code>. The payload byte is recoverable with rounding.</p>
+    <p>The image becomes a signed document. No external database query is required to read the creator identifier. No manifest is required to validate the section structure. The provenance record is embedded in the pixel structure and carries with the image wherever it goes.</p>
+    <p>The matching service does not become unnecessary. It becomes an indexer rather than an oracle &mdash; it can validate the internal consistency of the embedded payload, cross-reference creator identifiers against a registry, and build a chain of custody. But the basic attestation &mdash; this image was marked, by this entity, at this time &mdash; is self-contained.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.9 The Architecture of Difficulty</h2>
+    <p>A forger who wants to inject a false payload into a marked image must:</p>
+    <p><strong>1.</strong> Identify the anchor positions (knowing M=31 and M=7 as sentinel values)</p>
+    <p><strong>2.</strong> Reconstruct the section structure from the matched entry/exit pairs</p>
+    <p><strong>3.</strong> Embed the desired payload into the flanking pixels with correct differentials</p>
+    <p><strong>4.</strong> Do this in a way that survives re-encoding &mdash; meaning the embedded differentials must survive the JPEG pipeline they are about to encounter</p>
+    <p>Step 4 is the hard one. The flanking pixel values must be chosen to produce the correct post-compression differentials, which requires knowing the quantization table and local DCT coefficients at each position. This is not impossible, but it requires re-implementing the injector &mdash; which is substantially more difficult than simply removing a watermark.</p>
+    <p>Removal is similarly non-trivial. Removing the sentinels requires identifying every M=31 and M=7 anchor position, understanding that the flanking pixels form a correlated span, and replacing all five pixels in each span with values that appear natural. Getting this wrong produces a detectable anomaly in the spatial variance distribution &mdash; Layer D fires on the edit.</p>
+    <p>The adversary who attacks the sentinel layer is fighting two detection systems simultaneously.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>L.10 The Four Observable States</h2>
+    <p>Every image that passes through a compliant detection pipeline produces one of four states:</p>
+    <p><strong>State A</strong> &mdash; No signal, no claim. The image was not marked, or any marking has been removed beyond recovery. No provenance can be established.</p>
+    <p><strong>State B</strong> &mdash; Signal coherent, provenance preserved. The embedded structure is intact. The four-state classifier confirms unmarred delivery.</p>
+    <p><strong>State C</strong> &mdash; Signal degraded, benign transforms. Spatial variance is elevated (Layer D fires), but the sentinel structure shows compression-consistent degradation rather than selective removal. Normal platform handling.</p>
+    <p><strong>State D</strong> &mdash; Signal interfered, selective removal or structural artifacts. The sentinel contract is broken in a pattern inconsistent with benign compression. Tamper class is logged. Evidence is preserved.</p>
+    <p>State C is what 500 images at Q40 produced in Layer D testing. The spatial signal amplified. The sentinel structure showed graceful demotion but not selective removal. State C is proof of participation.</p>
+    <p>State D requires an adversary who understood what they were removing and removed it selectively. That selectivity is itself a detection signal.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.11 Positions, Votes, and the Gap</h2>
+    <h3>L.11.1 Why Values Are the Wrong Carrier</h3>
+    <p>The sentinel architecture proved that JPEG cannot move a pixel from column 47 to column 48. What it compresses is the value at that position &mdash; the channel difference, the luminance, the chroma. The position itself is fixed.</p>
+    <p>This is not a subtle property. It is a definitional constraint of how JPEG works. And it suggests an embedding strategy that the compression pipeline has no mechanism to attack.</p>
+    <p>We had been trying to encode payload in channel difference values &mdash; in the specific numeric relationship between pixels. Every attempt failed because JPEG&rsquo;s quantization is precisely the operation that normalizes channel differences. We were writing in pencil on the face of the eraser.</p>
+    <p>The correct carrier is the <em>offset</em> &mdash; how far a sentinel is shifted from its natural section boundary. The sentinel that would have been placed at column 44 is instead placed at column 45, encoding a bit. After any number of JPEG re-encodes, that sentinel is still at column 45. The position was chosen. The choice survives.</p>
+    <h3>L.11.2 The Voting Structure</h3>
+    <p>Each section boundary provides four placement options for its entry sentinel:</p>
+    <pre>offset  0 &rarr; bits 00
+offset +1 &rarr; bits 01
+offset +2 &rarr; bits 10
+offset -1 &rarr; bits 11</pre>
+    <p>A 24-bit payload structured as creator ID fragment (8 bits), perceptual hash fragment (8 bits), protocol version (4 bits), and flags (4 bits) requires 216 raw bits across approximately 108 sections. Each of the 24 payload bit positions receives 9 independent votes. Majority vote fails only if more than 4 of 9 votes are corrupted &mdash; requiring more than half the sentinel structure to be destroyed, which would itself be a detection event under Layer E.</p>
+    <p>The entry and exit sentinels for each section encode identical bits. Their agreement is the integrity check. When entry offset equals exit offset, the section is intact. When they disagree, the section is flagged &mdash; not excluded, still voting, but logged as a mismatch.</p>
+    <h3>L.11.3 Validated Result</h3>
+    <p>Across 800 images and five cascade generations from Q95 to Q40:</p>
+    <pre>Creator ID match:      100%
+Hash fragment match:   100%
+Protocol version:      100%
+Mean bit margin:       1.000 (unanimous on every bit, every image)
+Uncertain bits:        0</pre>
+    <p>The mean bit margin of 1.000 is the most important number. Not 0.8. Not 0.95. Unanimous. Every vote agreed. 9 for 9 on every bit position. This is not robustness &mdash; it is invariance. Positions don&rsquo;t drift. Votes don&rsquo;t split. The arithmetic is just arithmetic.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>L.12 The Combined Score and the Gap</h2>
+    <p>A detection harness assembles all five layers into a single provenance score using an unweighted mean of active layer scores. The design insight is the denominator: a layer scoring zero because it was never supposed to fire should not dilute the mean of layers that did fire. The denominator counts only layers with non-zero scores.</p>
+    <p>Layer D (blind spatial variance) receives additional treatment: it enters the combined score only when at least one manifest-mode layer is already active. Layer D cannot distinguish &ldquo;this image was marked&rdquo; from &ldquo;this image has natural chromatic asymmetry&rdquo; without context from the manifest layers. It is corroborating evidence, not primary evidence.</p>
+    <p>With this scoring design, the test produces:</p>
+    <pre>Marked images  (50 images): mean combined = 0.9988, State B = 50/50
+Clean images   (50 images): mean combined = 0.0000, false positives = 0/50
+Gap:                        0.9988</pre>
+    <p>The distributions do not touch. The gap between the lowest-scoring marked image and the highest-scoring clean image is large enough to place the detection threshold anywhere in the range (0.1, 0.96) with perfect accuracy on this corpus. The classifier is not operating near a decision boundary. It is operating across a chasm.</p>
+    <p><strong>This is the number. Marked: 0.9988. Clean: 0.0000.</strong></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>L.13 The Architecture, Complete</h2>
+    <pre>Layer A  Container    DQT prime quantization tables (static, O(1) scan)
+Layer BC Frequency    Twin prime-gap compound markers (manifest mode)
+Layer D  Spatial      Channel-controlled KS test (corroborates manifest)
+Layer E  Sentinel     Spanning relational Mersenne (manifest mode, tiered)
+Layer F  Payload      Position-offset majority vote (manifest mode)</pre>
+    <p>Three layers require a manifest to be meaningful. One layer provides container-level evidence at the cost of a single re-encode. One layer corroborates when the others have established context.</p>
+    <p>Together they answer three distinct questions:</p>
+    <p><em>Was this image marked?</em> &mdash; Layer E (sentinel present), Layer D (spatial variance elevated above baseline when manifest confirms)</p>
+    <p><em>Was this marked image tampered with?</em> &mdash; Layer E (sentinel contract broken versus demoted), State D classification</p>
+    <p><em>Whose is it and what does it say?</em> &mdash; Layer F (creator ID, hash fragment, protocol version recovered with unanimous margins)</p>
+    <p class="lead"><em>The signal proves participation. The matching service proves identity. These are different claims. Both are now measured.</em></p>
+    <p class="lead"><em>&ldquo;Positions survive JPEG. Values do not.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;Layer D is corroborating evidence, not primary evidence.&rdquo;</em></p>
+    <p class="lead"><em>&ldquo;The gap between marked and clean is 0.9988. The distributions do not touch.&rdquo;</em></p>
+    <p>Jeremy Pickett &mdash; March 2026</p>
+    <p class="lead"><em>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</em></p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div>
+      <div class="footer-title">Granite Under Sandstone</div>
+      <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <span class="footer-sep">/</span>
+      <a href="index.html">Docs</a>
+      <span class="footer-sep">/</span>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

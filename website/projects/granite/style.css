@@ -399,6 +399,16 @@ a:hover { color: #fff; }
   margin-top: 0.75rem;
 }
 
+/* ── Results Sub-headers ─────────────────────────────────────────── */
+
+.section h4 {
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--accent);
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+}
+
 /* ── Tables ──────────────────────────────────────────────────────── */
 
 .table-wrap {
