@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -32,7 +32,7 @@
 </nav>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- HERO — Split layout with Sempé illustration -->
+<!-- SCREEN 1 — HERO -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <header class="hero">
 
@@ -50,12 +50,12 @@
     </blockquote>
 
     <div class="hero-cta">
-      <a href="#results" class="btn btn-primary">See the Results</a>
+      <a href="#architecture" class="btn btn-primary">The Architecture</a>
       <a href="https://github.com/jeremy-pickett/granite" class="btn btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
     </div>
   </div>
 
-  <!-- RIGHT: SEMPÉ ILLUSTRATION WINDOW -->
+  <!-- RIGHT: SEMP&Eacute; ILLUSTRATION WINDOW -->
   <div class="illustration-column">
     <div class="scene-window">
       <div class="scene-paper">
@@ -103,7 +103,7 @@
                 fill="none" stroke="#8A7A60" stroke-width=".8"
                 stroke-dasharray="4,6" opacity=".35"/>
 
-          <!-- ROBOT COURIER — Sempé proportions -->
+          <!-- ROBOT COURIER -->
           <g class="robot-float" transform="translate(85,280)">
             <rect x="-12" y="0"  width="32" height="46" rx="6" fill="#7090A0" opacity=".85"/>
             <rect x="-8"  y="3"  width="24" height="3"  rx="1" fill="#5A7888"/>
@@ -133,7 +133,7 @@
             <rect x="4"   y="52" width="12" height="6"  rx="3" fill="#4A7080"/>
           </g>
 
-          <!-- PROFESSOR — tiny, far right -->
+          <!-- PROFESSOR -->
           <g transform="translate(284,355)">
             <rect x="-5"  y="28" width="6"  height="18" rx="2" fill="#3A3428"/>
             <rect x="2"   y="30" width="6"  height="16" rx="2" fill="#3A3428"/>
@@ -153,7 +153,7 @@
           <!-- Scan line overlay -->
           <rect class="scan-line" x="0" y="0" width="380" height="2" fill="#1AA882" opacity=".08"/>
 
-          <!-- Sempé cross-hatch sky -->
+          <!-- Cross-hatch sky -->
           <line x1="0" y1="80"  x2="380" y2="88"  stroke="#C8BFA8" stroke-width=".3" opacity=".3"/>
           <line x1="0" y1="120" x2="380" y2="128" stroke="#C8BFA8" stroke-width=".3" opacity=".25"/>
           <line x1="0" y1="160" x2="380" y2="168" stroke="#C8BFA8" stroke-width=".3" opacity=".2"/>
@@ -162,7 +162,7 @@
           <!-- Signature -->
           <text x="355" y="512" text-anchor="end"
                 font-family="Georgia,serif" font-style="italic" font-size="9"
-                fill="#A89878" opacity=".6">Pickett after Sempé</text>
+                fill="#A89878" opacity=".6">Pickett after Semp&eacute;</text>
         </svg>
 
         <div class="scan-line"></div>
@@ -181,11 +181,11 @@
         </div>
         <div class="layer-row-item">
           <span class="layer-label-sm">D</span>
-          <div class="layer-track"><div class="layer-fill" style="width:100%"></div></div>
+          <div class="layer-track"><div class="layer-fill amber" style="width:90%"></div></div>
         </div>
         <div class="layer-row-item">
           <span class="layer-label-sm">E</span>
-          <div class="layer-track"><div class="layer-fill" style="width:96%"></div></div>
+          <div class="layer-track"><div class="layer-fill" style="width:99%"></div></div>
         </div>
         <div class="layer-row-item">
           <span class="layer-label-sm">F</span>
@@ -215,15 +215,15 @@
     </div>
     <div class="score-divider"></div>
     <div class="score-item">
-      <span class="score-value" style="font-size:1rem">800 / 800</span>
-      <span class="score-label">state B &middot; no false positives</span>
+      <span class="score-value" style="font-size:1rem">50 / 50 State B</span>
+      <span class="score-label">combined harness &middot; 0 false positives</span>
     </div>
   </div>
 
 </header>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- WHAT IT IS — with Sempé section illustration -->
+<!-- SCREEN 2 — WHAT IT IS + HOW IT WORKS -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section-what">
   <div class="section-figure">
@@ -256,7 +256,7 @@
                 fill="#C8BFA8" opacity=".5">the signal is the subject</text>
           <text x="262" y="333" text-anchor="end"
                 font-family="Georgia,serif" font-style="italic" font-size="8"
-                fill="#A89878" opacity=".5">Pickett after Sempé</text>
+                fill="#A89878" opacity=".5">Pickett after Semp&eacute;</text>
         </svg>
       </div>
       <div class="scene-frame"></div>
@@ -273,42 +273,13 @@
       not touch.
     </p>
     <p class="section-body">
-      Not enforcement. Not DRM. Not watermarking in the traditional sense.
+      Not a watermark. Not steganography. Not DRM. Not a certificate authority.
       The signal proves participation. A matching service proves identity.
       These are different claims, and the difference matters.
     </p>
   </div>
 </section>
 
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- WHAT IT IS — Cards -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="grid-4">
-      <div class="card card-dark">
-        <h3>Not a Watermark</h3>
-        <p>Encodes a relationship and detects a distribution &mdash; not a visible or invisible mark.</p>
-      </div>
-      <div class="card card-dark">
-        <h3>Not Steganography</h3>
-        <p>Hides nothing. The signal is a statistical property of the pixel data itself.</p>
-      </div>
-      <div class="card card-dark">
-        <h3>Not DRM</h3>
-        <p>Enforces nothing. Produces measurements. Proves participation.</p>
-      </div>
-      <div class="card card-dark">
-        <h3>Not a CA</h3>
-        <p>No one issues or revokes. The file carries its own evidence.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- HOW IT WORKS -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section section-alt" id="how">
   <div class="container">
     <h2>How It Works</h2>
@@ -353,530 +324,65 @@
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- RESULTS -->
+<!-- SCREEN 3 — THE ARCHITECTURE (corrected) -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="results">
+<section class="section" id="architecture">
   <div class="container">
-    <h2>Results</h2>
-    <p class="lead">500&ndash;800 real photographs. Five generations of JPEG compression. Two independent detection layers survive Q40. The spatial signal gets <strong>louder</strong>, not quieter.</p>
+    <h2>Five Detection Layers</h2>
+    <p class="lead">Defense in depth. Each layer operates independently in a different domain, with a validated operational range and honestly documented failure modes.</p>
 
     <div class="results-headline">
       <div class="stat">
         <span class="stat-number">98.6%</span>
         <span class="stat-label">Sentinel Survival</span>
-        <span class="stat-detail">Spanning architecture at Q40 (500 images)</span>
+        <span class="stat-detail">Layer E at Q40 &mdash; 500 images, &gt;99% any tier</span>
       </div>
       <div class="stat">
-        <span class="stat-number">90%+</span>
-        <span class="stat-label">Blind Detection</span>
-        <span class="stat-detail">Spatial variance, no reference needed (500 images)</span>
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Payload Recovery</span>
+        <span class="stat-detail">Layer F at Q40 &mdash; 800 images, margin 1.000</span>
       </div>
       <div class="stat">
-        <span class="stat-number">&gt;99%</span>
-        <span class="stat-label">Any-Tier Detection</span>
-        <span class="stat-detail">Including graceful tier demotion</span>
+        <span class="stat-number">0.998</span>
+        <span class="stat-label">Combined Gap</span>
+        <span class="stat-detail">Marked vs. clean &mdash; distributions do not touch</span>
       </div>
     </div>
-
-    <!-- ── Detection States Gauge Panel ── -->
-    <div class="states-visual">
-      <svg width="100%" viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="panel-bg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#060E1C"/>
-            <stop offset="100%" stop-color="#040A14"/>
-          </linearGradient>
-          <radialGradient id="rg-a" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#7BA0B5" stop-opacity=".15"/>
-            <stop offset="100%" stop-color="#7BA0B5" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="rg-b" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#1AA882" stop-opacity=".2"/>
-            <stop offset="100%" stop-color="#1AA882" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="rg-c" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#F5C040" stop-opacity=".2"/>
-            <stop offset="100%" stop-color="#F5C040" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="rg-d" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#E24B4A" stop-opacity=".25"/>
-            <stop offset="100%" stop-color="#E24B4A" stop-opacity="0"/>
-          </radialGradient>
-        </defs>
-
-        <rect x="0" y="0" width="680" height="380" fill="url(#panel-bg)" rx="8"/>
-        <rect x="8" y="8" width="664" height="364" rx="6" fill="none" stroke="#1A3050" stroke-width="2"/>
-        <rect x="12" y="12" width="656" height="356" rx="4" fill="none" stroke="#0E2035" stroke-width="1"/>
-
-        <!-- Rivets -->
-        <circle cx="20" cy="20" r="4" fill="#1A3050"/>
-        <circle cx="660" cy="20" r="4" fill="#1A3050"/>
-        <circle cx="20" cy="360" r="4" fill="#1A3050"/>
-        <circle cx="660" cy="360" r="4" fill="#1A3050"/>
-
-        <!-- Header -->
-        <rect x="12" y="12" width="656" height="30" rx="4" fill="#0A1A2C"/>
-        <line x1="12" y1="42" x2="668" y2="42" stroke="#1A3050" stroke-width="1"/>
-        <text x="340" y="32" text-anchor="middle" font-family="'DM Mono','Courier New',monospace" font-size="11" font-weight="400" fill="#7BA0B5" letter-spacing="6">PROVENANCE DETECTION STATES</text>
-
-        <!-- Dividers -->
-        <line x1="178" y1="48" x2="178" y2="352" stroke="#1A3050" stroke-width="1"/>
-        <line x1="348" y1="48" x2="348" y2="352" stroke="#1A3050" stroke-width="1"/>
-        <line x1="518" y1="48" x2="518" y2="352" stroke="#1A3050" stroke-width="1"/>
-
-        <!-- STATE A — NO SIGNAL -->
-        <circle cx="95" cy="165" r="75" fill="url(#rg-a)"/>
-        <text x="95" y="72" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#3A5870" letter-spacing="2">A</text>
-        <text x="95" y="88" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#3A5870" letter-spacing="3">NO SIGNAL</text>
-        <circle cx="95" cy="165" r="70" fill="#080F1C" stroke="#1A3050" stroke-width="2"/>
-        <circle cx="95" cy="165" r="62" fill="none" stroke="#0E2035" stroke-width="1"/>
-        <path d="M 38,220 A 62 62 0 1 1 152,220" fill="none" stroke="#1A3050" stroke-width="6" stroke-linecap="round"/>
-        <g stroke="#2A4060" stroke-width="1.5">
-          <line x1="95" y1="103" x2="95" y2="116" transform="rotate(-120,95,165)"/>
-          <line x1="95" y1="103" x2="95" y2="112" transform="rotate(-90,95,165)"/>
-          <line x1="95" y1="103" x2="95" y2="116" transform="rotate(-60,95,165)"/>
-          <line x1="95" y1="103" x2="95" y2="112" transform="rotate(-30,95,165)"/>
-          <line x1="95" y1="103" x2="95" y2="116" transform="rotate(0,95,165)"/>
-          <line x1="95" y1="103" x2="95" y2="112" transform="rotate(30,95,165)"/>
-          <line x1="95" y1="103" x2="95" y2="116" transform="rotate(60,95,165)"/>
-        </g>
-        <g transform="rotate(-115,95,165)">
-          <line x1="95" y1="165" x2="95" y2="115" stroke="#5A8898" stroke-width="2.5" stroke-linecap="round"/>
-          <polygon points="95,113 92,120 98,120" fill="#5A8898"/>
-        </g>
-        <circle cx="95" cy="165" r="8" fill="#0D1E2E" stroke="#2A4060" stroke-width="1.5"/>
-        <circle cx="95" cy="165" r="4" fill="#3A5870"/>
-        <rect x="68" y="215" width="54" height="20" rx="3" fill="#060E1A" stroke="#1A3050" stroke-width="1"/>
-        <text x="95" y="229" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" fill="#3A5870">0.000</text>
-        <text x="95" y="262" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#2A4060">not marked</text>
-        <text x="95" y="274" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#2A4060">or fully stripped</text>
-        <text x="95" y="298" text-anchor="middle" font-family="'DM Mono',monospace" font-size="7" fill="#2A4060" letter-spacing="2">A  BC  D  E  F</text>
-        <circle cx="62" cy="312" r="5" fill="#1A3050"/>
-        <circle cx="78" cy="312" r="5" fill="#1A3050"/>
-        <circle cx="95" cy="312" r="5" fill="#1A3050"/>
-        <circle cx="112" cy="312" r="5" fill="#1A3050"/>
-        <circle cx="128" cy="312" r="5" fill="#1A3050"/>
-        <rect x="18" y="52" width="152" height="296" rx="3" fill="none" stroke="#1A3050" stroke-width="1"/>
-
-        <!-- STATE B — PRESERVED -->
-        <circle cx="265" cy="165" r="75" fill="url(#rg-b)"/>
-        <text x="265" y="72" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#1AA882" letter-spacing="2">B</text>
-        <text x="265" y="88" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#1AA882" letter-spacing="3">PRESERVED</text>
-        <circle cx="265" cy="165" r="70" fill="#080F1C" stroke="#1A4050" stroke-width="2"/>
-        <circle cx="265" cy="165" r="62" fill="none" stroke="#0E2A1C" stroke-width="1"/>
-        <path d="M 208,220 A 62 62 0 1 1 322,220" fill="none" stroke="#0A3828" stroke-width="6" stroke-linecap="round"/>
-        <path d="M 208,220 A 62 62 0 1 1 322,220" fill="none" stroke="#1AA882" stroke-width="4" stroke-linecap="round" opacity=".8"/>
-        <g stroke="#1A5840" stroke-width="1.5">
-          <line x1="265" y1="103" x2="265" y2="116" transform="rotate(-120,265,165)"/>
-          <line x1="265" y1="103" x2="265" y2="112" transform="rotate(-90,265,165)"/>
-          <line x1="265" y1="103" x2="265" y2="116" transform="rotate(-60,265,165)"/>
-          <line x1="265" y1="103" x2="265" y2="112" transform="rotate(-30,265,165)"/>
-          <line x1="265" y1="103" x2="265" y2="116" transform="rotate(0,265,165)"/>
-          <line x1="265" y1="103" x2="265" y2="112" transform="rotate(30,265,165)"/>
-          <line x1="265" y1="103" x2="265" y2="116" transform="rotate(60,265,165)"/>
-        </g>
-        <g transform="rotate(55,265,165)">
-          <line x1="265" y1="165" x2="265" y2="115" stroke="#1AA882" stroke-width="2.5" stroke-linecap="round"/>
-          <polygon points="265,113 262,120 268,120" fill="#1AA882"/>
-        </g>
-        <circle cx="265" cy="165" r="8" fill="#0D1E2E" stroke="#1A5840" stroke-width="1.5"/>
-        <circle cx="265" cy="165" r="4" fill="#1AA882"/>
-        <rect x="238" y="215" width="54" height="20" rx="3" fill="#060E1A" stroke="#1A5840" stroke-width="1"/>
-        <text x="265" y="229" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" fill="#1AA882">0.998</text>
-        <text x="265" y="262" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#1AA882" opacity=".7">provenance intact</text>
-        <text x="265" y="274" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#1AA882" opacity=".7">payload recovered</text>
-        <text x="265" y="298" text-anchor="middle" font-family="'DM Mono',monospace" font-size="7" fill="#5A8898" letter-spacing="2">A  BC  D  E  F</text>
-        <circle cx="232" cy="312" r="5" fill="#1AA882"/>
-        <circle cx="248" cy="312" r="5" fill="#1AA882"/>
-        <circle cx="265" cy="312" r="5" fill="#1AA882"/>
-        <circle cx="282" cy="312" r="5" fill="#1AA882"/>
-        <circle cx="298" cy="312" r="5" fill="#1AA882"/>
-        <rect x="188" y="52" width="152" height="296" rx="3" fill="none" stroke="#1A5840" stroke-width="1"/>
-
-        <!-- STATE C — DEGRADED -->
-        <circle cx="435" cy="165" r="75" fill="url(#rg-c)"/>
-        <text x="435" y="72" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#F5C040" letter-spacing="2">C</text>
-        <text x="435" y="88" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#F5C040" letter-spacing="3">DEGRADED</text>
-        <circle cx="435" cy="165" r="70" fill="#080F1C" stroke="#3A3010" stroke-width="2"/>
-        <circle cx="435" cy="165" r="62" fill="none" stroke="#2A2208" stroke-width="1"/>
-        <path d="M 378,220 A 62 62 0 1 1 492,220" fill="none" stroke="#2A2010" stroke-width="6" stroke-linecap="round"/>
-        <path d="M 378,220 A 62 62 0 0 1 460,108" fill="none" stroke="#F5C040" stroke-width="4" stroke-linecap="round" opacity=".7"/>
-        <g stroke="#3A3010" stroke-width="1.5">
-          <line x1="435" y1="103" x2="435" y2="116" transform="rotate(-120,435,165)"/>
-          <line x1="435" y1="103" x2="435" y2="112" transform="rotate(-90,435,165)"/>
-          <line x1="435" y1="103" x2="435" y2="116" transform="rotate(-60,435,165)"/>
-          <line x1="435" y1="103" x2="435" y2="112" transform="rotate(-30,435,165)"/>
-          <line x1="435" y1="103" x2="435" y2="116" transform="rotate(0,435,165)"/>
-          <line x1="435" y1="103" x2="435" y2="112" transform="rotate(30,435,165)"/>
-          <line x1="435" y1="103" x2="435" y2="116" transform="rotate(60,435,165)"/>
-        </g>
-        <g transform="rotate(20,435,165)">
-          <line x1="435" y1="165" x2="435" y2="115" stroke="#F5C040" stroke-width="2.5" stroke-linecap="round"/>
-          <polygon points="435,113 432,120 438,120" fill="#F5C040"/>
-        </g>
-        <circle cx="435" cy="165" r="8" fill="#0D1E2E" stroke="#3A3010" stroke-width="1.5"/>
-        <circle cx="435" cy="165" r="4" fill="#F5C040"/>
-        <rect x="408" y="215" width="54" height="20" rx="3" fill="#060E1A" stroke="#3A3010" stroke-width="1"/>
-        <text x="435" y="229" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" fill="#F5C040">0.741</text>
-        <text x="435" y="262" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#F5C040" opacity=".7">platform processed</text>
-        <text x="435" y="274" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#F5C040" opacity=".7">no tamper evidence</text>
-        <text x="435" y="298" text-anchor="middle" font-family="'DM Mono',monospace" font-size="7" fill="#5A8898" letter-spacing="2">A  BC  D  E  F</text>
-        <circle cx="402" cy="312" r="5" fill="#2A2010"/>
-        <circle cx="418" cy="312" r="5" fill="#2A2010"/>
-        <circle cx="435" cy="312" r="5" fill="#F5C040"/>
-        <circle cx="452" cy="312" r="5" fill="#F5C040"/>
-        <circle cx="468" cy="312" r="5" fill="#F5C040"/>
-        <rect x="358" y="52" width="152" height="296" rx="3" fill="none" stroke="#3A3010" stroke-width="1"/>
-
-        <!-- STATE D — TAMPERED -->
-        <circle cx="605" cy="165" r="75" fill="url(#rg-d)"/>
-        <text x="605" y="72" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="22" fill="#E24B4A" letter-spacing="2">D</text>
-        <text x="605" y="88" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#E24B4A" letter-spacing="3">TAMPERED</text>
-        <circle cx="605" cy="165" r="70" fill="#080F1C" stroke="#3A1010" stroke-width="2"/>
-        <circle cx="605" cy="165" r="62" fill="none" stroke="#2A0808" stroke-width="1"/>
-        <path d="M 548,220 A 62 62 0 1 1 662,220" fill="none" stroke="#2A0808" stroke-width="6" stroke-linecap="round"/>
-        <path d="M 548,220 A 62 62 0 1 1 662,220" fill="none" stroke="#E24B4A" stroke-width="4" stroke-linecap="round" opacity=".5"/>
-        <g stroke="#4A1010" stroke-width="1.5">
-          <line x1="605" y1="103" x2="605" y2="116" transform="rotate(-120,605,165)"/>
-          <line x1="605" y1="103" x2="605" y2="112" transform="rotate(-90,605,165)"/>
-          <line x1="605" y1="103" x2="605" y2="116" transform="rotate(-60,605,165)"/>
-          <line x1="605" y1="103" x2="605" y2="112" transform="rotate(-30,605,165)"/>
-          <line x1="605" y1="103" x2="605" y2="116" transform="rotate(0,605,165)"/>
-          <line x1="605" y1="103" x2="605" y2="112" transform="rotate(30,605,165)"/>
-          <line x1="605" y1="103" x2="605" y2="116" transform="rotate(60,605,165)"/>
-        </g>
-        <g transform="rotate(-10,605,165)">
-          <line x1="605" y1="165" x2="605" y2="115" stroke="#E24B4A" stroke-width="2.5" stroke-linecap="round"/>
-          <polygon points="605,113 602,120 608,120" fill="#E24B4A"/>
-        </g>
-        <circle cx="605" cy="165" r="8" fill="#0D1E2E" stroke="#4A1010" stroke-width="1.5"/>
-        <circle cx="605" cy="165" r="4" fill="#E24B4A"/>
-        <polygon points="605,125 596,140 614,140" fill="none" stroke="#E24B4A" stroke-width="1.5" opacity=".6"/>
-        <text x="605" y="138" text-anchor="middle" font-family="'DM Mono',monospace" font-size="9" font-weight="700" fill="#E24B4A">!</text>
-        <rect x="578" y="215" width="54" height="20" rx="3" fill="#060E1A" stroke="#4A1010" stroke-width="1"/>
-        <text x="605" y="229" text-anchor="middle" font-family="'DM Mono',monospace" font-size="12" fill="#E24B4A">0.912</text>
-        <text x="605" y="262" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#E24B4A" opacity=".7">sentinel contract</text>
-        <text x="605" y="274" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#E24B4A" opacity=".7">selectively broken</text>
-        <text x="605" y="298" text-anchor="middle" font-family="'DM Mono',monospace" font-size="7" fill="#5A8898" letter-spacing="2">A  BC  D  E  F</text>
-        <circle cx="572" cy="312" r="5" fill="#5A8898"/>
-        <circle cx="588" cy="312" r="5" fill="#2A0808"/>
-        <circle cx="605" cy="312" r="5" fill="#E24B4A"/>
-        <circle cx="622" cy="312" r="5" fill="#E24B4A"/>
-        <circle cx="638" cy="312" r="5" fill="#5A8898"/>
-        <rect x="528" y="52" width="144" height="296" rx="3" fill="none" stroke="#4A1010" stroke-width="1"/>
-
-        <!-- Bottom label -->
-        <line x1="12" y1="348" x2="668" y2="348" stroke="#1A3050" stroke-width="1"/>
-        <text x="340" y="366" text-anchor="middle" font-family="'DM Mono',monospace" font-size="8" fill="#3A5870" letter-spacing="4">
-          GRANITE DETECTION HARNESS &middot; FOUR OBSERVABLE STATES &middot; PARTICIPATION OVER PERMISSION
-        </text>
-      </svg>
-    </div>
-
-    <div class="results-chart">
-      <img src="assets/granite_test_v2.png" alt="DIV2K Granite Test — Channel pair comparison showing KS distribution, variance ratio across cascade, head-to-head comparison, and enrichment ratio" loading="lazy">
-      <p class="caption">DIV2K validation: 800 images through Q95 &rarr; Q85 &rarr; Q75 &rarr; Q60 &rarr; Q40 cascade</p>
-    </div>
-
-    <h3>Layer Performance Across the Cascade</h3>
-    <p>Each layer has a validated operational range. Together they provide defense in depth from embedding through aggressive recompression.</p>
-
-    <h4>Layer D &mdash; Blind Spatial Variance Detection</h4>
-    <p>No reference image needed. The image is its own control group. Compression <em>amplifies</em> the variance anomaly at marker positions. Validated on 500 DIV2K images.</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Generation</th><th>Quality</th><th>G-B KS p&lt;0.05</th><th>R-G KS p&lt;0.05</th><th>G-B Variance Ratio</th><th>Amplification</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Gen 0</td><td>Q95</td><td>96.4%</td><td>90.1%</td><td>1.05</td><td>&mdash;</td></tr>
-          <tr><td>Gen 1</td><td>Q85</td><td>96.4%</td><td>90.1%</td><td>1.09</td><td class="yes">YES</td></tr>
-          <tr><td>Gen 2</td><td>Q75</td><td>94.2%</td><td>87.5%</td><td>1.12</td><td class="yes">YES</td></tr>
-          <tr><td>Gen 3</td><td>Q60</td><td>91.8%</td><td>82.3%</td><td>1.15</td><td class="yes">YES</td></tr>
-          <tr class="highlight-row"><td>Gen 4</td><td>Q40</td><td>90%+</td><td>&mdash;</td><td>1.18</td><td class="yes">YES</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="caption" style="margin-top:-1rem">Variance ratio increases under compression &mdash; granite under sandstone. KS frequency detection degrades at Q60+ but spatial variance compensates.</p>
-
-    <h4>Layer E &mdash; Spanning Relational Sentinel</h4>
-    <p>Relational encoding within 8&times;8 DCT blocks. The differential between correlated pixels survives when absolute values do not. Validated on 500 DIV2K images.</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Generation</th><th>Quality</th><th>T24 Intact</th><th>Demoted to T16/T8</th><th>Effective Detection</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Gen 0</td><td>Q95</td><td>99.2%</td><td>14.3%</td><td>&gt;99%</td></tr>
-          <tr><td>Gen 1</td><td>Q85</td><td>98.2%</td><td>8.6%</td><td>&gt;99%</td></tr>
-          <tr><td>Gen 2</td><td>Q75</td><td>98.0%</td><td>8.5%</td><td>&gt;99%</td></tr>
-          <tr><td>Gen 3</td><td>Q60</td><td>98.3%</td><td>14.4%</td><td>&gt;99%</td></tr>
-          <tr class="highlight-row"><td>Gen 4</td><td>Q40</td><td>98.6%</td><td>28.4%</td><td>&gt;99%</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="caption" style="margin-top:-1rem">28.4% T24 demotion at Q40 means graceful degradation, not failure &mdash; demoted sentinels are still detected at lower tier.</p>
-
-    <h4>Layer BC &mdash; Compound Frequency Markers</h4>
-    <p>Twin-prime compound markers at known positions. Effective at G0&ndash;G2. Frequency signal degrades under aggressive compression &mdash; this is an honest result, not a failure. Layer BC is a near-field detector.</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Generation</th><th>Quality</th><th>G-B Detection</th><th>R-G Detection</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Gen 0</td><td>Q95</td><td>96.4%</td><td>90.1%</td><td class="yes">STRONG</td></tr>
-          <tr><td>Gen 1</td><td>Q85</td><td>96.4%</td><td>90.1%</td><td class="yes">STRONG</td></tr>
-          <tr><td>Gen 2</td><td>Q75</td><td>~90%</td><td>~80%</td><td>DEGRADING</td></tr>
-          <tr><td>Gen 3</td><td>Q60</td><td>&mdash;</td><td>&mdash;</td><td>UNRELIABLE</td></tr>
-          <tr><td>Gen 4</td><td>Q40</td><td>&mdash;</td><td>&mdash;</td><td>NOT EFFECTIVE</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- TORTURE TESTS -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section section-alt" id="attacks">
-  <div class="container">
-    <h2>Torture Tests</h2>
-    <p class="lead">We tried to kill it. Here's what happened.</p>
-
-    <div class="grid-3">
-      <div class="card attack-card">
-        <div class="attack-icon">&#x21BB;</div>
-        <h3>Rotation Attack</h3>
-        <div class="attack-result pass">SURVIVED</div>
-        <ul>
-          <li>Flips: perfect detection (3.3x ratio, p&asymp;10<sup>-42</sup>)</li>
-          <li>Up to 7&deg; rotation: detected without position correction</li>
-          <li>Full chain (rotate + flip + rotate + flip + JPEG): <strong>4.0x ratio</strong></li>
-          <li>Round-trip inverse: detected despite 97.5% pixel damage</li>
-          <li>Fingerprint Jaccard: 0.72 after full chain</li>
-        </ul>
-      </div>
-
-      <div class="card attack-card">
-        <div class="attack-icon">&#x2702;</div>
-        <h3>Slice &amp; Stitch</h3>
-        <div class="attack-result pass">SURVIVED</div>
-        <ul>
-          <li>Image sliced into 4 quadrants, each re-encoded JPEG Q85</li>
-          <li>Individual fragments: detection breaks (too few markers)</li>
-          <li>Stitched back: <strong>detection returns</strong> (3.6x, p=0.001)</li>
-          <li>Stitched + JPEG Q75: still detected (3.4x, p=0.003)</li>
-          <li>Stitch seams forensically visible (3.3x seam ratio)</li>
-        </ul>
-        <p class="attack-quote">"The attack undoes itself on reassembly."</p>
-      </div>
-
-      <div class="card attack-card">
-        <div class="attack-icon">&#x2922;</div>
-        <h3>Scale &amp; Resize</h3>
-        <div class="attack-result pass">SURVIVED</div>
-        <ul>
-          <li>1024px: strong detection through full cascade (3.4x&rarr;2.5x)</li>
-          <li>2048px: amplifying variance ratio 3.7 &rarr; 9.3</li>
-          <li>Resize to 50%, 25%, even 12%: <strong>detected</strong></li>
-          <li>Resize + WebP transcoding: detected at all sizes</li>
-          <li>Fingerprint Jaccard &gt;0.47 across all transforms</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="fingerprint-table">
-      <h3>Marker Capacity</h3>
-      <p>Embedding surface scales with image resolution. Saturation stays well under 10%.</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Resolution</th><th>Pixels</th><th>Markers</th><th>Saturation</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>512 &times; 512</td><td>262,144</td><td>248</td><td>6.1%</td></tr>
-            <tr><td>1024 &times; 1024</td><td>1,048,576</td><td>999</td><td>6.1%</td></tr>
-            <tr><td>2048 &times; 2048</td><td>4,194,304</td><td>1,129</td><td>1.7%</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="fingerprint-table">
-      <h3>Fingerprint Stability</h3>
-      <p>The disruption map &mdash; the fingerprint &mdash; survives every transform we tested. 11/11 matchable.</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Transform</th><th>Ones</th><th>Hamming Distance</th><th>Jaccard Similarity</th><th>Matchable</th></tr>
-          </thead>
-          <tbody class="fp-table-body">
-            <tr><td>JPEG Q95 (identity)</td><td>122</td><td class="hamming-0">0.0%</td><td class="jaccard-perfect">1.000</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q85</td><td>98</td><td>13.8%</td><td>0.594</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q75</td><td>93</td><td>13.5%</td><td>0.593</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q60</td><td>105</td><td>16.5%</td><td>0.544</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q40</td><td>117</td><td>14.5%</td><td>0.604</td><td class="yes">YES</td></tr>
-            <tr class="table-separator"><td colspan="5"></td></tr>
-            <tr><td>WebP Q95</td><td>139</td><td>16.5%</td><td>0.591</td><td class="yes">YES</td></tr>
-            <tr><td>WebP Q80</td><td>90</td><td>18.7%</td><td>0.472</td><td class="yes">YES</td></tr>
-            <tr><td>WebP Q60</td><td>96</td><td>17.2%</td><td>0.514</td><td class="yes">YES</td></tr>
-            <tr class="table-separator"><td colspan="5"></td></tr>
-            <tr><td>JPEG Q85 &rarr; WebP Q80</td><td>91</td><td>17.9%</td><td>0.490</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q75 &rarr; WebP Q60</td><td>93</td><td>18.4%</td><td>0.483</td><td class="yes">YES</td></tr>
-            <tr><td>JPEG Q95 &rarr; Q85 &rarr; Q75</td><td>109</td><td>15.5%</td><td>0.571</td><td class="yes">YES</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- SCALE RESULTS -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section" id="scale">
-  <div class="container">
-    <h2>Scale: 512 to 4096</h2>
-    <p class="lead">Detection across four image sizes. Larger images mean more markers, stronger signal, deeper survival.</p>
-
-    <h3>Capacity &amp; Cascade by Size</h3>
-    <p>Full JPEG cascade (Q95 &rarr; Q85 &rarr; Q75 &rarr; Q60 &rarr; Q40) at each resolution.</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Size</th><th>Markers</th><th>Gen 0 Ratio</th><th>Gen 0 p-value</th><th>Gen 4 Ratio</th><th>Gen 4 p-value</th><th>Gen 4 VarRatio</th><th>Amplifies</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>512 &times; 512</td><td>236</td>
-            <td>0.6&times;</td><td>1.00</td>
-            <td>0.6&times;</td><td>1.00</td>
-            <td>2.41</td><td>KS only</td>
-          </tr>
-          <tr>
-            <td>1024 &times; 1024</td><td>676</td>
-            <td>1.1&times;</td><td>9.8e-2</td>
-            <td>1.1&times;</td><td>8.9e-2</td>
-            <td>3.84</td><td class="yes">YES</td>
-          </tr>
-          <tr>
-            <td>2048 &times; 2048</td><td>691</td>
-            <td>1.3&times;</td><td>2.9e-4</td>
-            <td>1.2&times;</td><td>3.0e-2</td>
-            <td>3.77</td><td class="yes">YES</td>
-          </tr>
-          <tr class="highlight-row">
-            <td>4096 &times; 4096</td><td>591</td>
-            <td>1.6&times;</td><td>8.7e-7</td>
-            <td>1.4&times;</td><td>4.2e-4</td>
-            <td>5.22</td><td class="yes">YES</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>4096 &rarr; Resize Survival</h3>
-    <p>Embed at 4096, resize down, re-encode. The signal follows the content, not the resolution.</p>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Target</th><th>Scale</th><th>Ratio</th><th>p-value</th><th>VarRatio</th><th>Detected</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>2048px</td><td>0.50&times;</td><td>1.6&times;</td><td>3.8e-7</td><td>2.40</td><td class="yes">YES</td></tr>
-          <tr><td>1024px</td><td>0.25&times;</td><td>1.6&times;</td><td>1.1e-6</td><td>1.12</td><td class="yes">YES</td></tr>
-          <tr><td>512px</td><td>0.12&times;</td><td>1.7&times;</td><td>7.7e-9</td><td>&mdash;</td><td class="yes">YES</td></tr>
-          <tr><td>256px</td><td>0.06&times;</td><td>1.8&times;</td><td>3.5e-9</td><td>&mdash;</td><td class="yes">YES</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>4096 &rarr; Resize + Re-encode</h3>
-    <p>The real-world pipeline: resize then re-encode to JPEG or WebP. Every combination detected.</p>
-    <div class="grid-2">
-      <div>
-        <h4>JPEG Re-encode</h4>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Target</th><th>Quality</th><th>Ratio</th><th>p-value</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1024px</td><td>Q85</td><td>1.5&times;</td><td>4.8e-6</td><td class="yes">YES</td></tr>
-              <tr><td>1024px</td><td>Q75</td><td>1.5&times;</td><td>4.9e-6</td><td class="yes">YES</td></tr>
-              <tr><td>1024px</td><td>Q60</td><td>1.6&times;</td><td>3.7e-6</td><td class="yes">YES</td></tr>
-              <tr><td>512px</td><td>Q85</td><td>1.5&times;</td><td>5.9e-6</td><td class="yes">YES</td></tr>
-              <tr><td>512px</td><td>Q75</td><td>1.6&times;</td><td>4.0e-6</td><td class="yes">YES</td></tr>
-              <tr><td>512px</td><td>Q60</td><td>1.6&times;</td><td>7.7e-7</td><td class="yes">YES</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <h4>WebP Transcode</h4>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Target</th><th>Quality</th><th>Ratio</th><th>p-value</th><th></th></tr>
-            </thead>
-            <tbody>
-              <tr><td>1024px</td><td>WQ95</td><td>1.7&times;</td><td>3.9e-8</td><td class="yes">YES</td></tr>
-              <tr><td>1024px</td><td>WQ80</td><td>1.6&times;</td><td>3.3e-7</td><td class="yes">YES</td></tr>
-              <tr><td>1024px</td><td>WQ60</td><td>1.7&times;</td><td>5.2e-9</td><td class="yes">YES</td></tr>
-              <tr><td>512px</td><td>WQ95</td><td>1.7&times;</td><td>4.5e-8</td><td class="yes">YES</td></tr>
-              <tr><td>512px</td><td>WQ80</td><td>1.8&times;</td><td>4.5e-10</td><td class="yes">YES</td></tr>
-              <tr><td>512px</td><td>WQ60</td><td>1.7&times;</td><td>5.3e-9</td><td class="yes">YES</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- FIVE LAYERS -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section section-alt" id="layers">
-  <div class="container">
-    <h2>Five Detection Layers</h2>
-    <p class="lead">Defense in depth. Each layer operates independently in a different domain, with a validated operational range. Together they compound.</p>
 
     <div class="layers">
       <div class="layer">
         <div class="layer-num">A</div>
         <div class="layer-body">
           <h3>DQT Prime Tables</h3>
-          <p>Replace JPEG quantization table entries with nearest primes. The table itself is the provenance signal. Container-level detection. <strong>Operational: G0 only</strong> &mdash; by design, the container signal does not survive re-encoding.</p>
+          <p>Replace JPEG quantization table entries with nearest primes. The table itself is the provenance signal. O(1) detection &mdash; scan 128 bytes without decoding. <strong>Operational: G0 only.</strong> Dies on any re-encode, which is expected: the absence of Layer A after processing is evidence of processing, not failure.</p>
         </div>
       </div>
       <div class="layer">
         <div class="layer-num">BC</div>
         <div class="layer-body">
           <h3>Compound Frequency Markers</h3>
-          <p>Twin-prime markers at known positions. Detection compares prime-gap hit rate at marker vs. control positions in the same image. Compound strategies collapse false positive probability. <strong>Operational: G0&ndash;G2</strong> &mdash; frequency signal degrades under aggressive compression. 96.4% G-B detection at Q95, not reliable past Q60.</p>
+          <p>Twin-prime markers at known positions with AND logic. <strong>Operational: G0&ndash;G2.</strong> Frequency signal degrades under aggressive compression &mdash; at G4 detection is near zero. This is an honest result: Layer BC is a near-field detector. OR logic was tested and rejected (raised false positive rate to ~22% on controls).</p>
         </div>
       </div>
       <div class="layer">
         <div class="layer-num">D</div>
         <div class="layer-body">
-          <h3>Blind Spatial Variance</h3>
-          <p>KS test on local spatial variance and channel-difference variance distributions. The image is its own control group. No reference image needed. Compression <em>amplifies</em> the signal &mdash; the adversary who compresses to destroy the frequency signal is constructing the spatial variance detection signal. <strong>Operational: G0&ndash;G4</strong> &mdash; 90%+ blind detection at Q40 on 500 images. This is the paper.</p>
+          <h3>Spatial Variance <span style="color:var(--amber);font-size:.75rem;vertical-align:middle">&nbsp;CORROBORATING</span></h3>
+          <p>KS test on local variance distributions. Blind &mdash; no reference image needed. Two prior versions failed: v1 measured JPEG's own blocking artifact (0.89 FP rate on clean images); v2 measured natural chromatic asymmetry (0.98 FP rate). <strong>Architectural constraint:</strong> Layer D enters the combined score only when a manifest-mode layer (E or F) has non-zero score. With this constraint, false positive rate collapses to 0%. Without it, Layer D cannot distinguish marked from naturally asymmetric images.</p>
         </div>
       </div>
       <div class="layer">
         <div class="layer-num">E</div>
         <div class="layer-body">
           <h3>Spanning Relational Sentinel</h3>
-          <p>Mersenne-prime anchors with correlated flanking pixels within 8&times;8 DCT blocks. The differential between positions survives when absolute values do not. Tiered detection (24/16/8-bit) degrades gracefully at block boundaries. <strong>Operational: G0&ndash;G4</strong> &mdash; 98.6% manifest survival at Q40, &gt;99% effective at any tier. Validated on 500 images.</p>
+          <p>Mersenne-prime anchors (M=31 entry, M=7 exit) with correlated flanking pixels within 8&times;8 DCT blocks. The differential between positions survives when absolute values do not (intra-block correlation r=0.96 at Q40). Three detection tiers (T24/T16/T8) degrade gracefully. M=127 permanently excluded &mdash; 97.6% both-catastrophic rate due to JPEG's chroma gravity well at mid-range values. <strong>Operational: G0&ndash;G4.</strong> 98.6% at Q40, 28.4% tier demotion, &gt;99% effective at any tier. Validated on 500 images. Zero false State D across 250 image-generation combinations.</p>
         </div>
       </div>
       <div class="layer">
         <div class="layer-num">F</div>
         <div class="layer-body">
-          <h3>Rare Basket / Attribution</h3>
-          <p>Position pattern derived from 256-bit key via HMAC-SHA512. Enables attribution through Jaccard similarity at corpus scale. The fingerprint, not the signal. Payload encoder (structured flanking data: creator ID, timestamp, section index) is architecturally ready but not yet validated at scale.</p>
+          <h3>Position-Based Payload</h3>
+          <p>24-bit payload (creator ID, hash fragment, protocol version, flags) encoded in positional offsets from natural section boundaries. 2 bits per section, ~108 sections, ~9 votes per bit position via majority vote. Positions survive JPEG. Values do not. <strong>Operational: G0&ndash;G4.</strong> 800/800 images: 100% recovery on all fields, mean bit margin 1.000 (unanimous), zero uncertain bits at Q40. This is not robustness &mdash; it is invariance.</p>
         </div>
       </div>
     </div>
@@ -884,13 +390,78 @@
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- FUTURE STATES — LINK-OUT -->
+<!-- SCREEN 4 — VALIDATED RESULTS + DEEP DIVES -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section section-alt" id="universal">
-  <div class="container" style="text-align:center;">
-    <h2>Beyond JPEG</h2>
-    <p class="lead" style="margin-left:auto;margin-right:auto;">The fuse is engineering. The fire is physics. Any codec that partitions, transforms, and quantizes is susceptible. The mechanism is universal &mdash; and so is the roadmap.</p>
-    <a href="future.html" class="btn btn-primary">Future States &rarr;</a>
+<section class="section section-alt" id="results">
+  <div class="container">
+    <h2>Validated Results</h2>
+    <p class="lead">All numbers from the DIV2K corpus through Q95 &rarr; Q85 &rarr; Q75 &rarr; Q60 &rarr; Q40 cascade. Codec: Pillow's libjpeg. No other implementations tested.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Metric</th><th>Result</th><th>Corpus</th><th>Layer</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Combined score &mdash; marked</td><td class="yes">0.9988</td><td>50 images</td><td>All (combined harness)</td></tr>
+          <tr><td>Combined score &mdash; clean</td><td>0.0000</td><td>50 images</td><td>All (combined harness)</td></tr>
+          <tr><td>False positives</td><td class="yes">0 / 50</td><td>50 images</td><td>All (combined harness)</td></tr>
+          <tr><td>State B rate (800-image)</td><td class="yes">99.5% (796/800)</td><td>800 images</td><td>All</td></tr>
+          <tr><td>FP rate (800-image)</td><td class="yes">0 / 800</td><td>800 images</td><td>All</td></tr>
+          <tr><td>Sentinel T24 intact at Q40</td><td class="yes">98.6%</td><td>500 images</td><td>E</td></tr>
+          <tr><td>Effective detection (any tier)</td><td class="yes">&gt;99%</td><td>500 images</td><td>E</td></tr>
+          <tr><td>False State D</td><td class="yes">0 / 250 combinations</td><td>500 images</td><td>E</td></tr>
+          <tr><td>CID recovery at Q40</td><td class="yes">100% (800/800)</td><td>800 images</td><td>F</td></tr>
+          <tr><td>Payload bit margin at Q40</td><td class="yes">1.000 (unanimous)</td><td>800 images</td><td>F</td></tr>
+          <tr><td>Uncertain bits</td><td class="yes">0</td><td>800 images</td><td>F</td></tr>
+          <tr><td>DQT detection at G0</td><td class="yes">100%</td><td>All</td><td>A</td></tr>
+          <tr><td>Layer BC at G4</td><td>~0% (near chance)</td><td>500 images</td><td>BC</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Known Limitations</h3>
+    <div class="grid-2" style="margin-top:1rem">
+      <div class="card card-dark">
+        <h3>Not Yet Characterized</h3>
+        <p>Geometric transforms (rotation, non-integer scaling, affine). Neural codecs (HEIC, AVIF). Quality below Q10. Codec implementations beyond Pillow's libjpeg (MozJPEG, libjpeg-turbo, hardware encoders).</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Honest Scope</h3>
+        <p>50-image FP confidence interval upper bound: 5.8%. 800-image bound: 0.36%. Neither sufficient for production at scale without further validation. Layer D cannot stand alone. Layer BC is not effective past Q75.</p>
+      </div>
+    </div>
+
+    <!-- ── Deep Dives ── -->
+    <h3 style="margin-top:4rem">Deep Dives</h3>
+    <p>The full technical documentation, design history, and proofs behind every claim on this page.</p>
+
+    <div class="grid-3" style="margin-top:1.5rem">
+      <a href="docs/design-history.html" class="card card-dark" style="text-decoration:none">
+        <h3>Design History</h3>
+        <p>Six wrong assumptions, the M=127 gravity well, relational encoding, and how every failure became a feature.</p>
+      </a>
+      <a href="docs/addendum-l-spanning-sentinel.html" class="card card-dark" style="text-decoration:none">
+        <h3>The Spanning Sentinel</h3>
+        <p>Layer E: from flat-line failure to 98.6% survival. The relational encoding breakthrough.</p>
+      </a>
+      <a href="docs/addendum-k-fuse-and-fire.html" class="card card-dark" style="text-decoration:none">
+        <h3>Fuse &amp; Fire</h3>
+        <p>Formal definitions, novelty assessment, and why compression is the amplifier, not the enemy.</p>
+      </a>
+      <a href="docs/addendum-g-known-attacks.html" class="card card-dark" style="text-decoration:none">
+        <h3>Known Attacks</h3>
+        <p>Rotation, slice-and-stitch, scale, Ship of Theseus. What survived, what broke, and the economics of suppression.</p>
+      </a>
+      <a href="docs/addendum-h-thar-be-dragons.html" class="card card-dark" style="text-decoration:none">
+        <h3>Thar Be Dragons</h3>
+        <p>Seven failure modes and open problems. Seed compromise, no revocation, no forward secrecy &mdash; by design.</p>
+      </a>
+      <a href="history.html" class="card card-dark" style="text-decoration:none">
+        <h3>The Full Story</h3>
+        <p>Part I: Discovery. Part II: Validation. Built in a single sustained conversation between a human and an AI.</p>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -917,7 +488,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const fills = document.querySelectorAll('.layer-fill');
-  const targets = ['100%','12%','100%','96%','100%'];
+  const targets = ['100%','12%','90%','99%','100%'];
   fills.forEach((f,i) => {
     f.style.width = '0%';
     setTimeout(() => { f.style.width = targets[i]; }, 900 + i * 120);
