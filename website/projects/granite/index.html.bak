@@ -23,8 +23,6 @@
       <a href="index.html" class="active">Home</a>
       <a href="philosophy.html">Philosophy</a>
       <a href="history.html">History</a>
-      <a href="future.html">Future</a>
-      <a href="drops.html">Sample Code</a>
       <a href="docs/index.html">Docs</a>
       <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
     </div>
@@ -884,13 +882,28 @@
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- FUTURE STATES — LINK-OUT -->
+<!-- UNIVERSALITY -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section section-alt" id="universal">
-  <div class="container" style="text-align:center;">
+  <div class="container">
     <h2>Beyond JPEG</h2>
-    <p class="lead" style="margin-left:auto;margin-right:auto;">The fuse is engineering. The fire is physics. Any codec that partitions, transforms, and quantizes is susceptible. The mechanism is universal &mdash; and so is the roadmap.</p>
-    <a href="future.html" class="btn btn-primary">Future States &rarr;</a>
+    <p class="lead">The fuse is engineering. The fire is physics.</p>
+    <p>Any codec that uses a <strong>partition &rarr; transform &rarr; quantize</strong> pipeline is susceptible. The mechanism is universal:</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Images</h3>
+        <p>JPEG, WebP, HEIF &mdash; all use block-based DCT or wavelet quantization. Tested and confirmed across JPEG and WebP with cross-codec transcoding.</p>
+      </div>
+      <div class="card">
+        <h3>Audio</h3>
+        <p>MP3, AAC, Opus &mdash; frequency-domain quantization in sub-band partitions. Initial MP3 testing has exceeded expectations.</p>
+      </div>
+      <div class="card">
+        <h3>Video</h3>
+        <p>H.264, H.265, AV1 &mdash; block-based motion-compensated DCT quantization. The same thermodynamic tax applies per-frame.</p>
+      </div>
+    </div>
   </div>
 </section>
 

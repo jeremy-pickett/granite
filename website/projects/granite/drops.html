@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>History — Granite Under Sandstone</title>
+  <title>Sample Code — Granite Under Sandstone</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -15,20 +15,10 @@
 
 <!--
   ════════════════════════════════════════════════════════════════════════
-  HISTORY CONVENTION
+  DROPS CONVENTION
   ════════════════════════════════════════════════════════════════════════
-  The founding history is split into two parts (Part 1: Discovery, Part 2:
-  Validation) living at history/part-1-discovery.html and
-  history/part-2-validation.html.
-
-  ALL NEW HISTORY ENTRIES get their own page under the /history directory.
-  Each new entry is built from a supplied markdown file and placed at:
-    history/[slug].html
-
-  To trigger a new history page build, use the phrase:
-    history: [name-of-new-history-file]
-
-  See CLAUDE.md for the active build convention.
+  Each "Drop" is a self-contained code release linking to a GitHub repo.
+  To add a new drop, append a .drop-card inside .drops-grid below.
   ════════════════════════════════════════════════════════════════════════
 -->
 
@@ -38,9 +28,9 @@
     <div class="nav-links">
       <a href="index.html">Home</a>
       <a href="philosophy.html">Philosophy</a>
-      <a href="history.html" class="active">History</a>
+      <a href="history.html">History</a>
       <a href="future.html">Future</a>
-      <a href="drops.html">Sample Code</a>
+      <a href="drops.html" class="active">Sample Code</a>
       <a href="docs/index.html">Docs</a>
       <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
     </div>
@@ -52,60 +42,35 @@
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <header class="page-hero">
   <div class="container">
-    <p class="hero-series">March 2026</p>
-    <h1>How We Got Here</h1>
-    <p class="hero-subtitle">The development history of Granite Under Sandstone, as it happened</p>
+    <p class="hero-series">Code Drops</p>
+    <h1>Sample Code</h1>
+    <p class="hero-subtitle">Working implementations, released as they mature</p>
   </div>
 </header>
 
 <!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- INTRO -->
+<!-- DROPS -->
 <!-- ════════════════════════════════════════════════════════════════════ -->
 <section class="section">
-  <div class="container content-narrow">
-    <p class="lead">This is the story of how a provenance signal detection system was built in a single sustained conversation between a human and an AI. Every breakthrough, dead end, and moment of discovery &mdash; recorded as it happened.</p>
-  </div>
-</section>
+  <div class="container">
+    <p class="lead">Each drop is a self-contained release &mdash; a working piece of the system you can clone, run, and build on. BSD 2-Clause licensed. No gatekeeping.</p>
 
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- HISTORY INDEX -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section section-alt">
-  <div class="container content-narrow">
-    <h2>The Founding Story</h2>
-
-    <div class="history-index">
-      <a href="history/part-1-discovery.html" class="history-card">
-        <span class="history-card-label">Part I</span>
-        <h3>Discovery</h3>
-        <p>Chapters I&ndash;VII &mdash; From a hand on a keyboard to &ldquo;the fuse is engineering, the fire is physics.&rdquo; The false positive problem, the smart embedder, quantization tables, amplification under compression, interference patterns, and channel pair diagnostics.</p>
-        <span class="history-card-chapters">7 chapters</span>
+    <div class="drops-grid">
+      <!-- ── DROP: granite (core) ── -->
+      <a href="https://github.com/jeremy-pickett/granite" class="drop-card" target="_blank" rel="noopener">
+        <div class="drop-header">
+          <span class="drop-tag">Core</span>
+          <span class="drop-lang">Python</span>
+        </div>
+        <h3>granite</h3>
+        <p>The reference implementation. Embedding, multi-generation cascade, five-layer detection harness, fingerprint extraction, and the DIV2K validation suite.</p>
+        <div class="drop-footer">
+          <span class="drop-repo">jeremy-pickett/granite</span>
+          <span class="drop-arrow">&rarr;</span>
+        </div>
       </a>
 
-      <a href="history/part-2-validation.html" class="history-card">
-        <span class="history-card-label">Part II</span>
-        <h3>Validation</h3>
-        <p>Chapters VIII&ndash;XIII &mdash; Block interior physics, cross-codec survival, the 800-image Granite Test, torture tests, dead ends, and an honest reckoning with what was actually new.</p>
-        <span class="history-card-chapters">6 chapters</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<!-- DAILY HISTORY -->
-<!-- ════════════════════════════════════════════════════════════════════ -->
-<section class="section">
-  <div class="container content-narrow">
-    <h2>Daily History</h2>
-
-    <div class="history-index">
-      <a href="history/an-afternoon-well-spent.html" class="history-card">
-        <span class="history-card-label">March 26, 2026</span>
-        <h3>An Afternoon Well Spent</h3>
-        <p>Disk forensics on a full hard drive, cosmological constants and why they&rsquo;re suspicious, structural pairings, the Pachinko Universe hypothesis, number field primes, and 911 appearing at two unrelated energy scales.</p>
-        <span class="history-card-chapters">6 parts</span>
-      </a>
+      <!-- Future drops go here. Copy the .drop-card template above. -->
     </div>
   </div>
 </section>

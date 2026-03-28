@@ -1,0 +1,16 @@
+GRANITE PARTIAL.
+
+On 5 real photographs:
+  - Best pair: GB
+  - 100.0% show KS separation at Gen4 below p=0.05
+  - 40.0% show elevated variance ratio at Gen4
+  - 80.0% show amplification
+  - G-B wins head-to-head: 4/5
+
+The effect is present but not universal.
+Characterize which content classes amplify and which don't.
+The paper can claim the effect with caveats.
+
+Generated: 2026-03-22T19:36:18.081013Z
+Harness: div2k_harness_v2.py
+Channel pairs tested: ['RG', 'GB']
