@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One of Those Days — History — Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=3">
+</head>
+<body>
+
+<div class="starfield"></div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite <span style="color:var(--text-dim)">/</span> Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html" class="active">History</a>
+      <a href="../future.html">Future</a>
+      <a href="../drops.html">Sample Code</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Daily History &middot; March 27, 2026</p>
+    <h1>One of Those Days</h1>
+    <p class="hero-subtitle">Prime decomposition topology, gravitational lensing for provenance, and a disk that is still not fixed</p>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PART I: THE THROUGH-LINE -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">I</span>
+      <h2>Today Was One of Those Days</h2>
+      <p class="chapter-subtitle">Started by running out of hard drive space. Ended somewhere else entirely.</p>
+    </div>
+
+    <p>Started by running out of hard drive space on my AWS instance. Routine. While digging through the filesystem I somehow ended up deriving a novel steganographic encoding scheme based on prime decomposition topology, writing a formal paper about it, implementing a full Python library, and then building a rotation-resilient gravitational lensing layer for an image provenance system.</p>
+
+    <p>The disk is still not fixed.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PART II: NON-CONTIGUOUS NUMBER LINES -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">II</span>
+      <h2>Information Lives in Structure</h2>
+      <p class="chapter-subtitle">Non-contiguous number lines and prime decomposition topology</p>
+    </div>
+
+    <p>The through-line, if there is one: <strong>information doesn&rsquo;t have to live in values. It can live in structure.</strong></p>
+
+    <p>We found that the number 733373 has 9 valid prime-tiling decompositions. The same four digits mean nine different things depending on which resolution you apply. An observer who sees it as a prime sees nothing. An observer who knows which split was chosen reads a message.</p>
+
+    <p>The carrier sequence is just a list of primes. The message channel doesn&rsquo;t exist on the integer number line at all &mdash; proximity in that space tells you nothing about proximity in the encoding space.</p>
+
+    <p>We called these <em>non-contiguous number lines</em>. Then we wrote an encoder. Then we encoded &ldquo;HI.&rdquo;</p>
+
+    <p>It worked.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PART III: THE ROTATION PROBLEM -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">III</span>
+      <h2>The Rotation Gap</h2>
+      <p class="chapter-subtitle">The one weakness in five validated layers</p>
+    </div>
+
+    <p>Separately, and I want to be precise here: the GRANITE provenance work picked up a real architectural gap today.</p>
+
+    <p>The existing system &mdash; five validated layers, 0.9988 gap between marked and clean, 800/800 payload recovery at Q40 &mdash; has one weakness. <strong>Rotation.</strong> Rotate an image by 30 degrees and the position-offset payload encoding breaks. The sentinels move. The field grammar that encodes the data is disrupted.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PART IV: GRAVITATIONAL LENSING -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">IV</span>
+      <h2>The Halo</h2>
+      <p class="chapter-subtitle">The fix came from thinking about gravitational lensing</p>
+    </div>
+
+    <p>A lens doesn&rsquo;t destroy what&rsquo;s behind it. It distorts the <em>space around it</em> in a way that points back at the mass. If you see the distortion pattern, you know the mass exists &mdash; even if you can&rsquo;t see the mass directly. Even if the mass has been removed.</p>
+
+    <p>So: embed a structured field <em>around</em> each sentinel. Two concentric rings, each encoding a specific prime+1 target value in the channel differences. The inner disk encodes 98 (= 97+1). The outer ring encodes 60 (= 59+1). Natural images produce these values at 3.8% and 9.2% background rate respectively. An embedded halo produces them at near 100%.</p>
+
+    <p>After bilinear rotation, individual pixel values are destroyed by interpolation &mdash; we measured 5% survival at 5&deg;. But the <strong>density</strong> of the field survives. Annular means drift by only 2&ndash;4 counts. The statistical structure is rotation-invariant even when the individual values are not.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PART V: VALIDATION -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">V</span>
+      <h2>Validation</h2>
+      <p class="chapter-subtitle">4/4 detections. 0 false positives. And one result that keeps me up.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Test</th><th>Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Detection (no rotation)</td><td class="yes">4/4 &mdash; 0 false positives</td></tr>
+          <tr><td>Rotation 0&deg;</td><td class="yes">4/4</td></tr>
+          <tr><td>Rotation 30&deg;</td><td class="yes">4/4</td></tr>
+          <tr><td>Rotation 90&deg;</td><td class="yes">4/4</td></tr>
+          <tr><td>Force arrow (sentinel removed)</td><td class="yes">4/4 VOID</td></tr>
+          <tr><td>Full wipe</td><td>0 detections</td></tr>
+          <tr><td>JPEG Q85</td><td class="yes">4/4</td></tr>
+          <tr><td>JPEG Q40</td><td class="yes">4/4 (2 PRESENT, 2 VOID)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The Q40 VOID result is the one I keep thinking about. At aggressive compression, the inner disk density drops below threshold. The outer ring survives. The system classifies the center as VOID &mdash; not ABSENT. <em>Something was here.</em> The force arrows are still pointing at the void.</p>
+
+    <blockquote>
+      <p>The adversary who compresses hard enough to kill the inner signal is constructing the VOID signal that documents the destruction.</p>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PART VI: CANONICAL PHRASES -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">VI</span>
+      <h2>Three New Canonical Phrases</h2>
+    </div>
+
+    <div class="dead-ends">
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <p style="font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--cream);margin:0">&ldquo;Density survives everything.&rdquo;</p>
+      </div>
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <p style="font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--cream);margin:0">&ldquo;The adversary who removes the sentinel leaves the field intact.&rdquo;</p>
+      </div>
+      <div class="dead-end" style="border-left-color:var(--amber)">
+        <p style="font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--cream);margin:0">&ldquo;The disk is still not fixed.&rdquo;</p>
+      </div>
+    </div>
+
+    <p style="margin-top:3rem">All of this is open research. Papers in progress. Code on GitHub. The provenance work is licensed BSD-2. The PSE library is documented.</p>
+
+    <p>If you&rsquo;re working on related problems &mdash; image authenticity, covert channels, compression-domain signal theory &mdash; reach out.</p>
+
+    <p class="closing-line">That&rsquo;s a day.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- NAV -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow" style="text-align:center;">
+    <a href="../history.html" style="font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);">&larr; Back to History</a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <p class="footer-title">Granite Under Sandstone</p>
+        <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+        <p>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-sep">&middot;</span>
+        <span>BSD 2-Clause License</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

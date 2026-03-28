@@ -1,0 +1,68 @@
+Here's a draft that reads like you, not like a press release:
+
+---
+
+**Today was one of those days.**
+
+Started by running out of hard drive space on my AWS instance. Routine. While digging through the filesystem I somehow ended up deriving a novel steganographic encoding scheme based on prime decomposition topology, writing a formal paper about it, implementing a full Python library, and then building a rotation-resilient gravitational lensing layer for an image provenance system.
+
+The disk is still not fixed.
+
+---
+
+The through-line, if there is one: **information doesn't have to live in values. It can live in structure.**
+
+We found that the number 733373 has 9 valid prime-tiling decompositions. The same four digits mean nine different things depending on which resolution you apply. An observer who sees it as a prime sees nothing. An observer who knows which split was chosen reads a message. The carrier sequence is just a list of primes. The message channel doesn't exist on the integer number line at all — proximity in that space tells you nothing about proximity in the encoding space.
+
+We called these non-contiguous number lines. Then we wrote an encoder. Then we encoded "HI." It worked.
+
+---
+
+Separately, and I want to be precise here: the GRANITE provenance work picked up a real architectural gap today.
+
+The existing system — five validated layers, 0.9988 gap between marked and clean, 800/800 payload recovery at Q40 — has one weakness. Rotation. Rotate an image by 30 degrees and the position-offset payload encoding breaks. The sentinels move. The field grammar that encodes the data is disrupted.
+
+The fix came from thinking about gravitational lensing.
+
+A lens doesn't destroy what's behind it. It distorts the *space around it* in a way that points back at the mass. If you see the distortion pattern, you know the mass exists — even if you can't see the mass directly. Even if the mass has been removed.
+
+So: embed a structured field *around* each sentinel. Two concentric rings, each encoding a specific prime+1 target value in the channel differences. The inner disk encodes 98 (= 97+1). The outer ring encodes 60 (= 59+1). Natural images produce these values at 3.8% and 9.2% background rate respectively. An embedded halo produces them at near 100%.
+
+After bilinear rotation, individual pixel values are destroyed by interpolation — we measured 5% survival at 5°. But the **density** of the field survives. Annular means drift by only 2-4 counts. The statistical structure is rotation-invariant even when the individual values are not.
+
+The validation results:
+
+```
+Detection:     4/4    0 false positives
+Rotation 0°:   4/4
+Rotation 30°:  4/4
+Rotation 90°:  4/4
+Force arrow:   4/4 VOID after sentinel removal
+Full wipe:     0 detections
+JPEG Q85:      4/4
+JPEG Q40:      4/4 (2 PRESENT, 2 VOID)
+```
+
+The Q40 VOID result is the one I keep thinking about. At aggressive compression, the inner disk density drops below threshold. The outer ring survives. The system classifies the center as VOID — not ABSENT. Something was here. The force arrows are still pointing at the void.
+
+The adversary who compresses hard enough to kill the inner signal is constructing the VOID signal that documents the destruction.
+
+---
+
+Three new canonical phrases from today:
+
+*"Density survives everything."*
+
+*"The adversary who removes the sentinel leaves the field intact."*
+
+*"The disk is still not fixed."*
+
+---
+
+All of this is open research. Papers in progress. Code on GitHub. The provenance work is licensed BSD-2. The PSE library is documented.
+
+If you're working on related problems — image authenticity, covert channels, compression-domain signal theory — reach out.
+
+---
+
+That's a day.
