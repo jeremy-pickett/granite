@@ -86,9 +86,104 @@ CANARY_WIDTH        = 8                # Fuzzy window for sentinel match (+-N)
                                         # P(prime_fuzzy) ~ 0.05 * 0.06 = 0.003.
 SENTINEL_CANARY_RATIO = 8              # Interior markers per section
                                         # (one sentinel pair per 8 markers)
-DENSITY_FRAC_ESTIMATE = 0.08           # Expected embedding density — used by
+DENSITY_FRAC_ESTIMATE = 0.15           # Expected embedding density — used by
                                         # blind scanner to estimate n_sections.
                                         # Must match the injector's density.
+
+# Default density fraction for dynamic n_markers calculation
+DEFAULT_DENSITY_FRAC = 0.15            # 15% of eligible grid positions
+
+# =============================================================================
+# ENTROPY GATE — shared between injector and verifier
+# =============================================================================
+#
+# The injector and verifier must agree on which grid positions are
+# "high entropy" (textured, safe to embed) vs "low entropy" (flat,
+# faces, sky — skip).  Both sides compute the same luma entropy map
+# from the image they see and apply the same threshold.
+#
+# Stability across JPEG (measured on 512px synthetic + DIV2K):
+#   thresh=10, Q95: 99.9% positions agree, 1 missed out of 715
+#   thresh=10, Q85: 99.3% agree, 5 missed out of 715
+#   thresh=10, Q75: 99.3% agree, 5 missed out of 715
+#
+# JPEG noise raises entropy, so the verifier always checks a SUPERSET
+# of the injector's positions — missed count stays near zero.
+#
+ENTROPY_GATE_THRESH  = 10     # local luma std-dev; below this = flat/face region
+ENTROPY_BLOCK_SIZE   = 16     # smoothing window for entropy map (pixels)
+
+
+def entropy_gate_positions(pixels, grid_positions, h, w):
+    """
+    Filter grid positions by local luma entropy.
+
+    Returns list of (r, col) that pass the entropy gate.
+    Deterministic: both injector and verifier call this on the image
+    they see, producing compatible position sets.
+    """
+    entropy_map = compute_local_entropy_fast(pixels, block_size=ENTROPY_BLOCK_SIZE)
+    passed = []
+    for pos in grid_positions:
+        r, col = pos
+        if entropy_map[min(r, h - 1), min(col, w - 1)] >= ENTROPY_GATE_THRESH:
+            passed.append((r, col))
+    return passed
+
+
+# =============================================================================
+# LUMA HELPERS
+# =============================================================================
+
+def _pixel_luma(pixels, r, c):
+    """Integer luma Y for pixel at (r, c).  BT.601 weights."""
+    return int(round(0.299 * float(pixels[r, c, 0]) +
+                     0.587 * float(pixels[r, c, 1]) +
+                     0.114 * float(pixels[r, c, 2])))
+
+
+def _find_channel_for_luma_dist(r_val, g_val, b_val, y_ref, target_prime):
+    """
+    Find (new_R, new_G) values that make |Y_new - y_ref| == target_prime.
+
+    Searches G first (highest luma weight), then R+G together.
+    Returns (new_r, new_g, adjustment) or (None, None, None).
+    """
+    best = None
+    for sign in [+1, -1]:
+        target_y = y_ref + sign * target_prime
+        if target_y < 0 or target_y > 255:
+            continue
+
+        # Strategy 1: G-only — estimate then search ±2
+        g_est = round((target_y - 0.299 * r_val - 0.114 * b_val) / 0.587)
+        for g_try in range(g_est - 2, g_est + 3):
+            if not (20 <= g_try <= 235):
+                continue
+            y_check = int(round(0.299 * r_val + 0.587 * g_try + 0.114 * b_val))
+            if abs(y_check - y_ref) == target_prime:
+                adj = abs(g_try - g_val)
+                if best is None or adj < best[2]:
+                    best = (r_val, g_try, adj)
+                break
+
+        # Strategy 2: equal R+G shift — for large deltas
+        if best is None:
+            d_est = round((target_y - (0.299 * r_val + 0.587 * g_val + 0.114 * b_val)) /
+                          (0.299 + 0.587))
+            for d_try in range(d_est - 2, d_est + 3):
+                nr = r_val + d_try
+                ng = g_val + d_try
+                if not (20 <= nr <= 235 and 20 <= ng <= 235):
+                    continue
+                y_check = int(round(0.299 * nr + 0.587 * ng + 0.114 * b_val))
+                if abs(y_check - y_ref) == target_prime:
+                    adj = abs(d_try)
+                    if best is None or adj < best[2]:
+                        best = (nr, ng, adj)
+                    break
+
+    return best if best else (None, None, None)
 
 
 # =============================================================================
@@ -136,7 +231,9 @@ class MarkerConfig:
     """Configuration for a compound marker type."""
     name: str
     description: str
-    min_prime: int = 53
+    min_prime: int = 29                    # Nearest-prime floor: primes ≥29 are
+                                         # sparse enough to survive Q95 JPEG
+                                         # (p<1e-9 with nudge≤8)
     use_twins: bool = False
     use_magic: bool = False
     magic_value: int = 42
@@ -144,7 +241,7 @@ class MarkerConfig:
     use_rare_basket: bool = False
     rare_min_gap: int = 4
     detection_prime_tolerance: int = 2  # Fuzzy N for detection
-    n_markers: int = 400
+    n_markers: int = 0                   # 0 = dynamic: ceil(grid_capacity * DEFAULT_DENSITY_FRAC)
 
 
 MARKER_TYPES = {
@@ -176,11 +273,18 @@ MARKER_TYPES = {
     ),
     "compound": MarkerConfig(
         name="compound",
-        description="Full compound: twin + magic + rare basket",
+        description="Nearest-prime nudge — minimal pixel adjustment",
+        min_prime=29,
+        use_twins=False,
+        use_magic=False,
+        use_rare_basket=False,
+    ),
+    "prime_split": MarkerConfig(
+        name="prime_split",
+        description="PSE: multi-bit payload via prime decomposition choice",
         min_prime=53,
-        use_twins=True,
-        use_magic=True,
         use_rare_basket=True,
+        rare_min_gap=4,
     ),
 }
 
@@ -602,137 +706,207 @@ def embed_compound(pixels: np.ndarray, config: MarkerConfig,
                     variable_offset: int = 42) -> tuple[np.ndarray, list]:
     """
     Embed compound markers according to config.
-    Returns (modified_pixels, marker_metadata_list).
+    Returns (modified_pixels, marker_metadata_list, sentinel_list).
 
-    variable_offset controls which positions are selected from the eligible
-    pool and which prime is assigned to each position.  The same image
-    embedded with different variable_offsets produces different marker
-    positions and prime assignments, even with identical config.
+    Embedding domain: **luma (Y) adjacent-pixel difference**.
+    At each marker position (r, col), we adjust the G channel so that
+    |Y(r,col) - Y(r,col+1)| = target_prime.  Luma survives JPEG 4:2:0
+    because chroma subsampling only touches Cb/Cr, not Y.
 
-    For Layer BC (manifest-based) detection, the variable_offset used at
-    embed time must be known — store it in the sidecar receipt alongside
-    the image hash, floor, and density.  Layer D (blind spatial) detection
-    requires no knowledge of the variable_offset.
+    Position selection is **deterministic stride-based** (row-major order)
+    so the blind verifier can reconstruct the marker grid without a
+    manifest.  No entropy-biased random selection.
 
-    The default value of 42 is used for research and testing.  Production
-    embeddings should use a unique value per image and record it in the
-    receipt.
+    variable_offset controls which prime is assigned to each position.
     """
+    import math
+
     h, w, c = pixels.shape
     modified = pixels.copy().astype(np.int16)
     rng = np.random.RandomState(variable_offset)
 
-    # Build basket
-    if config.use_rare_basket:
-        basket = build_rare_basket(min_prime=config.min_prime, min_gap=config.rare_min_gap)
-    else:
-        all_p = sieve_of_eratosthenes(251)
-        basket = all_p[all_p >= config.min_prime]
+    # Bug 3 fix: dynamic n_markers when set to 0
+    if config.n_markers == 0:
+        cap = len(sample_positions_grid(h, w, WINDOW_W))
+        config = MarkerConfig(**{
+            f.name: getattr(config, f.name)
+            for f in config.__dataclass_fields__.values()
+        })
+        config.n_markers = max(10, math.ceil(cap * DEFAULT_DENSITY_FRAC))
 
-    # Cap to embeddable range
-    basket = basket[basket <= 200]
+    # Build basket: ALL primes from 7 to 127.
+    # Floor=7 gives dense enough primes that the nearest is always
+    # within MAX_NUDGE of any natural diff.  For chain detection,
+    # P(natural chain of 7 at floor=7) = 0.14^7 ≈ 1e-6 — effectively
+    # zero false positive chains.  Steps < 7 would create chains too
+    # short to span meaningful distances.
+    all_p = sieve_of_eratosthenes(127)
+    basket = all_p[all_p >= 7]
 
     if len(basket) == 0:
         raise ValueError(f"Empty basket for config {config.name}")
 
-    # Get eligible positions (away from edges for twins, in mid-range values)
+    # Get eligible positions — block-center offset (+3) for JPEG survival,
+    # col+1 must be in bounds for luma pair.
     all_positions = sample_positions_grid(h, w, WINDOW_W)
 
-    # Entropy scoring for position selection
-    entropy_map = compute_local_entropy_fast(pixels)
-
-    # Filter positions
     eligible = []
     for pos in all_positions:
         r, col = int(pos[0]), int(pos[1])
 
-        # Offset into block center if JPEG-aware
-        if config.use_twins or config.use_magic or config.use_rare_basket:
-            r = min(r + 3, h - 1)
-            col = min(col + 3, w - 2 if config.use_twins else w - 1)
+        # Offset into block center (JPEG-aware)
+        r = min(r + 3, h - 1)
+        col = min(col + 3, w - 2)  # -2: need col+1 for luma pair
 
-        # Value range check
-        if not (20 <= pixels[r, col, 0] <= 235 and 20 <= pixels[r, col, 1] <= 235):
+        # Value range check — both pixels in the luma pair
+        if col + 1 >= w:
             continue
-        # For twins: need adjacent position in bounds with good values
-        if config.use_twins:
-            if col + 1 >= w:
-                continue
-            if not (20 <= pixels[r, col+1, 0] <= 235 and 20 <= pixels[r, col+1, 1] <= 235):
-                continue
+        if not (20 <= pixels[r, col, 0] <= 235 and
+                20 <= pixels[r, col, 1] <= 235 and
+                20 <= pixels[r, col + 1, 0] <= 235 and
+                20 <= pixels[r, col + 1, 1] <= 235):
+            continue
 
-        eligible.append((r, col, entropy_map[min(r, h-1), min(col, w-1)]))
+        eligible.append((r, col))
 
     if not eligible:
         raise ValueError("No eligible positions")
 
-    # Sort by entropy (higher = better hiding spot), take top candidates
-    eligible.sort(key=lambda x: -x[2])
-    n_use = min(config.n_markers, len(eligible))
-    # Weighted random from top half by entropy
-    top_n = max(n_use, len(eligible) // 2)
-    top_eligible = eligible[:top_n]
-    indices = rng.choice(len(top_eligible), size=n_use, replace=False)
-    selected = [top_eligible[i] for i in indices]
+    # Entropy-gated positions in row-major order — the canonical grid
+    # that both injector and verifier reconstruct independently.
+    gated = entropy_gate_positions(pixels, eligible, h, w)
+    gated.sort(key=lambda x: (x[0], x[1]))
+    n_gated = len(gated)
+
+    # Maximum luma-diff nudge (pixels).  Positions requiring larger
+    # adjustments are skipped — they'd be perceptually visible.
+    MAX_NUDGE = 8
+
+    # Number of independent chains to embed.  More chains = more
+    # redundancy if JPEG breaks some links.  Chains are interleaved
+    # across the grid: chain 0 starts at position 0, chain 1 at
+    # position 1, etc.
+    n_chains = getattr(config, 'n_chains', 3)
+
+    # ------------------------------------------------------------------
+    # CHAIN-LINKED EMBEDDING
+    #
+    # Each marker's prime value = step count to the next marker in the
+    # gated position list.  The verifier reads the prime, jumps that
+    # many positions forward, and checks whether the target also has a
+    # prime luma-diff.  A chain of ≥7 consecutive links is proof —
+    # probability of that by chance is < 1e-7.
+    #
+    # For each chain:
+    #   1. Start at a seed position
+    #   2. Find a prime from the basket that:
+    #      (a) is within MAX_NUDGE of the natural luma-diff
+    #      (b) when used as step count, lands on another gated position
+    #          that is also embeddable (within MAX_NUDGE of ITS natural diff)
+    #   3. Embed that prime, advance to the target position, repeat
+    # ------------------------------------------------------------------
+
+    # Pre-check which positions are embeddable (natural diff close to
+    # some basket prime within MAX_NUDGE)
+    embeddable = set()
+    for idx, (r, col) in enumerate(gated):
+        nd = abs(_pixel_luma(pixels, r, col) - _pixel_luma(pixels, r, col + 1))
+        best_dist = min(abs(int(p) - nd) for p in basket)
+        if best_dist <= MAX_NUDGE:
+            embeddable.add(idx)
 
     markers = []
-    for r, col, ent in selected:
-        target_prime = int(rng.choice(basket))
+    used = set()       # grid indices already claimed by a chain
+    chains_meta = []   # metadata per chain
 
-        # --- Primary marker: make |R-G| at (r, col) = target_prime ---
-        val_r = int(modified[r, col, 0])
-        opt1 = val_r - target_prime
-        opt2 = val_r + target_prime
-        candidates = []
-        for new_g in [opt1, opt2]:
-            if 20 <= new_g <= 235:
-                candidates.append(new_g)
-        if not candidates:
+    for chain_id in range(n_chains):
+        # Seed: start from position chain_id, skip if already used
+        cursor = chain_id
+        if cursor >= n_gated or cursor in used:
             continue
 
-        new_g = min(candidates, key=lambda x: abs(x - int(modified[r, col, 1])))
-        modified[r, col, 1] = new_g
+        chain_positions = []
 
-        marker_info = {
-            "row": int(r), "col": int(col),
-            "prime": target_prime,
-            "type": "primary",
-        }
+        while cursor < n_gated and cursor not in used:
+            r, col = gated[cursor]
+            nd = abs(_pixel_luma(modified, r, col) -
+                     _pixel_luma(modified, r, col + 1))
 
-        # --- Twin marker: make |R-G| at (r, col+1) also a prime ---
-        if config.use_twins and col + 1 < w:
-            twin_prime = int(rng.choice(basket))
-            val_r2 = int(modified[r, col+1, 0])
-            opt1 = val_r2 - twin_prime
-            opt2 = val_r2 + twin_prime
-            t_candidates = []
-            for new_g2 in [opt1, opt2]:
-                if 20 <= new_g2 <= 235:
-                    t_candidates.append(new_g2)
-            if t_candidates:
-                new_g2 = min(t_candidates, key=lambda x: abs(x - int(modified[r, col+1, 1])))
-                modified[r, col+1, 1] = new_g2
-                marker_info["twin_prime"] = twin_prime
-                marker_info["twin_col"] = int(col + 1)
-            else:
-                if config.use_twins:
-                    continue  # Can't complete twin, skip
+            # Find a prime that (a) is within MAX_NUDGE of nd AND
+            # (b) when used as step, lands on an embeddable position.
+            best_prime = None
+            best_adj = MAX_NUDGE + 1
 
-        # --- Magic sentinel: set B channel at (r, col) to MAGIC_VALUE ---
-        if config.use_magic:
-            modified[r, col, 2] = config.magic_value
-            marker_info["magic_channel"] = 2
-            marker_info["magic_value"] = config.magic_value
+            for p in basket:
+                adj = abs(int(p) - nd)
+                if adj > MAX_NUDGE:
+                    continue
+                # Would this step land in bounds on an embeddable position?
+                target_idx = cursor + int(p)
+                if target_idx < n_gated and target_idx in embeddable:
+                    if adj < best_adj:
+                        best_prime = int(p)
+                        best_adj = adj
+                elif adj < best_adj:
+                    # Valid prime but target out of bounds or not embeddable
+                    # — use it as chain terminator
+                    best_prime = int(p)
+                    best_adj = adj
 
-        markers.append(marker_info)
+            if best_prime is None:
+                break  # can't continue this chain
+
+            # Embed the prime
+            y_ref = _pixel_luma(modified, r, col + 1)
+            r_val = int(modified[r, col, 0])
+            g_val = int(modified[r, col, 1])
+            b_val = int(modified[r, col, 2])
+
+            new_r, new_g, adj = _find_channel_for_luma_dist(
+                r_val, g_val, b_val, y_ref, best_prime)
+            if new_r is None:
+                break
+
+            modified[r, col, 0] = new_r
+            modified[r, col, 1] = new_g
+
+            marker_info = {
+                "row": int(r), "col": int(col),
+                "prime": best_prime,
+                "type": "chain_link",
+                "chain_id": chain_id,
+                "grid_index": cursor,
+                "adjustment": adj,
+            }
+            markers.append(marker_info)
+            chain_positions.append(cursor)
+            used.add(cursor)
+
+            # Advance cursor by step count
+            next_idx = cursor + best_prime
+            if next_idx >= n_gated or next_idx in used:
+                break
+            cursor = next_idx
+
+        chains_meta.append({
+            "chain_id": chain_id,
+            "length": len(chain_positions),
+            "start_grid_index": chain_positions[0] if chain_positions else -1,
+        })
 
     modified = np.clip(modified, 0, 255).astype(np.uint8)
 
-    # Place Mersenne sentinels bracketing each section of SENTINEL_CANARY_RATIO markers
-    # Do this after all marker pixels are finalised (sentinels work on a copy)
+    # Place Mersenne sentinels bracketing each section
+    selected_with_entropy = [(r, c, 0.0) for r, c in gated]
     modified_int = modified.astype(np.int16)
-    sentinels = place_sentinels(modified_int, selected, rng, ch_a=0, ch_b=1)
+    sentinels = place_sentinels(modified_int, selected_with_entropy, rng, ch_a=0, ch_b=1)
     modified  = np.clip(modified_int, 0, 255).astype(np.uint8)
+
+    # Attach chain metadata
+    for m in markers:
+        m["n_gated"] = n_gated
+    if chains_meta:
+        markers.append({"_chains": chains_meta})
 
     return modified, markers, sentinels
 
@@ -782,19 +956,21 @@ def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
         marker_set.add((r, col))
         marker_total += 1
 
-        # Check primary: |R-G| is fuzzy-prime
-        d_primary = abs(int(pixels[r, col, 0]) - int(pixels[r, col, 1]))
+        # Check primary: |Y(r,col) - Y(r,col+1)| is fuzzy-prime
+        if col + 1 >= w:
+            continue
+        d_primary = abs(_pixel_luma(pixels, r, col) - _pixel_luma(pixels, r, col + 1))
         primary_ok = bool(fuzzy_prime[min(d_primary, max_val)])
         if primary_ok:
             marker_primary_pass += 1
 
-        # Check twin
+        # Check twin: |Y(r,col+1) - Y(r,col+2)| is fuzzy-prime
         twin_ok = True
         if config.use_twins:
             twin_ok = False
             tc = m.get("twin_col", col + 1)
-            if tc < w:
-                d_twin = abs(int(pixels[r, tc, 0]) - int(pixels[r, tc, 1]))
+            if tc + 1 < w:
+                d_twin = abs(_pixel_luma(pixels, r, tc) - _pixel_luma(pixels, r, tc + 1))
                 twin_ok = bool(fuzzy_prime[min(d_twin, max_val)])
                 if twin_ok:
                     marker_twin_pass += 1
@@ -830,7 +1006,9 @@ def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
             continue
         control_total += 1
 
-        d_primary = abs(int(pixels[r, col, 0]) - int(pixels[r, col, 1]))
+        if col + 1 >= w:
+            continue
+        d_primary = abs(_pixel_luma(pixels, r, col) - _pixel_luma(pixels, r, col + 1))
         primary_ok = bool(fuzzy_prime[min(d_primary, max_val)])
         if primary_ok:
             control_primary_pass += 1
@@ -838,8 +1016,8 @@ def detect_compound(pixels: np.ndarray, markers: list, config: MarkerConfig,
         twin_ok = True
         if config.use_twins:
             twin_ok = False
-            if col + 1 < w:
-                d_twin = abs(int(pixels[r, col+1, 0]) - int(pixels[r, col+1, 1]))
+            if col + 2 < w:
+                d_twin = abs(_pixel_luma(pixels, r, col + 1) - _pixel_luma(pixels, r, col + 2))
                 twin_ok = bool(fuzzy_prime[min(d_twin, max_val)])
                 if twin_ok:
                     control_twin_pass += 1

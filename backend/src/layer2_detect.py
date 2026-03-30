@@ -40,34 +40,45 @@ BIT_DEPTH = 8
 WINDOW_W = 8
 
 
+def _pixel_luma(pixels, r, c):
+    """Integer luma Y for pixel at (r, c).  BT.601 weights."""
+    return int(round(0.299 * float(pixels[r, c, 0]) +
+                     0.587 * float(pixels[r, c, 1]) +
+                     0.114 * float(pixels[r, c, 2])))
+
+
 def layer2_detect(pixels: np.ndarray, marker_positions: list,
                    min_prime: int = 37, channel_pair: tuple = (0, 1)) -> dict:
     """
     Layer 2 detection: compare prime-gap hit rate at KNOWN marker positions
     vs NON-marker positions in the same image.
 
+    Distance metric: |Y(r,c) - Y(r,c+1)| — adjacent-pixel luma difference.
+    This survives JPEG 4:2:0 because luma is not subsampled.
+
     The image is its own control group.
     """
     h, w, _ = pixels.shape
-    prime_lookup = build_prime_lookup(BIT_DEPTH, min_prime=min_prime)
-    ch_a, ch_b = channel_pair
+    prime_lookup = build_prime_lookup(BIT_DEPTH)
+    # Apply prime floor: primes below min_prime don't count as signal
+    prime_lookup[:min_prime] = False
 
-    # Extract distances at marker positions
+    # Extract luma-pair distances at marker positions
     marker_set = set((m["row"], m["col"]) for m in marker_positions)
     marker_dists = []
     for m in marker_positions:
         r, c = m["row"], m["col"]
-        if 0 <= r < h and 0 <= c < w:
-            d = abs(int(pixels[r, c, ch_a]) - int(pixels[r, c, ch_b]))
+        if 0 <= r < h and 0 <= c < w and c + 1 < w:
+            d = abs(_pixel_luma(pixels, r, c) - _pixel_luma(pixels, r, c + 1))
             marker_dists.append(d)
 
     # Extract distances at non-marker grid positions (control group)
     all_positions = sample_positions_grid(h, w, WINDOW_W)
     control_dists = []
     for pos in all_positions:
-        r, c = pos
-        if (r, c) not in marker_set:
-            d = abs(int(pixels[r, c, ch_a]) - int(pixels[r, c, ch_b]))
+        r, c = int(pos[0]), int(pos[1])
+        if (r, c) not in marker_set and c + 1 < w:
+            d = abs(_pixel_luma(pixels, r, c) - _pixel_luma(pixels, r, c + 1))
             control_dists.append(d)
 
     marker_dists = np.array(marker_dists)
@@ -99,6 +110,10 @@ def layer2_detect(pixels: np.ndarray, marker_positions: list,
     contingency = np.array([[a, b], [c, d]])
     if min(a, b, c, d) > 5:
         chi2, chi2_p, dof, expected = sp_stats.chi2_contingency(contingency)
+    elif (a + b) > 0 and (c + d) > 0:
+        # Small cell counts — use Fisher's exact test instead of chi-squared
+        odds, chi2_p = sp_stats.fisher_exact(contingency, alternative='greater')
+        chi2 = 0  # Not applicable for Fisher's test
     else:
         chi2, chi2_p = 0, 1.0
 

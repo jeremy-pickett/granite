@@ -42,22 +42,33 @@ from sympy import isprime
 
 HALO_RADIUS    = 10
 INNER_RADIUS   = 5
+FLOOR          = 29     # minimum prime for halo signal
+
+# --- Legacy fixed-target constants (kept for reference / old tests) ---
 INNER_TARGET   = 98     # = 97 + 1  (97 is prime)
 OUTER_TARGET   = 60     # = 59 + 1  (59 is prime)
 VOTE_TOL       = 5      # match window around each target
-FLOOR          = 43
 
-INNER_THRESH   = 0.28   # inner density → PRESENT
-OUTER_THRESH   = 0.18   # outer density → contributes to PRESENT / VOID
-VOID_OUTER_MIN = 0.45   # outer density alone → VOID (elevated, inner absent)
-GRADIENT_MIN   = 0.02   # minimum inner - outer for PRESENT
+# --- Nearest-prime density thresholds ---
+# Natural prime density for |R-G| >= 29: ~18-22% of pixels
+# After nearest-prime embedding: ~95-100% in halo disk
+# Detection threshold must sit between natural and embedded.
+PRIME_DENSITY_THRESH = 0.55   # > 55% of disk pixels have prime |R-G| ≥ FLOOR
+VOID_DENSITY_THRESH  = 0.40   # outer ring alone above this → VOID
+GRADIENT_MIN   = 0.02         # minimum inner - outer for PRESENT
+
+INNER_THRESH   = PRIME_DENSITY_THRESH   # compat alias
+OUTER_THRESH   = 0.35
+VOID_OUTER_MIN = VOID_DENSITY_THRESH
 
 NMS_WINDOW     = HALO_RADIUS * 2 + 1
-MATCH_RADIUS   = 28     # generous: accounts for PIL rotation formula drift
+MATCH_RADIUS   = 28
 
-assert isprime(INNER_TARGET - 1) and (INNER_TARGET - 1) > FLOOR
-assert isprime(OUTER_TARGET - 1) and (OUTER_TARGET - 1) > FLOOR
-assert INNER_TARGET > OUTER_TARGET
+# Build prime lookup at module load
+_PRIME_LUT = np.zeros(256, dtype=bool)
+for _p in range(2, 256):
+    if isprime(_p):
+        _PRIME_LUT[_p] = True
 
 
 # ---------------------------------------------------------------------------
@@ -100,6 +111,12 @@ def _target_mask(rg: np.ndarray, target: int, tol: int = VOTE_TOL) -> np.ndarray
     return (np.abs(rg - target) <= tol).astype(np.float32)
 
 
+def _prime_mask(rg: np.ndarray, floor: int = FLOOR) -> np.ndarray:
+    """Mask of pixels where |R-G| is prime and ≥ floor."""
+    rg_int = np.clip(rg, 0, 255).astype(np.uint8)
+    return (_PRIME_LUT[rg_int] & (rg_int >= floor)).astype(np.float32)
+
+
 def _disk_density(mask: np.ndarray, radius: int) -> np.ndarray:
     """Fraction of pixels within circle of `radius` that match, per pixel."""
     sz   = 2 * radius + 1
@@ -112,6 +129,20 @@ def _disk_density(mask: np.ndarray, radius: int) -> np.ndarray:
 # Injector
 # ---------------------------------------------------------------------------
 
+# Precomputed nearest-prime lookup: for each distance d, the closest prime ≥ FLOOR
+_NEAREST_PRIME = np.zeros(256, dtype=np.int16)
+for _d in range(256):
+    _best, _best_dist = _d, 999
+    for _p in range(max(0, _d - 10), min(256, _d + 11)):
+        if _PRIME_LUT[_p] and _p >= FLOOR and abs(_p - _d) < _best_dist:
+            _best, _best_dist = _p, abs(_p - _d)
+    if _best_dist == 999:  # fallback
+        for _p in range(FLOOR, 256):
+            if _PRIME_LUT[_p]:
+                _best = _p; break
+    _NEAREST_PRIME[_d] = _best
+
+
 def embed_halos_from_sentinels(
     image: Image.Image,
     sentinel_centers: List[Tuple[int, int]],
@@ -119,34 +150,52 @@ def embed_halos_from_sentinels(
     """
     Embed two-zone radial halos at each sentinel center.
 
-    Inner disk  (r ≤ INNER_RADIUS): |R-G| = INNER_TARGET
-    Outer ring  (r ≤ HALO_RADIUS):  |R-G| = OUTER_TARGET
-
-    Adjusts G channel to achieve target; falls back to R if saturated.
+    Nearest-prime strategy: nudge |R-G| at each pixel to the closest
+    prime ≥ FLOOR.  Typical adjustment: 1-3 pixel values.
+    Uses precomputed _NEAREST_PRIME lookup for speed.
     """
     arr = np.array(image, dtype=np.int16)
     h, w = arr.shape[:2]
 
+    # Precompute disk offsets
+    offsets = []
+    for dy in range(-HALO_RADIUS, HALO_RADIUS + 1):
+        for dx in range(-HALO_RADIUS, HALO_RADIUS + 1):
+            if math.sqrt(dy*dy + dx*dx) <= HALO_RADIUS:
+                offsets.append((dy, dx))
+
     for (cy, cx) in sentinel_centers:
-        for dy in range(-HALO_RADIUS, HALO_RADIUS + 1):
-            for dx in range(-HALO_RADIUS, HALO_RADIUS + 1):
-                r = math.sqrt(dy*dy + dx*dx)
-                if r > HALO_RADIUS:
-                    continue
-                py, px = cy + dy, cx + dx
-                if not (0 <= py < h and 0 <= px < w):
-                    continue
+        for dy, dx in offsets:
+            py, px = cy + dy, cx + dx
+            if not (0 <= py < h and 0 <= px < w):
+                continue
 
-                target = INNER_TARGET if r <= INNER_RADIUS else OUTER_TARGET
-                R, G   = int(arr[py, px, 0]), int(arr[py, px, 1])
+            R, G = int(arr[py, px, 0]), int(arr[py, px, 1])
+            d = abs(R - G)
+            target = int(_NEAREST_PRIME[min(d, 255)])
 
-                if R >= target:
-                    arr[py, px, 1] = R - target
-                elif G + target <= 255:
-                    arr[py, px, 0] = G + target
-                else:
-                    arr[py, px, 0] = 255
-                    arr[py, px, 1] = max(0, 255 - target)
+            if target == d:
+                continue  # already prime — no change
+            if abs(target - d) > 8:
+                continue  # skip — adjustment too large for perceptual budget
+
+            # Achieve |R-G| = target with minimal channel change
+            if R >= G:
+                new_G = R - target
+                if 0 <= new_G <= 255:
+                    arr[py, px, 1] = new_G
+                    continue
+                new_R = G + target
+                if 0 <= new_R <= 255:
+                    arr[py, px, 0] = new_R
+            else:
+                new_R = G - target
+                if 0 <= new_R <= 255:
+                    arr[py, px, 0] = new_R
+                    continue
+                new_G = R + target
+                if 0 <= new_G <= 255:
+                    arr[py, px, 1] = new_G
 
     return Image.fromarray(arr.astype(np.uint8), mode='RGB')
 
@@ -197,10 +246,9 @@ def detect_halo_centers(
     Returns all PRESENT and VOID centers, sorted by inner_density desc.
     """
     rg         = _abs_rg(image)
-    inner_mask = _target_mask(rg, INNER_TARGET)
-    outer_mask = _target_mask(rg, OUTER_TARGET)
-    inner_map  = _disk_density(inner_mask, INNER_RADIUS)
-    outer_map  = _disk_density(outer_mask, HALO_RADIUS)
+    pmask      = _prime_mask(rg, FLOOR)
+    inner_map  = _disk_density(pmask, INNER_RADIUS)
+    outer_map  = _disk_density(pmask, HALO_RADIUS)
     h, w       = rg.shape
 
     # Score map: PRESENT gets inner density, VOID gets outer density (inverted)
