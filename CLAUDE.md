@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Always check `TODO.md` at the start of every session.** It tracks in-progress experimental layers, integration status, and open items. If the user references ongoing work without context, the answer is probably in there.
+
 ## Project Overview
 
 Granite Under Sandstone is a research project implementing **Compression-Amplified Provenance Signal Detection** for digital media. It embeds imperceptible statistical perturbations (provenance signals) into images that survive and amplify under lossy JPEG compression. The key insight: the signal is not the perturbation itself—it's the system's statistical response to the perturbation over multiple compression generations.
@@ -107,6 +109,10 @@ Most testing has been in adversarial environments (JPEG cascades, cross-codec tr
 
 ## Alidade / IALD Scoring System
 
+### Design Philosophy: Assume Every Asset Is Pre-Collapse
+
+Every security in the system should be treated as a potential Enron, Bear Stearns, or WeWork. The default posture is suspicion — filings, advisories, warnings, auditor changes, executive departures, ownership concentration shifts, all of it matters. Collectors exist to surface the early signals that precede catastrophic failure. When building or extending a collector, ask: "Would this have caught Enron six months earlier?" If it wouldn't have, it's not aggressive enough.
+
 ### IALD Signal Count Rule
 
 **`collectors/signal_config.py` is the single source of truth for all IALD signals.** The `_DECLARED_COUNT` constant at the bottom of that file MUST match the actual number of active signals in `SIGNAL_CONFIG`. The file has a runtime assertion that enforces this. When adding or removing a signal, update both the dict and the count. Do NOT add aspirational/placeholder signals — every entry must have a live collector or derived-signal job that writes to the `signals` table.
@@ -134,11 +140,30 @@ Scores are **0.0 to 1.0** everywhere: database, API, frontend. Verdicts:
 
 All collectors live in `collectors/` and inherit from `BaseCollector` in `base.py`. Lifecycle: `setup() → fetch() → transform() → store() → teardown()`. Copy `_template.py` to start a new one. Register in `collectors_run.py` REGISTRY dict.
 
+**Collector checklist** — when creating or modifying a collector:
+1. Every collector must run once per day via cron (staggered at 15-min intervals starting 06:00 UTC). Add the cron entry and verify it with `crontab -l`.
+2. All `raw_*` tables must have both `collected_at` (first seen) and `last_updated` (last confirmed) columns. On duplicate insert, use `ON CONFLICT ... DO UPDATE SET last_updated = now()` — never `DO NOTHING`.
+3. Verify the collector runs end-to-end against the full securities list before considering it done.
+
+### Collector Status (as of 2026-03-31)
+
+**18 live collectors**, 22 active signals, 12 daily cron jobs (06:00–07:14 UTC staggered).
+
+Live — sec_filing: Auditor Change Monitor, C-Suite Departure Tracker, Concentration Disclosure, Material Weakness Scanner (+ Late Filings, Financial Restatements, Going Concern feeding composite signal), SEC 13F Monitor, SEC Form 4 Parser.
+
+Live — market_data: Market Data (Daily), Earnings Calendar, Analyst Revision Tracker, FTD Pattern Analyzer, Options Flow Scanner.
+
+Live — blockchain: Crypto Whale Tracker (BTC mempool whale txs), Exchange Flow Monitor (daily exchange wallet balance snapshots), On-Chain Activity (BTC/ETH chain metrics via blockchain.com + blockchair + etherscan v2). Required adding BTC-USD and ETH-USD to the securities table.
+
+Live — other: Congressional Trade Feed, Social Velocity Scanner (news sentiment via Finnhub), Crypto Exposure Estimator, Prediction Market Feed (Polymarket + Kalshi).
+
+**Dark (need paid APIs):** Short Interest Tracker (5), Stock Loan Rate Monitor (6), Dark Pool Volume (7), ADR Spread Monitor (13), Convertible Spread Tracker (14). **Derivable from existing data:** Sector Correlation Engine (15).
+
 ### Key Tables
 
 - `signals` — normalized signal rows (security_id, signal_type, contribution, confidence, direction, magnitude)
 - `iald_scores` — daily scores per security (score, verdict, active_signals)
 - `score_aggregates` — rolling 30d stats (avg, min, max, volatility, trend)
 - `raw_market_data` — OHLCV from market_data collector
-- `collectors` — registry of all 22 collectors with run status
+- `collectors` — registry of all 23 collectors with run status
 - `collector_coverage` — per-security data availability per collector

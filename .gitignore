@@ -17,5 +17,12 @@ backend/docs/*.log
 # Claude Code local settings
 .claude/
 
+# Secrets
+.env
+*.env
+.env.local
+.env*.local
+collectors/.env
+
 # OS
 .DS_Store

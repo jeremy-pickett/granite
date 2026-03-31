@@ -106,6 +106,8 @@ def _generate_heatmap(pixels: np.ndarray, markers: list, sentinels: list,
 
     # --- Draw primary / compound markers as filled circles ---
     for m in markers:
+        if "row" not in m or "col" not in m:
+            continue
         r, c = m["row"], m["col"]
         if not (0 <= r < h and 0 <= c < w):
             continue
@@ -226,7 +228,7 @@ def _generate_histogram(markers: list, sentinels: list, output_path: str):
     import matplotlib.pyplot as plt
 
     # Collect primes by category
-    primary_primes = [m["prime"] for m in markers]
+    primary_primes = [m["prime"] for m in markers if "prime" in m]
     twin_primes = [m["twin_prime"] for m in markers if "twin_prime" in m]
     sentinel_mersennes = [s["mersenne"] for s in sentinels if s.get("placed")]
 
@@ -278,7 +280,7 @@ def _generate_histogram(markers: list, sentinels: list, output_path: str):
 
     # 4. Spatial distribution (row histogram)
     ax = axes[1, 1]
-    rows = [m["row"] for m in markers]
+    rows = [m["row"] for m in markers if "row" in m]
     if rows:
         ax.hist(rows, bins=50,
                 color=tuple(v / 255 for v in LAYER_COLORS["sentinel"]), **style)
@@ -313,6 +315,8 @@ def generate_injection_report(
     output_dir: str,
     profile_name: str = "compound",
     variable_offset: int = 42,
+    enable_dct: bool = False,
+    enable_thermo: bool = False,
 ) -> InjectionReport:
     """
     Run the full injection pipeline on an image and produce:
@@ -356,10 +360,11 @@ def generate_injection_report(
 
     primes_used = {}
     for m in markers:
-        p = m["prime"]
-        primes_used[p] = primes_used.get(p, 0) + 1
+        p = m.get("prime")
+        if p is not None:
+            primes_used[p] = primes_used.get(p, 0) + 1
 
-    basket_primes = sorted(set(m["prime"] for m in markers))
+    basket_primes = sorted(set(m["prime"] for m in markers if "prime" in m))
 
     # ── Layer 3: Radial halos at Mersenne sentinel positions ──
     placed_sentinels = [s for s in sentinels if s.get("placed")]
@@ -384,6 +389,53 @@ def generate_injection_report(
     # intensity can be reduced to imperceptible levels.
     n_rulers = 0
 
+    # ── EXPERIMENTAL: Layer DCT — frequency-domain primes ──
+    n_dct = 0
+    if enable_dct:
+        from dct_markers import embed_dct_primes
+        from compound_markers import entropy_gate_positions, ENTROPY_BLOCK_SIZE
+        from smart_embedder import compute_local_entropy_fast
+        from pgps_detector import sample_positions_grid
+
+        h_cur, w_cur = modified.shape[:2]
+        emap = compute_local_entropy_fast(
+            np.clip(modified, 0, 255).astype(np.uint8),
+            block_size=ENTROPY_BLOCK_SIZE)
+        raw_grid = sample_positions_grid(h_cur, w_cur, 8)
+        grid_positions = [(int(r) + 3, int(c) + 3) for r, c in raw_grid
+                          if int(r) + 3 < h_cur and int(c) + 3 < w_cur]
+        from verify_image import _entropy_gate_cached, ENTROPY_GATE_THRESH
+        gated_dct = _entropy_gate_cached(emap, grid_positions, h_cur, w_cur)
+        # Align to 8x8 block origins
+        dct_blocks = list(set(
+            (r - r % 8, c - c % 8) for r, c in gated_dct
+            if r - r % 8 + 8 <= h_cur and c - c % 8 + 8 <= w_cur
+        ))
+        mod_clipped = np.clip(modified, 0, 255).astype(np.uint8)
+        mod_clipped, dct_meta = embed_dct_primes(mod_clipped, dct_blocks)
+        modified = mod_clipped.astype(modified.dtype)
+        n_dct = dct_meta['embedded']
+
+    # ── EXPERIMENTAL: Layer T — thermodynamic consensus ──
+    n_thermo = 0
+    if enable_thermo:
+        from thermo_markers import embed_thermodynamic
+        from compound_markers import entropy_gate_positions, ENTROPY_BLOCK_SIZE
+        from smart_embedder import compute_local_entropy_fast
+        from pgps_detector import sample_positions_grid
+
+        h_cur, w_cur = modified.shape[:2]
+        mod_u8 = np.clip(modified, 0, 255).astype(np.uint8)
+        emap = compute_local_entropy_fast(mod_u8, block_size=ENTROPY_BLOCK_SIZE)
+        raw_grid = sample_positions_grid(h_cur, w_cur, 8)
+        grid_positions = [(int(r) + 3, int(c) + 3) for r, c in raw_grid
+                          if int(r) + 3 < h_cur and int(c) + 3 + 1 < w_cur]
+        from verify_image import _entropy_gate_cached, ENTROPY_GATE_THRESH
+        gated_thermo = _entropy_gate_cached(emap, grid_positions, h_cur, w_cur)
+        mod_u8, thermo_meta = embed_thermodynamic(mod_u8, gated_thermo)
+        modified = mod_u8.astype(modified.dtype)
+        n_thermo = thermo_meta['embedded']
+
     # Determine active layers
     layers_active = ["compound"]
     if any("twin_col" in m for m in markers):
@@ -396,6 +448,10 @@ def generate_injection_report(
         layers_active.append("halo")
     if n_rulers > 0:
         layers_active.append("ruler")
+    if n_dct > 0:
+        layers_active.append("dct")
+    if n_thermo > 0:
+        layers_active.append("thermo")
 
     # File paths (relative for web serving)
     slug = f"{img_name}_{img_hash}"
@@ -482,6 +538,10 @@ if __name__ == "__main__":
                         help="Marker config profile")
     parser.add_argument("-s", "--seed", type=int, default=42,
                         help="Variable offset / seed")
+    parser.add_argument("--experimental-dct", action="store_true",
+                        help="Enable experimental DCT-domain prime embedding")
+    parser.add_argument("--experimental-thermo", action="store_true",
+                        help="Enable experimental thermodynamic consensus embedding")
     args = parser.parse_args()
 
     # Default output: website public reports directory
@@ -491,7 +551,9 @@ if __name__ == "__main__":
                                    "reports")
 
     report = generate_injection_report(
-        args.image, args.output, args.profile, args.seed
+        args.image, args.output, args.profile, args.seed,
+        enable_dct=args.experimental_dct,
+        enable_thermo=args.experimental_thermo,
     )
 
     print(f"\nInjection Report Generated")
