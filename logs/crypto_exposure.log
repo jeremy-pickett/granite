@@ -1,0 +1,22 @@
+2026-04-01 07:45:01 [Crypto Exposure Estimator] INFO === Crypto Exposure Estimator (ID 23) starting ===
+2026-04-01 07:45:01 [Crypto Exposure Estimator] INFO Loaded 731 securities
+2026-04-01 07:45:02 [Crypto Exposure Estimator] INFO Fetching...
+2026-04-01 07:45:02 [Crypto Exposure Estimator] INFO Pass 3: checking 668 unclassified equities via Finnhub
+2026-04-01 07:45:04 [Crypto Exposure Estimator] INFO   ...checked 55/668, sleeping for rate limit
+2026-04-01 07:46:08 [Crypto Exposure Estimator] INFO   ...checked 110/668, sleeping for rate limit
+2026-04-01 07:47:13 [Crypto Exposure Estimator] INFO   ...checked 165/668, sleeping for rate limit
+2026-04-01 07:48:18 [Crypto Exposure Estimator] INFO   ...checked 220/668, sleeping for rate limit
+2026-04-01 07:49:22 [Crypto Exposure Estimator] INFO   ...checked 275/668, sleeping for rate limit
+2026-04-01 07:50:28 [Crypto Exposure Estimator] INFO   ...checked 330/668, sleeping for rate limit
+2026-04-01 07:51:33 [Crypto Exposure Estimator] INFO   ...checked 385/668, sleeping for rate limit
+2026-04-01 07:52:38 [Crypto Exposure Estimator] INFO   ...checked 440/668, sleeping for rate limit
+2026-04-01 07:53:42 [Crypto Exposure Estimator] INFO   ...checked 495/668, sleeping for rate limit
+2026-04-01 07:54:47 [Crypto Exposure Estimator] INFO   ...checked 550/668, sleeping for rate limit
+2026-04-01 07:55:51 [Crypto Exposure Estimator] INFO   ...checked 605/668, sleeping for rate limit
+2026-04-01 07:56:55 [Crypto Exposure Estimator] INFO   ...checked 660/668, sleeping for rate limit
+2026-04-01 07:57:57 [Crypto Exposure Estimator] INFO Fetch complete — stats so far: {'fetched': 63, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 07:57:57 [Crypto Exposure Estimator] INFO Transforming...
+2026-04-01 07:57:57 [Crypto Exposure Estimator] INFO Transformed 731 rows
+2026-04-01 07:57:57 [Crypto Exposure Estimator] INFO Storing...
+2026-04-01 07:57:58 [Crypto Exposure Estimator] INFO Stored 731 rows
+2026-04-01 07:57:58 [Crypto Exposure Estimator] INFO === Done in 776.13s | {'fetched': 63, 'transformed': 731, 'stored': 731, 'errors': 0, 'skipped': 0, 'elapsed': 776.13} ===

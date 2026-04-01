@@ -1,0 +1,43 @@
+2026-03-31 06:45:01 [Material Weakness Scanner] INFO === Material Weakness Scanner (ID 9) starting ===
+2026-03-31 06:45:01 [Material Weakness Scanner] INFO Loaded 577 securities
+2026-03-31 06:45:02 [Material Weakness Scanner] INFO Fetching...
+2026-03-31 06:45:02 [Material Weakness Scanner] INFO Mapped 483 securities to CIKs
+2026-03-31 06:45:15 [Material Weakness Scanner] INFO   EFTS progress: 500/4035 hits scanned, 5 matched our universe
+2026-03-31 06:45:25 [Material Weakness Scanner] INFO   EFTS progress: 1000/4035 hits scanned, 10 matched our universe
+2026-03-31 06:45:37 [Material Weakness Scanner] INFO   EFTS progress: 1500/4035 hits scanned, 16 matched our universe
+2026-03-31 06:45:45 [Material Weakness Scanner] INFO   EFTS progress: 2000/4035 hits scanned, 24 matched our universe
+2026-03-31 06:45:50 [Material Weakness Scanner] INFO   EFTS progress: 2500/4035 hits scanned, 28 matched our universe
+2026-03-31 06:45:58 [Material Weakness Scanner] INFO   EFTS progress: 3000/4035 hits scanned, 36 matched our universe
+2026-03-31 06:46:04 [Material Weakness Scanner] INFO   EFTS progress: 3500/4035 hits scanned, 38 matched our universe
+2026-03-31 06:46:14 [Material Weakness Scanner] INFO   EFTS progress: 4000/4035 hits scanned, 55 matched our universe
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO EFTS scan complete: 4035 total hits, 60 matched our securities
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Fetch complete — stats so far: {'fetched': 4035, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Transforming...
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Transformed 59 rows
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Storing...
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Writing 59 material weakness records...
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Stored 59 rows
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO Material weaknesses: 4035 scanned, 59 stored, 0 errors
+2026-03-31 06:46:16 [Material Weakness Scanner] INFO === Done in 74.46s | {'fetched': 4035, 'transformed': 59, 'stored': 59, 'errors': 0, 'skipped': 0, 'elapsed': 74.46} ===
+2026-04-01 06:09:01 [Material Weakness Scanner] INFO === Material Weakness Scanner (ID 9) starting ===
+2026-04-01 06:09:01 [Material Weakness Scanner] INFO Loaded 686 securities
+2026-04-01 06:09:01 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:09:01 [Material Weakness Scanner] INFO Fetching...
+2026-04-01 06:09:01 [Material Weakness Scanner] INFO Mapped 592 securities to CIKs
+2026-04-01 06:09:04 [Material Weakness Scanner] INFO   EFTS progress: 500/4036 hits scanned, 5 matched our universe
+2026-04-01 06:09:07 [Material Weakness Scanner] INFO   EFTS progress: 1000/4036 hits scanned, 10 matched our universe
+2026-04-01 06:09:10 [Material Weakness Scanner] INFO   EFTS progress: 1500/4036 hits scanned, 18 matched our universe
+2026-04-01 06:09:17 [Material Weakness Scanner] INFO   EFTS progress: 2000/4036 hits scanned, 26 matched our universe
+2026-04-01 06:09:23 [Material Weakness Scanner] INFO   EFTS progress: 2500/4036 hits scanned, 30 matched our universe
+2026-04-01 06:09:25 [Material Weakness Scanner] INFO   EFTS progress: 3000/4036 hits scanned, 38 matched our universe
+2026-04-01 06:09:28 [Material Weakness Scanner] INFO   EFTS progress: 3500/4036 hits scanned, 40 matched our universe
+2026-04-01 06:09:31 [Material Weakness Scanner] INFO   EFTS progress: 4000/4036 hits scanned, 61 matched our universe
+2026-04-01 06:09:32 [Material Weakness Scanner] INFO EFTS scan complete: 4036 total hits, 68 matched our securities
+2026-04-01 06:09:32 [Material Weakness Scanner] INFO Fetch complete — stats so far: {'fetched': 4036, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 06:09:32 [Material Weakness Scanner] INFO Transforming...
+2026-04-01 06:09:51 [Material Weakness Scanner] INFO Transformed 67 rows
+2026-04-01 06:09:51 [Material Weakness Scanner] INFO Storing...
+2026-04-01 06:09:51 [Material Weakness Scanner] INFO Writing 67 material weakness records...
+2026-04-01 06:09:52 [Material Weakness Scanner] INFO Stored 67 rows
+2026-04-01 06:09:52 [Material Weakness Scanner] INFO Material weaknesses: 4036 scanned, 67 stored, 0 errors
+2026-04-01 06:09:52 [Material Weakness Scanner] INFO === Done in 50.74s | {'fetched': 4036, 'transformed': 67, 'stored': 67, 'errors': 0, 'skipped': 0, 'elapsed': 50.74} ===

@@ -1,0 +1,45 @@
+2026-03-31 06:55:01 [FTD Pattern Analyzer] INFO === FTD Pattern Analyzer (ID 12) starting ===
+2026-03-31 06:55:01 [FTD Pattern Analyzer] INFO Loaded 577 securities
+2026-03-31 06:55:01 [FTD Pattern Analyzer] INFO Fetching...
+2026-03-31 06:55:01 [FTD Pattern Analyzer] INFO Downloading FTD data for 12 periods...
+2026-03-31 06:55:02 [FTD Pattern Analyzer] INFO   202603a: 1363 matching FTD records
+2026-03-31 06:55:04 [FTD Pattern Analyzer] INFO   202603a: 1363 matching FTD records
+2026-03-31 06:55:04 [FTD Pattern Analyzer] INFO   202601b: 1399 matching FTD records
+2026-03-31 06:55:05 [FTD Pattern Analyzer] INFO   202601a: 895 matching FTD records
+2026-03-31 06:55:06 [FTD Pattern Analyzer] INFO   202512b: 1483 matching FTD records
+2026-03-31 06:55:06 [FTD Pattern Analyzer] INFO   202512a: 1074 matching FTD records
+2026-03-31 06:55:07 [FTD Pattern Analyzer] INFO   202512b: 1483 matching FTD records
+2026-03-31 06:55:08 [FTD Pattern Analyzer] INFO   202512a: 1074 matching FTD records
+2026-03-31 06:55:08 [FTD Pattern Analyzer] INFO   202511b: 1046 matching FTD records
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO   202511a: 1132 matching FTD records
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO Total FTD records matched to our universe: 12312
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO Fetch complete — stats so far: {'fetched': 10, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 2, 'elapsed': 0.0}
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO Transforming...
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO Transformed 8392 rows
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO Storing...
+2026-03-31 06:55:09 [FTD Pattern Analyzer] INFO Writing 8392 FTD records...
+2026-03-31 06:55:10 [FTD Pattern Analyzer] INFO Stored 8392 rows
+2026-03-31 06:55:10 [FTD Pattern Analyzer] INFO FTD data: 10 periods fetched, 8392 records stored, 0 errors
+2026-03-31 06:55:10 [FTD Pattern Analyzer] INFO === Done in 8.61s | {'fetched': 10, 'transformed': 8392, 'stored': 8392, 'errors': 0, 'skipped': 2, 'elapsed': 8.61} ===
+2026-04-01 07:09:02 [FTD Pattern Analyzer] INFO === FTD Pattern Analyzer (ID 12) starting ===
+2026-04-01 07:09:02 [FTD Pattern Analyzer] INFO Loaded 686 securities
+2026-04-01 07:09:02 [FTD Pattern Analyzer] INFO Fetching...
+2026-04-01 07:09:02 [FTD Pattern Analyzer] INFO Downloading FTD data for 12 periods...
+2026-04-01 07:09:04 [FTD Pattern Analyzer] INFO   202603a: 1543 matching FTD records
+2026-04-01 07:09:05 [FTD Pattern Analyzer] INFO   202601b: 1565 matching FTD records
+2026-04-01 07:09:05 [FTD Pattern Analyzer] INFO   202601a: 988 matching FTD records
+2026-04-01 07:09:06 [FTD Pattern Analyzer] INFO   202601b: 1565 matching FTD records
+2026-04-01 07:09:06 [FTD Pattern Analyzer] INFO   202601a: 988 matching FTD records
+2026-04-01 07:09:07 [FTD Pattern Analyzer] INFO   202512b: 1659 matching FTD records
+2026-04-01 07:09:08 [FTD Pattern Analyzer] INFO   202512a: 1194 matching FTD records
+2026-04-01 07:09:09 [FTD Pattern Analyzer] INFO   202511b: 1184 matching FTD records
+2026-04-01 07:09:09 [FTD Pattern Analyzer] INFO   202511a: 1251 matching FTD records
+2026-04-01 07:09:10 [FTD Pattern Analyzer] INFO Total FTD records matched to our universe: 11937
+2026-04-01 07:09:10 [FTD Pattern Analyzer] INFO Fetch complete — stats so far: {'fetched': 9, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 3, 'elapsed': 0.0}
+2026-04-01 07:09:10 [FTD Pattern Analyzer] INFO Transforming...
+2026-04-01 07:09:10 [FTD Pattern Analyzer] INFO Transformed 9384 rows
+2026-04-01 07:09:10 [FTD Pattern Analyzer] INFO Storing...
+2026-04-01 07:09:10 [FTD Pattern Analyzer] INFO Writing 9384 FTD records...
+2026-04-01 07:09:11 [FTD Pattern Analyzer] INFO Stored 9384 rows
+2026-04-01 07:09:11 [FTD Pattern Analyzer] INFO FTD data: 9 periods fetched, 9384 records stored, 0 errors
+2026-04-01 07:09:11 [FTD Pattern Analyzer] INFO === Done in 8.81s | {'fetched': 9, 'transformed': 9384, 'stored': 9384, 'errors': 0, 'skipped': 3, 'elapsed': 8.81} ===

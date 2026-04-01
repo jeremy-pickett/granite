@@ -1,0 +1,58 @@
+2026-03-31 06:51:01 [Going Concern Scanner] INFO === Going Concern Scanner (ID 9) starting ===
+2026-03-31 06:51:01 [Going Concern Scanner] INFO Loaded 577 securities
+2026-03-31 06:51:02 [Going Concern Scanner] INFO CIK cache loaded: 10447 tickers
+2026-03-31 06:51:02 [Going Concern Scanner] INFO Fetching...
+2026-03-31 06:51:02 [Going Concern Scanner] INFO Mapped 483 securities to CIKs
+2026-03-31 06:51:02 [Going Concern Scanner] INFO EFTS searching: "substantial doubt" "going concern"
+2026-03-31 06:51:07 [Going Concern Scanner] WARNING EFTS returned 500 at offset 200, stopping
+2026-03-31 06:51:07 [Going Concern Scanner] INFO   going_concern: 1 hits in our universe
+2026-03-31 06:51:07 [Going Concern Scanner] INFO EFTS searching: "going concern" "ability to continue"
+2026-03-31 06:51:14 [Going Concern Scanner] INFO   going_concern_alt progress: 500/3974 scanned, 1 matched
+2026-03-31 06:51:17 [Going Concern Scanner] INFO   going_concern_alt progress: 1000/3974 scanned, 1 matched
+2026-03-31 06:51:24 [Going Concern Scanner] INFO   going_concern_alt progress: 1500/3974 scanned, 1 matched
+2026-03-31 06:51:28 [Going Concern Scanner] INFO   going_concern_alt progress: 2000/3974 scanned, 1 matched
+2026-03-31 06:51:33 [Going Concern Scanner] INFO   going_concern_alt progress: 2500/3974 scanned, 1 matched
+2026-03-31 06:51:39 [Going Concern Scanner] INFO   going_concern_alt progress: 3000/3974 scanned, 5 matched
+2026-03-31 06:51:48 [Going Concern Scanner] INFO   going_concern_alt progress: 3500/3974 scanned, 8 matched
+2026-03-31 06:51:51 [Going Concern Scanner] INFO   going_concern_alt progress: 4000/3974 scanned, 11 matched
+2026-03-31 06:51:51 [Going Concern Scanner] INFO   going_concern_alt: 11 hits in our universe
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Fetch complete — stats so far: {'fetched': 4174, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Transforming...
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Transformed 11 rows
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Storing...
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Writing 11 going concern records...
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Stored 11 rows
+2026-03-31 06:51:51 [Going Concern Scanner] INFO Going concern: 4174 scanned, 11 stored, 0 errors
+2026-03-31 06:51:51 [Going Concern Scanner] INFO === Done in 49.53s | {'fetched': 4174, 'transformed': 11, 'stored': 11, 'errors': 0, 'skipped': 0, 'elapsed': 49.53} ===
+2026-04-01 06:18:02 [Going Concern Scanner] INFO === Going Concern Scanner (ID 9) starting ===
+2026-04-01 06:18:02 [Going Concern Scanner] INFO Loaded 686 securities
+2026-04-01 06:18:02 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:18:02 [Going Concern Scanner] INFO Fetching...
+2026-04-01 06:18:02 [Going Concern Scanner] INFO Mapped 592 securities to CIKs
+2026-04-01 06:18:02 [Going Concern Scanner] INFO EFTS searching: "substantial doubt" "going concern"
+2026-04-01 06:18:11 [Going Concern Scanner] INFO   going_concern progress: 500/3548 scanned, 1 matched
+2026-04-01 06:18:19 [Going Concern Scanner] INFO   going_concern progress: 1000/3548 scanned, 1 matched
+2026-04-01 06:18:23 [Going Concern Scanner] INFO   going_concern progress: 1500/3548 scanned, 1 matched
+2026-04-01 06:18:29 [Going Concern Scanner] INFO   going_concern progress: 2000/3548 scanned, 1 matched
+2026-04-01 06:18:32 [Going Concern Scanner] INFO   going_concern progress: 2500/3548 scanned, 4 matched
+2026-04-01 06:18:35 [Going Concern Scanner] INFO   going_concern progress: 3000/3548 scanned, 6 matched
+2026-04-01 06:18:37 [Going Concern Scanner] INFO   going_concern progress: 3500/3548 scanned, 10 matched
+2026-04-01 06:18:38 [Going Concern Scanner] INFO   going_concern: 10 hits in our universe
+2026-04-01 06:18:38 [Going Concern Scanner] INFO EFTS searching: "going concern" "ability to continue"
+2026-04-01 06:18:42 [Going Concern Scanner] INFO   going_concern_alt progress: 500/3977 scanned, 1 matched
+2026-04-01 06:18:50 [Going Concern Scanner] INFO   going_concern_alt progress: 1000/3977 scanned, 1 matched
+2026-04-01 06:18:58 [Going Concern Scanner] INFO   going_concern_alt progress: 1500/3977 scanned, 1 matched
+2026-04-01 06:19:02 [Going Concern Scanner] INFO   going_concern_alt progress: 2000/3977 scanned, 1 matched
+2026-04-01 06:19:13 [Going Concern Scanner] INFO   going_concern_alt progress: 2500/3977 scanned, 1 matched
+2026-04-01 06:19:17 [Going Concern Scanner] INFO   going_concern_alt progress: 3000/3977 scanned, 6 matched
+2026-04-01 06:19:28 [Going Concern Scanner] INFO   going_concern_alt progress: 3500/3977 scanned, 9 matched
+2026-04-01 06:19:41 [Going Concern Scanner] INFO   going_concern_alt progress: 4000/3974 scanned, 12 matched
+2026-04-01 06:19:41 [Going Concern Scanner] INFO   going_concern_alt: 12 hits in our universe
+2026-04-01 06:19:41 [Going Concern Scanner] INFO Fetch complete — stats so far: {'fetched': 7522, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 06:19:41 [Going Concern Scanner] INFO Transforming...
+2026-04-01 06:19:44 [Going Concern Scanner] INFO Transformed 12 rows
+2026-04-01 06:19:44 [Going Concern Scanner] INFO Storing...
+2026-04-01 06:19:44 [Going Concern Scanner] INFO Writing 12 going concern records...
+2026-04-01 06:19:44 [Going Concern Scanner] INFO Stored 12 rows
+2026-04-01 06:19:44 [Going Concern Scanner] INFO Going concern: 7522 scanned, 12 stored, 0 errors
+2026-04-01 06:19:44 [Going Concern Scanner] INFO === Done in 102.43s | {'fetched': 7522, 'transformed': 12, 'stored': 12, 'errors': 0, 'skipped': 0, 'elapsed': 102.43} ===

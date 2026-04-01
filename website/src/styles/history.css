@@ -1,0 +1,385 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   HISTORY — Fireside Library
+   Big lazy dog by the fire. Tobacco pipe. Scotch in crystal.
+   Warm ambers, deep browns, cream parchment, unhurried serif.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Palette ── */
+.history-world {
+  --hw-bg:         #1a1510;
+  --hw-bg-warm:    #1e1812;
+  --hw-surface:    rgba(255, 240, 210, 0.035);
+  --hw-border:     rgba(180, 140, 80, 0.12);
+  --hw-border-warm: rgba(200, 160, 90, 0.22);
+  --hw-amber:      #c0944a;
+  --hw-amber-dim:  #7a6030;
+  --hw-amber-glow: rgba(200, 150, 60, 0.08);
+  --hw-gold:       #d4a84a;
+  --hw-cream:      #d4c4a0;
+  --hw-parchment:  #c4b498;
+  --hw-muted:      #8a7a5e;
+  --hw-dim:        #5a4a34;
+  --hw-deep-dim:   #3a3020;
+  --hw-serif:      var(--font-serif, 'Cormorant Garamond', Georgia, 'Times New Roman', serif);
+  --hw-display:    var(--font-display, 'Bebas Neue', sans-serif);
+  --hw-mono:       var(--font-mono, 'DM Mono', 'Courier New', monospace);
+}
+
+/* ── Page shell ── */
+.history-world {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--hw-bg);
+  background-image:
+    radial-gradient(ellipse 90% 50% at 50% 110%, rgba(180, 120, 50, 0.10), transparent),
+    radial-gradient(ellipse 30% 30% at 80% 15%, rgba(140, 90, 40, 0.05), transparent);
+  color: var(--hw-cream);
+  font-family: var(--hw-serif);
+  font-weight: 400;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ── */
+.h-header {
+  border-bottom: 1px solid var(--hw-border);
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(26, 21, 16, 0.92);
+  backdrop-filter: blur(12px);
+}
+
+.h-nav {
+  max-width: 52rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 3.5rem;
+}
+
+.h-brand {
+  font-family: var(--hw-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--hw-dim);
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.h-brand:hover { color: var(--hw-amber); }
+
+.h-title {
+  font-family: var(--hw-display);
+  font-size: 1.1rem;
+  color: var(--hw-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.h-back {
+  font-family: var(--hw-mono);
+  font-size: 0.7rem;
+  color: var(--hw-dim);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+.h-back:hover { color: var(--hw-amber); }
+
+/* ── Main ── */
+.h-main {
+  flex: 1;
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  width: 100%;
+}
+
+/* ── Preamble ── */
+.h-preamble {
+  text-align: center;
+  margin-bottom: 4rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid var(--hw-border);
+}
+
+.h-preamble h1 {
+  font-family: var(--hw-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: var(--hw-gold);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.h-preamble p {
+  font-family: var(--hw-serif);
+  font-size: 1.1rem;
+  color: var(--hw-muted);
+  max-width: 36rem;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* ── Section labels ── */
+.h-section-label {
+  font-family: var(--hw-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hw-dim);
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--hw-border);
+}
+
+/* ── Entry form ── */
+.h-form {
+  margin-bottom: 4rem;
+  padding: 2rem;
+  background: var(--hw-surface);
+  border: 1px solid var(--hw-border);
+  border-radius: 6px;
+}
+
+.h-form-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.h-form-author {
+  font-family: var(--hw-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--hw-amber);
+}
+
+.h-form-date {
+  font-family: var(--hw-mono);
+  font-size: 0.7rem;
+  color: var(--hw-dim);
+  letter-spacing: 0.08em;
+}
+
+.h-textarea {
+  width: 100%;
+  background: rgba(255, 240, 210, 0.03);
+  border: 1px solid var(--hw-border);
+  border-radius: 4px;
+  color: var(--hw-cream);
+  font-family: var(--hw-serif);
+  font-size: 1rem;
+  line-height: 1.8;
+  padding: 1rem 1.25rem;
+  resize: vertical;
+  transition: border-color 0.3s, background 0.3s;
+  box-sizing: border-box;
+}
+.h-textarea::placeholder {
+  color: var(--hw-deep-dim);
+  font-style: italic;
+}
+.h-textarea:focus {
+  outline: none;
+  border-color: var(--hw-border-warm);
+  background: rgba(255, 240, 210, 0.05);
+}
+
+.h-form-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.h-submit {
+  font-family: var(--hw-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hw-amber);
+  background: var(--hw-amber-glow);
+  border: 1px solid rgba(180, 140, 80, 0.2);
+  border-radius: 4px;
+  padding: 0.6rem 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.h-submit:hover:not(:disabled) {
+  background: rgba(200, 150, 60, 0.15);
+  border-color: var(--hw-border-warm);
+  color: var(--hw-gold);
+}
+.h-submit:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Plan entries ── */
+.h-plan-section {
+  margin-bottom: 4rem;
+}
+
+.h-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.h-day-heading {
+  font-family: var(--hw-mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--hw-dim);
+  margin-bottom: 1.25rem;
+}
+
+.h-entry {
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(180, 140, 80, 0.08);
+  transition: border-color 0.4s;
+}
+.h-entry:hover {
+  border-left-color: rgba(200, 150, 60, 0.25);
+}
+
+.h-entry-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.h-entry-author {
+  font-family: var(--hw-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--hw-amber);
+}
+
+.h-entry-time {
+  font-family: var(--hw-mono);
+  font-size: 0.65rem;
+  color: var(--hw-deep-dim);
+  letter-spacing: 0.08em;
+}
+
+.h-entry-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--hw-parchment);
+}
+.h-entry-body p {
+  margin: 0 0 0.2em 0;
+}
+
+/* ── Story cards (founding + daily) ── */
+.h-founding,
+.h-daily {
+  margin-bottom: 4rem;
+}
+
+.h-story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.5rem;
+}
+
+.h-story-card {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: var(--hw-surface);
+  border: 1px solid var(--hw-border);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: border-color 0.4s, box-shadow 0.4s, transform 0.25s;
+}
+.h-story-card:hover {
+  border-color: var(--hw-border-warm);
+  box-shadow: 0 0 40px var(--hw-amber-glow);
+  transform: translateY(-2px);
+}
+
+.h-card-label {
+  font-family: var(--hw-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--hw-amber-dim);
+  margin-bottom: 0.75rem;
+}
+
+.h-story-card h3 {
+  font-family: var(--hw-display);
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--hw-gold);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+  line-height: 1.1;
+}
+
+.h-story-card p {
+  font-family: var(--hw-serif);
+  font-size: 0.95rem;
+  color: var(--hw-muted);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.h-card-count {
+  font-family: var(--hw-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hw-deep-dim);
+  margin-top: 1.25rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--hw-border);
+}
+
+/* ── Footer ── */
+.h-footer {
+  border-top: 1px solid rgba(180, 140, 80, 0.06);
+  padding: 2rem;
+  text-align: center;
+}
+.h-footer p {
+  font-family: var(--hw-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--hw-deep-dim);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .h-main {
+    padding: 2.5rem 1.25rem;
+  }
+  .h-form {
+    padding: 1.25rem;
+  }
+  .h-form-meta {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .h-entry {
+    padding-left: 1rem;
+  }
+  .h-preamble h1 {
+    font-size: 2rem;
+  }
+}

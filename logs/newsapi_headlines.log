@@ -1,0 +1,11 @@
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO === NewsAPI Headlines (ID 26) starting ===
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO Loaded 731 securities
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO Fetching...
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO Fetching NewsAPI headlines for 50 tickers (of 731 total)...
+2026-04-01 08:06:02 [NewsAPI Headlines] WARNING NewsAPI 401 — API key may be invalid
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO Transforming...
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO Transformed 0 rows
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO No new rows — nothing to store
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO NewsAPI headlines: 0 fetched, 0 stored, 0 skipped, 0 errors
+2026-04-01 08:06:02 [NewsAPI Headlines] INFO === Done in 0.30s | {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.3} ===

@@ -1,0 +1,47 @@
+2026-03-31 06:53:01 [SEC 13F Monitor] INFO === SEC 13F Monitor (ID 2) starting ===
+2026-03-31 06:53:02 [SEC 13F Monitor] INFO Loaded 577 securities
+2026-03-31 06:53:02 [SEC 13F Monitor] INFO CIK cache loaded: 10447 tickers
+2026-03-31 06:53:02 [SEC 13F Monitor] INFO Fetching...
+2026-03-31 06:53:02 [SEC 13F Monitor] INFO Scanning 577 equities for 13F filings...
+2026-03-31 06:53:18 [SEC 13F Monitor] INFO   Progress: 50/577 (10 found)
+2026-03-31 06:53:34 [SEC 13F Monitor] INFO   Progress: 100/577 (21 found)
+2026-03-31 06:53:50 [SEC 13F Monitor] INFO   Progress: 150/577 (27 found)
+2026-03-31 06:54:04 [SEC 13F Monitor] INFO   Progress: 200/577 (27 found)
+2026-03-31 06:54:19 [SEC 13F Monitor] INFO   Progress: 250/577 (34 found)
+2026-03-31 06:54:46 [SEC 13F Monitor] INFO   Progress: 350/577 (43 found)
+2026-03-31 06:55:01 [SEC 13F Monitor] INFO   Progress: 400/577 (49 found)
+2026-03-31 06:55:27 [SEC 13F Monitor] INFO   Progress: 500/577 (56 found)
+2026-03-31 06:55:38 [SEC 13F Monitor] INFO   Progress: 550/577 (60 found)
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO Fetch complete — stats so far: {'fetched': 63, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 514, 'elapsed': 0.0}
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO Transforming...
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO Transformed 1188 rows
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO Storing...
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO Writing 1188 13F holding records...
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO Stored 1188 rows
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO 13F holdings: 63 fetched, 1188 stored, 0 errors
+2026-03-31 06:55:45 [SEC 13F Monitor] INFO === Done in 163.44s | {'fetched': 63, 'transformed': 1188, 'stored': 1188, 'errors': 0, 'skipped': 514, 'elapsed': 163.44} ===
+2026-04-01 06:21:01 [SEC 13F Monitor] INFO === SEC 13F Monitor (ID 2) starting ===
+2026-04-01 06:21:02 [SEC 13F Monitor] INFO Loaded 686 securities
+2026-04-01 06:21:02 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:21:02 [SEC 13F Monitor] INFO Fetching...
+2026-04-01 06:21:02 [SEC 13F Monitor] INFO Scanning 686 equities for 13F filings...
+2026-04-01 06:21:18 [SEC 13F Monitor] INFO   Progress: 50/686 (9 found)
+2026-04-01 06:21:34 [SEC 13F Monitor] INFO   Progress: 100/686 (21 found)
+2026-04-01 06:21:50 [SEC 13F Monitor] INFO   Progress: 150/686 (28 found)
+2026-04-01 06:22:05 [SEC 13F Monitor] INFO   Progress: 200/686 (32 found)
+2026-04-01 06:22:19 [SEC 13F Monitor] INFO   Progress: 250/686 (35 found)
+2026-04-01 06:22:34 [SEC 13F Monitor] INFO   Progress: 300/686 (41 found)
+2026-04-01 06:22:46 [SEC 13F Monitor] INFO   Progress: 350/686 (46 found)
+2026-04-01 06:23:01 [SEC 13F Monitor] INFO   Progress: 400/686 (50 found)
+2026-04-01 06:23:16 [SEC 13F Monitor] INFO   Progress: 450/686 (54 found)
+2026-04-01 06:23:29 [SEC 13F Monitor] INFO   Progress: 500/686 (63 found)
+2026-04-01 06:23:54 [SEC 13F Monitor] INFO   Progress: 600/686 (68 found)
+2026-04-01 06:24:05 [SEC 13F Monitor] INFO   Progress: 650/686 (73 found)
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO Fetch complete — stats so far: {'fetched': 77, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 609, 'elapsed': 0.0}
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO Transforming...
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO Transformed 1566 rows
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO Storing...
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO Writing 1566 13F holding records...
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO Stored 1566 rows
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO 13F holdings: 77 fetched, 1566 stored, 0 errors
+2026-04-01 06:24:16 [SEC 13F Monitor] INFO === Done in 194.30s | {'fetched': 77, 'transformed': 1566, 'stored': 1566, 'errors': 0, 'skipped': 609, 'elapsed': 194.3} ===

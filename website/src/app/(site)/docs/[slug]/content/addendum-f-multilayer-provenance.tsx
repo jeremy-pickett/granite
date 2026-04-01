@@ -1,0 +1,65 @@
+export default function AddendumFMultilayerProvenanceContent() {
+  return (
+    <>
+<header className="page-hero">
+  <div className="container">
+    <p className="hero-series">Addendum F</p>
+    <h1>Multilayer Provenance</h1>
+    <p className="hero-subtitle">Granite Under Sandstone &mdash; Addendum Series</p>
+  </div>
+</header>
+
+<section className="section">
+  <div className="container content-narrow">
+    <h2>F.1 The Scenario</h2>
+    <p>An image passes through multiple hands. Each hand may embed provenance with its own seed. The image accumulates layers. The question: does multi-layer embedding break detection or attribution?</p>
+    <p>It does neither. It enriches both. But the mechanism requires a precise walkthrough.</p>
+    </div></section>
+<section className="section section-alt"><div className="container content-narrow">
+    <h2>F.2 Alice and Bob</h2>
+    <p>J is a clean 1024×1024 JPEG. No provenance.</p>
+    <p><strong>Alice</strong> downloads J. Her embedder derives 200 positions from her seed and the image’s content hash. She embeds twin markers at those positions. She registers her fingerprint (the hash of her position set) with a matching service under a pseudonym. She releases the image.</p>
+    <p><strong>Bob</strong> downloads Alice’s modified image. He does not know Alice embedded anything. His embedder derives 200 positions from his seed and the image’s content hash — which is different from Alice’s input because Alice modified pixels. Bob gets a different position set. Approximately 10–15 positions overlap with Alice’s by chance. Bob embeds at his positions, overwriting Alice’s values at the overlapping positions. He registers his fingerprint. He releases the image.</p>
+    <p>The image now carries two layers. Approximately 385–390 unique disrupted positions. Two fingerprints. Two strata.</p>
+    </div></section>
+<section className="section"><div className="container content-narrow">
+    <h2>F.3 What the Detector Sees</h2>
+    <p>The detector has no seeds. No baskets. No knowledge of Alice or Bob. It does one thing: scan every eligible position and measure local variance anomaly. Disrupted or smooth. It produces a binary map with approximately 390 disrupted positions out of 4,000 eligible. It hashes the combined map and submits the whole thing to the matching service.</p>
+    <p className="lead"><strong>The detector does not separate the layers. It does not try. It is a thermometer. It measures heat. It does not know whose heat it is measuring.</strong></p>
+    </div></section>
+<section className="section section-alt"><div className="container content-narrow">
+    <h2>F.4 What the Matching Service Sees</h2>
+    <p>The service receives the combined disruption map. It already holds Alice’s registered fingerprint (her 200 positions) and Bob’s registered fingerprint (his 200 positions). It performs fuzzy subset containment: is Alice’s pattern contained within the combined map? Is Bob’s?</p>
+    <div className="table-wrap"><table>
+<thead><tr><th>Pseudonym</th><th>Registered</th><th>Match Quality</th><th>Interpretation</th></tr></thead>
+<tbody>
+<tr><td>Alice_001</td><td>March 15</td><td>185 / 200</td><td>Strong match. ~15 positions overwritten by later embedding.</td></tr>
+<tr><td>Bob_007</td><td>March 22</td><td>200 / 200</td><td>Perfect match. Top layer. Nothing overwrote this embedding.</td></tr>
+</tbody></table></div>
+    <p className="lead"><strong>Table F1. </strong><em>Matching service results for the Alice/Bob scenario. Match quality differential reveals stratigraphic order independently of timestamps.</em></p>
+    <p>The service returns both matches, both timestamps, and both match quality scores. It does not judge which is the “owner.” It reports what it found.</p>
+    </div></section>
+<section className="section"><div className="container content-narrow">
+    <h2>F.5 Stratigraphy</h2>
+    <p>The match quality differential reveals the layering order. Alice has 185/200 because Bob’s embedding overwrote a few of her positions. Bob has 200/200 because he was the last to embed and nothing overwrote him. The top layer is pristine. The bottom layer has small gaps where the top layer landed on the same positions.</p>
+    <p>If Bob had embedded first and Alice second, the numbers would be reversed: Bob at 185/200, Alice at 200/200. The overwriting direction tells you the order independently of the timestamps. Two independent clocks — the registration timestamp and the match quality degradation — both point in the same direction.</p>
+    <p>This extends to N layers. Each successive embedding slightly degrades all layers beneath it. The most degraded fingerprint is the oldest. The most pristine is the most recent. The image carries its own handling history in its perturbation strata.</p>
+    </div></section>
+<section className="section section-alt"><div className="container content-narrow">
+    <h2>F.6 It’s Always a Probability Cloud</h2>
+    <p>Every layer of this scheme is probabilistic:</p>
+    <p>The embedding is probabilistic — basket selection, position sampling, survival statistics.</p>
+    <p>The detection is probabilistic — variance anomaly is a distribution test, not a threshold.</p>
+    <p>The fingerprint is probabilistic — Jaccard 0.47 across transforms, not 1.0.</p>
+    <p>The matching is probabilistic — 185 out of 200, not 200 out of 200.</p>
+    <p>The attribution is probabilistic — “correlates with,” not “belongs to.”</p>
+    <p><strong>This is the strength, not the weakness.</strong> An exact system is brittle. Change one bit and the match fails. A probabilistic system degrades gracefully. Change 15 positions and the match quality drops from 200/200 to 185/200. The match still holds. The confidence is reported. The consumer decides what confidence threshold matters.</p>
+    <p>A court does not need 200/200. A court needs “more likely than not.” 185 out of 200 expected positions showing disruption, against a background expectation of 10 out of 200, is overwhelming. The probability cloud has a sharp peak and the peak is at the right answer.</p>
+    <p>A system that says “this is definitely Alice’s image” is lying. A system that says “185 out of 200 expected positions show disruption consistent with Alice’s registered fingerprint, with a background expectation of 10 out of 200” is telling the truth. The truth is a probability cloud. The cloud has a shape. The shape is the evidence.</p>
+    <p className="lead"><em>The detector is geology — it measures the rock. The matching service is stratigraphy — it identifies the layers. Two different disciplines. Two different participants. Both necessary. Neither sufficient alone.</em></p>
+    <p>Jeremy Pickett — March 2026</p>
+  </div>
+</section>
+    </>
+  );
+}

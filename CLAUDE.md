@@ -147,23 +147,39 @@ All collectors live in `collectors/` and inherit from `BaseCollector` in `base.p
 
 ### Collector Status (as of 2026-03-31)
 
-**18 live collectors**, 22 active signals, 12 daily cron jobs (06:00–07:14 UTC staggered).
+**32 registered collectors**, 33 active signals (4 Tier S, 10 Tier A), 14 API keys active.
 
-Live — sec_filing: Auditor Change Monitor, C-Suite Departure Tracker, Concentration Disclosure, Material Weakness Scanner (+ Late Filings, Financial Restatements, Going Concern feeding composite signal), SEC 13F Monitor, SEC Form 4 Parser.
+Live — sec_filing (10): Auditor Change Monitor (with disagreement extraction, tier tracking, silence-before-storm detection), C-Suite Departure Tracker, Concentration Disclosure, Material Weakness Scanner (negation-aware, with Late Filings NT cascade detection, Financial Restatements serial detection, Going Concern section-aware parsing feeding composite signal), SEC 13F Monitor, SEC Form 4 Parser (with dollar values, C-suite title, purchase signals, CFO exit strategy, sell-despite-good-news detection), PE Activity Monitor (going-private, tender offer, merger, debt offering, asset sale detection via EDGAR EFTS).
 
-Live — market_data: Market Data (Daily), Earnings Calendar, Analyst Revision Tracker, FTD Pattern Analyzer, Options Flow Scanner.
+Live — market_data (5): Market Data (Daily via yfinance + Tiingo backup), Analyst Revision Tracker, FTD Pattern Analyzer, Options Flow Scanner (with put skew persistence detection), Debt Loading Monitor (quarterly balance sheet via Finnhub, debt-to-equity trending, interest-to-revenue ratios).
 
-Live — blockchain: Crypto Whale Tracker (BTC mempool whale txs), Exchange Flow Monitor (daily exchange wallet balance snapshots), On-Chain Activity (BTC/ETH chain metrics via blockchain.com + blockchair + etherscan v2). Required adding BTC-USD and ETH-USD to the securities table.
+Live — blockchain (7): Crypto Whale Tracker, Exchange Flow Monitor (wired into blockchain_signals with day-over-day net flow), On-Chain Activity, LunarCrush Social Sentiment, Santiment On-Chain Analytics, Crypto Project Governance (CoinGecko + Santiment — supply ratios, dev activity, holder concentration), Crypto Death Spiral Detector (5-phase classification: healthy→warning→deteriorating→critical→terminal).
 
-Live — other: Congressional Trade Feed, Social Velocity Scanner (news sentiment via Finnhub), Crypto Exposure Estimator, Prediction Market Feed (Polymarket + Kalshi).
+Live — alternative/social (5): Congressional Trade Feed (with bipartisan consensus), Social Velocity Scanner (Finnhub + VADER), Crypto Exposure Estimator (propagates to equities), CryptoPanic News Feed, NewsAPI Headlines.
 
-**Dark (need paid APIs):** Short Interest Tracker (5), Stock Loan Rate Monitor (6), Dark Pool Volume (7), ADR Spread Monitor (13), Convertible Spread Tracker (14). **Derivable from existing data:** Sector Correlation Engine (15).
+Live — prediction markets (2): Prediction Market Feed (Polymarket + Kalshi, directional inference), Metaculus Prediction Markets.
+
+Live — macro (1): Nasdaq Data Link (Fed Funds, yield curve, VIX, HY spread, unemployment, S&P PE).
+
+Live — compound/analytics (2): Compound Signal Engine (governance_crisis S/1.70, insider_capitulation S/1.65, pe_distress_pattern S/1.65, short_squeeze_setup A/1.50, CFO+Auditor alarm, governance domino), Backtesting Framework (30d/90d/180d forward returns vs SPY).
+
+**Tier S signals (highest conviction):** governance_crisis (1.70), insider_capitulation (1.65), pe_distress_pattern (1.65), crypto_rug_pull_risk (1.60).
+
+**Dark (need paid APIs):** Stock Loan Rate Monitor (6), Dark Pool Volume (7), ADR Spread Monitor (13), Convertible Spread Tracker (14).
 
 ### Key Tables
 
 - `signals` — normalized signal rows (security_id, signal_type, contribution, confidence, direction, magnitude)
 - `iald_scores` — daily scores per security (score, verdict, active_signals)
 - `score_aggregates` — rolling 30d stats (avg, min, max, volatility, trend)
-- `raw_market_data` — OHLCV from market_data collector
-- `collectors` — registry of all 23 collectors with run status
+- `signal_backtests` — per-signal hit rates and excess returns at 30/90/180d horizons
+- `raw_market_data` — OHLCV from market_data + tiingo collectors
+- `raw_debt_metrics` — quarterly balance sheet metrics (debt/equity, interest/revenue, FCF)
+- `raw_pe_activity` — going-private, tender offer, merger, debt offering, asset sale events
+- `raw_economic_indicators` — macro indicators from Nasdaq Data Link
+- `raw_crypto_social` — social sentiment from LunarCrush
+- `raw_santiment_metrics` — on-chain analytics from Santiment
+- `raw_crypto_governance` — token distribution, supply ratios, dev activity, market health
+- `raw_crypto_death_spiral` — phase classification with score and triggered indicators
+- `collectors` — registry of all 32 collectors with run status
 - `collector_coverage` — per-security data availability per collector

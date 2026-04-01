@@ -1,0 +1,30 @@
+2026-04-01 08:15:02 [Crypto Project Governance] INFO === Crypto Project Governance (ID 33) starting ===
+2026-04-01 08:15:02 [Crypto Project Governance] INFO Loaded 45 securities
+2026-04-01 08:15:02 [Crypto Project Governance] INFO Fetching...
+2026-04-01 08:15:02 [Crypto Project Governance] INFO Fetching governance data for BTC-USD (bitcoin)...
+2026-04-01 08:15:02 [Crypto Project Governance] INFO   bitcoin: circ_ratio=1.0000  vol/mcap=0.040404  commits_4w=108  dev_score=108.0  liq=0.00
+2026-04-01 08:15:05 [Crypto Project Governance] INFO Fetching governance data for ETH-USD (ethereum)...
+2026-04-01 08:15:05 [Crypto Project Governance] INFO   ethereum: circ_ratio=1.0000  vol/mcap=0.084740  commits_4w=41  dev_score=41.0  liq=0.00
+2026-04-01 08:15:07 [Crypto Project Governance] INFO Fetch complete — stats so far: {'fetched': 2, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 43, 'elapsed': 0.0}
+2026-04-01 08:15:07 [Crypto Project Governance] INFO Transforming...
+2026-04-01 08:15:07 [Crypto Project Governance] INFO Transformed 2 rows
+2026-04-01 08:15:07 [Crypto Project Governance] INFO Storing...
+2026-04-01 08:15:07 [Crypto Project Governance] INFO Writing 2 governance records...
+2026-04-01 08:15:07 [Crypto Project Governance] ERROR Collector failed: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(33) is not present in table "collectors".
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/base.py", line 140, in run
+    self.store(rows)
+  File "/home/ubuntu/granite/collectors/crypto_governance.py", line 293, in store
+    super().store(rows)
+  File "/home/ubuntu/granite/collectors/base.py", line 98, in store
+    db.upsert_coverage_batch(
+  File "/home/ubuntu/granite/collectors/db.py", line 109, in upsert_coverage_batch
+    psycopg2.extras.execute_values(
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+psycopg2.errors.ForeignKeyViolation: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(33) is not present in table "collectors".
+
+2026-04-01 08:15:07 [Crypto Project Governance] INFO Governance: 2 fetched, 0 stored, 1 errors
+2026-04-01 08:15:07 [Crypto Project Governance] INFO === Done in 5.59s | {'fetched': 2, 'transformed': 2, 'stored': 0, 'errors': 1, 'skipped': 43, 'elapsed': 5.59} ===

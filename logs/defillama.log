@@ -1,0 +1,24 @@
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO === DefiLlama TVL Monitor (ID 40) starting ===
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO Loaded 731 securities
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO Fetching...
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO Fetching current chain TVL from DefiLlama...
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Base: $4.11B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   BSC: $5.42B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Avalanche: $0.74B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Arbitrum: $1.95B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Ethereum: $54.77B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Polygon: $1.26B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Solana: $6.36B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO   Optimism: $0.00B TVL
+2026-04-01 08:27:01 [DefiLlama TVL Monitor] INFO Fetching 7d historical TVL for Ethereum...
+2026-04-01 08:27:02 [DefiLlama TVL Monitor] INFO   Ethereum: 8 historical data points
+2026-04-01 08:27:02 [DefiLlama TVL Monitor] INFO Fetching 7d historical TVL for Solana...
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO   Solana: 8 historical data points
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO Fetch complete — stats so far: {'fetched': 8, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO Transforming...
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO Transformed 22 rows
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO Storing...
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO Writing 22 TVL records...
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO Stored 22 rows
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO DefiLlama TVL: 8 fetched, 22 stored, 0 errors
+2026-04-01 08:27:09 [DefiLlama TVL Monitor] INFO === Done in 8.07s | {'fetched': 8, 'transformed': 22, 'stored': 22, 'errors': 0, 'skipped': 0, 'elapsed': 8.07} ===

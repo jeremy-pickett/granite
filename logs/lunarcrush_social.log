@@ -1,0 +1,19 @@
+2026-04-01 07:39:01 [LunarCrush Social Sentiment] INFO === LunarCrush Social Sentiment (ID 29) starting ===
+2026-04-01 07:39:01 [LunarCrush Social Sentiment] INFO Loaded 45 securities
+2026-04-01 07:39:01 [LunarCrush Social Sentiment] INFO Fetching...
+2026-04-01 07:39:01 [LunarCrush Social Sentiment] INFO Fetching LunarCrush data for BTC-USD (bitcoin)...
+2026-04-01 07:39:02 [LunarCrush Social Sentiment] WARNING Request error (attempt 1): 402 Client Error: Payment Required for url: https://lunarcrush.com/api4/public/coins/bitcoin/v1 — retrying in 2.0s
+2026-04-01 07:39:05 [LunarCrush Social Sentiment] WARNING Request error (attempt 2): 402 Client Error: Payment Required for url: https://lunarcrush.com/api4/public/coins/bitcoin/v1 — retrying in 4.0s
+2026-04-01 07:39:09 [LunarCrush Social Sentiment] ERROR Request failed after 3 attempts: 402 Client Error: Payment Required for url: https://lunarcrush.com/api4/public/coins/bitcoin/v1
+2026-04-01 07:39:09 [LunarCrush Social Sentiment] WARNING Error fetching bitcoin: 402 Client Error: Payment Required for url: https://lunarcrush.com/api4/public/coins/bitcoin/v1
+2026-04-01 07:39:09 [LunarCrush Social Sentiment] INFO Fetching LunarCrush data for ETH-USD (ethereum)...
+2026-04-01 07:39:10 [LunarCrush Social Sentiment] WARNING Request error (attempt 1): 402 Client Error: Payment Required for url: https://lunarcrush.com/api4/public/coins/ethereum/v1 — retrying in 2.0s
+2026-04-01 07:39:13 [LunarCrush Social Sentiment] WARNING Rate limited, waiting 4.0s...
+2026-04-01 07:39:17 [LunarCrush Social Sentiment] WARNING Rate limited, waiting 8.0s...
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] WARNING No data returned for ethereum
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 1, 'skipped': 44, 'elapsed': 0.0}
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] INFO Transforming...
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] INFO Transformed 0 rows
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] INFO No new rows — nothing to store
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] INFO LunarCrush: 0 fetched, 0 stored, 1 errors
+2026-04-01 07:39:25 [LunarCrush Social Sentiment] INFO === Done in 24.20s | {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 1, 'skipped': 44, 'elapsed': 24.2} ===

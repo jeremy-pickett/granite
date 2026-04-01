@@ -1,0 +1,28 @@
+2026-04-01 00:00:02 [Market Snapshot] INFO === Market Snapshot (ID 35) starting ===
+2026-04-01 00:00:02 [Market Snapshot] INFO Loaded 582 securities
+2026-04-01 00:00:02 [Market Snapshot] INFO Fetching...
+2026-04-01 00:00:02 [Market Snapshot] INFO Snapshot type: crypto_12h (UTC hour: 0)
+2026-04-01 00:00:02 [Market Snapshot] INFO Fetching snapshots for 5 securities...
+2026-04-01 00:00:03 [yfinance] ERROR $ADA: possibly delisted; no price data found  (period=1d)
+2026-04-01 00:00:03 [yfinance] ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: AAVE"}}}
+2026-04-01 00:00:03 [yfinance] ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 1INCH"}}}
+2026-04-01 00:00:04 [yfinance] ERROR $1INCH: possibly delisted; no price data found  (period=1d) (Yahoo error = "No data found, symbol may be delisted")
+2026-04-01 00:00:04 [yfinance] ERROR $AAVE: possibly delisted; no price data found  (period=1d) (Yahoo error = "No data found, symbol may be delisted")
+2026-04-01 00:00:04 [yfinance] ERROR 
+3 Failed downloads:
+2026-04-01 00:00:04 [yfinance] ERROR ['ADA']: possibly delisted; no price data found  (period=1d)
+2026-04-01 00:00:04 [yfinance] ERROR ['1INCH', 'AAVE']: possibly delisted; no price data found  (period=1d) (Yahoo error = "No data found, symbol may be delisted")
+2026-04-01 00:00:04 [Market Snapshot] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 00:00:04 [Market Snapshot] INFO Transforming...
+2026-04-01 00:00:04 [Market Snapshot] INFO Transformed 3 rows
+2026-04-01 00:00:04 [Market Snapshot] INFO Storing...
+2026-04-01 00:00:04 [Market Snapshot] INFO Writing 5 snapshots, 0 institutional moves, 0 press releases...
+2026-04-01 00:00:04 [Market Snapshot] ERROR Collector failed: upsert_coverage_batch() takes 2 positional arguments but 3 were given
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/base.py", line 140, in run
+    self.store(rows)
+  File "/home/ubuntu/granite/collectors/market_snapshot.py", line 444, in store
+    db.upsert_coverage_batch(cur, self.COLLECTOR_ID,
+TypeError: upsert_coverage_batch() takes 2 positional arguments but 3 were given
+2026-04-01 00:00:04 [Market Snapshot] INFO Market snapshots: 0 fetched, 5 stored, 1 errors
+2026-04-01 00:00:04 [Market Snapshot] INFO === Done in 1.43s | {'fetched': 0, 'transformed': 3, 'stored': 5, 'errors': 1, 'skipped': 0, 'elapsed': 1.43} ===

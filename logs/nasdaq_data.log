@@ -1,0 +1,10 @@
+2026-04-01 07:28:01 [Nasdaq Data Link] INFO === Nasdaq Data Link (ID 28) starting ===
+2026-04-01 07:28:02 [Nasdaq Data Link] INFO Loaded 731 securities
+2026-04-01 07:28:02 [Nasdaq Data Link] INFO Fetching...
+2026-04-01 07:28:02 [Nasdaq Data Link] INFO Fetching 6 indicator datasets from Nasdaq Data Link...
+2026-04-01 07:28:43 [Nasdaq Data Link] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 6, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 07:28:43 [Nasdaq Data Link] INFO Transforming...
+2026-04-01 07:28:43 [Nasdaq Data Link] INFO Transformed 0 rows
+2026-04-01 07:28:43 [Nasdaq Data Link] INFO No new rows — nothing to store
+2026-04-01 07:28:43 [Nasdaq Data Link] INFO Nasdaq Data Link: 0 fetched, 0 stored, 0 skipped, 6 errors
+2026-04-01 07:28:43 [Nasdaq Data Link] INFO === Done in 41.90s | {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 6, 'skipped': 0, 'elapsed': 41.9} ===

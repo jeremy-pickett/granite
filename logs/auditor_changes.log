@@ -1,0 +1,173 @@
+2026-03-31 06:00:01 [Auditor Change Monitor] INFO === Auditor Change Monitor (ID 10) starting ===
+2026-03-31 06:00:01 [Auditor Change Monitor] INFO Loaded 577 securities
+2026-03-31 06:00:01 [Auditor Change Monitor] INFO Fetching...
+2026-03-31 06:00:01 [Auditor Change Monitor] INFO Scanning 577 equities for auditor changes...
+2026-03-31 06:00:19 [Auditor Change Monitor] INFO   AXON: found 1 auditor-change filings
+2026-03-31 06:00:19 [Auditor Change Monitor] INFO   Progress: 50/577
+2026-03-31 06:00:22 [Auditor Change Monitor] INFO   BE: found 1 auditor-change filings
+2026-03-31 06:00:24 [Auditor Change Monitor] INFO   BKR: found 1 auditor-change filings
+2026-03-31 06:00:25 [Auditor Change Monitor] INFO   BLNK: found 4 auditor-change filings
+2026-03-31 06:00:26 [Auditor Change Monitor] INFO   BNO: found 1 auditor-change filings
+2026-03-31 06:00:30 [Auditor Change Monitor] INFO   CANE: found 3 auditor-change filings
+2026-03-31 06:00:31 [Auditor Change Monitor] INFO   CBOE: found 2 auditor-change filings
+2026-03-31 06:00:32 [Auditor Change Monitor] INFO   CCL: found 1 auditor-change filings
+2026-03-31 06:00:33 [Auditor Change Monitor] INFO   CDNS: found 1 auditor-change filings
+2026-03-31 06:00:34 [Auditor Change Monitor] INFO   CHPT: found 1 auditor-change filings
+2026-03-31 06:00:36 [Auditor Change Monitor] INFO   Progress: 100/577
+2026-03-31 06:00:39 [Auditor Change Monitor] INFO   CPER: found 1 auditor-change filings
+2026-03-31 06:00:40 [Auditor Change Monitor] INFO   CRH: found 1 auditor-change filings
+2026-03-31 06:00:46 [Auditor Change Monitor] INFO   DBA: found 1 auditor-change filings
+2026-03-31 06:00:47 [Auditor Change Monitor] INFO   DBC: found 1 auditor-change filings
+2026-03-31 06:00:47 [Auditor Change Monitor] INFO   DD: found 1 auditor-change filings
+2026-03-31 06:00:52 [Auditor Change Monitor] INFO   Progress: 150/577
+2026-03-31 06:00:52 [Auditor Change Monitor] INFO   DXCM: found 1 auditor-change filings
+2026-03-31 06:00:55 [Auditor Change Monitor] INFO   EG: found 1 auditor-change filings
+2026-03-31 06:00:55 [Auditor Change Monitor] INFO   EL: found 2 auditor-change filings
+2026-03-31 06:01:00 [Auditor Change Monitor] INFO   EVGO: found 1 auditor-change filings
+2026-03-31 06:01:08 [Auditor Change Monitor] INFO   Progress: 200/577
+2026-03-31 06:01:09 [Auditor Change Monitor] INFO   GE: found 2 auditor-change filings
+2026-03-31 06:01:12 [Auditor Change Monitor] INFO   GM: found 2 auditor-change filings
+2026-03-31 06:01:12 [Auditor Change Monitor] INFO   GOLD: found 4 auditor-change filings
+2026-03-31 06:01:23 [Auditor Change Monitor] INFO   Progress: 250/577
+2026-03-31 06:01:25 [Auditor Change Monitor] INFO   IONQ: found 1 auditor-change filings
+2026-03-31 06:01:35 [Auditor Change Monitor] INFO   LCID: found 2 auditor-change filings
+2026-03-31 06:01:36 [Auditor Change Monitor] INFO   LH: found 2 auditor-change filings
+2026-03-31 06:01:39 [Auditor Change Monitor] INFO   LRCX: found 1 auditor-change filings
+2026-03-31 06:01:40 [Auditor Change Monitor] INFO   LVS: found 2 auditor-change filings
+2026-03-31 06:01:45 [Auditor Change Monitor] INFO   MELI: found 4 auditor-change filings
+2026-03-31 06:01:47 [Auditor Change Monitor] INFO   MLM: found 1 auditor-change filings
+2026-03-31 06:01:48 [Auditor Change Monitor] INFO   MNST: found 1 auditor-change filings
+2026-03-31 06:01:49 [Auditor Change Monitor] INFO   MP: found 1 auditor-change filings
+2026-03-31 06:01:51 [Auditor Change Monitor] INFO   MSCI: found 1 auditor-change filings
+2026-03-31 06:01:52 [Auditor Change Monitor] INFO   MSI: found 1 auditor-change filings
+2026-03-31 06:01:54 [Auditor Change Monitor] INFO   MTZ: found 1 auditor-change filings
+2026-03-31 06:01:56 [Auditor Change Monitor] INFO   Progress: 350/577
+2026-03-31 06:02:02 [Auditor Change Monitor] INFO   NXPI: found 2 auditor-change filings
+2026-03-31 06:02:05 [Auditor Change Monitor] INFO   PALL: found 1 auditor-change filings
+2026-03-31 06:02:05 [Auditor Change Monitor] INFO   PATH: found 1 auditor-change filings
+2026-03-31 06:02:06 [Auditor Change Monitor] INFO   PAYX: found 1 auditor-change filings
+2026-03-31 06:02:10 [Auditor Change Monitor] INFO   PLUG: found 1 auditor-change filings
+2026-03-31 06:02:12 [Auditor Change Monitor] INFO   PPLT: found 1 auditor-change filings
+2026-03-31 06:02:12 [Auditor Change Monitor] INFO   PRIM: found 1 auditor-change filings
+2026-03-31 06:02:14 [Auditor Change Monitor] INFO   Progress: 400/577
+2026-03-31 06:02:16 [Auditor Change Monitor] INFO   QQQ: found 2 auditor-change filings
+2026-03-31 06:02:16 [Auditor Change Monitor] INFO   QRVO: found 1 auditor-change filings
+2026-03-31 06:02:26 [Auditor Change Monitor] INFO   SMCI: found 3 auditor-change filings
+2026-03-31 06:02:28 [Auditor Change Monitor] INFO   SOFI: found 1 auditor-change filings
+2026-03-31 06:02:28 [Auditor Change Monitor] INFO   SOUN: found 4 auditor-change filings
+2026-03-31 06:02:29 [Auditor Change Monitor] INFO   SOYB: found 3 auditor-change filings
+2026-03-31 06:02:38 [Auditor Change Monitor] INFO   TDY: found 2 auditor-change filings
+2026-03-31 06:02:41 [Auditor Change Monitor] INFO   TKO: found 1 auditor-change filings
+2026-03-31 06:02:42 [Auditor Change Monitor] INFO   TMUS: found 2 auditor-change filings
+2026-03-31 06:02:44 [Auditor Change Monitor] INFO   TRMB: found 1 auditor-change filings
+2026-03-31 06:02:46 [Auditor Change Monitor] INFO   Progress: 500/577
+2026-03-31 06:02:49 [Auditor Change Monitor] INFO   UNG: found 1 auditor-change filings
+2026-03-31 06:02:52 [Auditor Change Monitor] INFO   USO: found 2 auditor-change filings
+2026-03-31 06:02:58 [Auditor Change Monitor] INFO   VRT: found 1 auditor-change filings
+2026-03-31 06:02:59 [Auditor Change Monitor] INFO   VTRS: found 1 auditor-change filings
+2026-03-31 06:03:03 [Auditor Change Monitor] INFO   Progress: 550/577
+2026-03-31 06:03:03 [Auditor Change Monitor] INFO   WEAT: found 3 auditor-change filings
+2026-03-31 06:03:05 [Auditor Change Monitor] INFO   WOLF: found 1 auditor-change filings
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Fetch complete — stats so far: {'fetched': 57, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 520, 'elapsed': 0.0}
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Transforming...
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Transformed 89 rows
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Storing...
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Writing 89 auditor change records...
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Stored 89 rows
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO Auditor changes: 57 fetched, 89 stored, 520 skipped, 0 errors
+2026-03-31 06:03:12 [Auditor Change Monitor] INFO === Done in 190.57s | {'fetched': 57, 'transformed': 89, 'stored': 89, 'errors': 0, 'skipped': 520, 'elapsed': 190.57} ===
+2026-04-01 06:00:01 [Auditor Change Monitor] INFO === Auditor Change Monitor (ID 10) starting ===
+2026-04-01 06:00:01 [Auditor Change Monitor] INFO Loaded 686 securities
+2026-04-01 06:00:01 [Auditor Change Monitor] INFO Fetching...
+2026-04-01 06:00:01 [Auditor Change Monitor] INFO Scanning 686 equities for auditor changes...
+2026-04-01 06:00:01 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:00:15 [Auditor Change Monitor] INFO   APD: found 1 auditor-change filings
+2026-04-01 06:00:17 [Auditor Change Monitor] INFO   Progress: 50/686
+2026-04-01 06:00:19 [Auditor Change Monitor] INFO   AXON: found 1 auditor-change filings
+2026-04-01 06:00:23 [Auditor Change Monitor] INFO   BE: found 1 auditor-change filings
+2026-04-01 06:00:24 [Auditor Change Monitor] INFO   BF-B: found 2 auditor-change filings
+2026-04-01 06:00:26 [Auditor Change Monitor] INFO   BKR: found 1 auditor-change filings
+2026-04-01 06:00:27 [Auditor Change Monitor] INFO   BLNK: found 4 auditor-change filings
+2026-04-01 06:00:27 [Auditor Change Monitor] INFO   BNO: found 1 auditor-change filings
+2026-04-01 06:00:31 [Auditor Change Monitor] INFO   CANE: found 3 auditor-change filings
+2026-04-01 06:00:32 [Auditor Change Monitor] INFO   CBOE: found 2 auditor-change filings
+2026-04-01 06:00:33 [Auditor Change Monitor] INFO   Progress: 100/686
+2026-04-01 06:00:34 [Auditor Change Monitor] INFO   CCL: found 1 auditor-change filings
+2026-04-01 06:00:34 [Auditor Change Monitor] INFO   CDNS: found 1 auditor-change filings
+2026-04-01 06:00:36 [Auditor Change Monitor] INFO   CHPT: found 1 auditor-change filings
+2026-04-01 06:00:44 [Auditor Change Monitor] INFO   CPER: found 1 auditor-change filings
+2026-04-01 06:00:45 [Auditor Change Monitor] INFO   CRH: found 1 auditor-change filings
+2026-04-01 06:00:48 [Auditor Change Monitor] INFO   Progress: 150/686
+2026-04-01 06:00:51 [Auditor Change Monitor] INFO   DBA: found 1 auditor-change filings
+2026-04-01 06:00:51 [Auditor Change Monitor] INFO   DBC: found 1 auditor-change filings
+2026-04-01 06:00:51 [Auditor Change Monitor] INFO   DD: found 1 auditor-change filings
+2026-04-01 06:00:53 [Auditor Change Monitor] INFO   DHI: found 1 auditor-change filings
+2026-04-01 06:00:58 [Auditor Change Monitor] INFO   DXCM: found 1 auditor-change filings
+2026-04-01 06:01:00 [Auditor Change Monitor] INFO   EG: found 1 auditor-change filings
+2026-04-01 06:01:01 [Auditor Change Monitor] INFO   EL: found 2 auditor-change filings
+2026-04-01 06:01:02 [Auditor Change Monitor] INFO   Progress: 200/686
+2026-04-01 06:01:06 [Auditor Change Monitor] INFO   EVGO: found 1 auditor-change filings
+2026-04-01 06:01:09 [Auditor Change Monitor] INFO   FAST: found 2 auditor-change filings
+2026-04-01 06:01:13 [Auditor Change Monitor] INFO   FIX: found 1 auditor-change filings
+2026-04-01 06:01:16 [Auditor Change Monitor] INFO   GE: found 2 auditor-change filings
+2026-04-01 06:01:17 [Auditor Change Monitor] INFO   Progress: 250/686
+2026-04-01 06:01:19 [Auditor Change Monitor] INFO   GM: found 2 auditor-change filings
+2026-04-01 06:01:19 [Auditor Change Monitor] INFO   GNRC: found 1 auditor-change filings
+2026-04-01 06:01:19 [Auditor Change Monitor] INFO   GOLD: found 4 auditor-change filings
+2026-04-01 06:01:31 [Auditor Change Monitor] INFO   Progress: 300/686
+2026-04-01 06:01:33 [Auditor Change Monitor] INFO   IONQ: found 1 auditor-change filings
+2026-04-01 06:01:36 [Auditor Change Monitor] INFO   JBHT: found 1 auditor-change filings
+2026-04-01 06:01:38 [Auditor Change Monitor] INFO   JKHY: found 1 auditor-change filings
+2026-04-01 06:01:43 [Auditor Change Monitor] INFO   LCID: found 2 auditor-change filings
+2026-04-01 06:01:44 [Auditor Change Monitor] INFO   Progress: 350/686
+2026-04-01 06:01:44 [Auditor Change Monitor] INFO   LH: found 2 auditor-change filings
+2026-04-01 06:01:45 [Auditor Change Monitor] INFO   LII: found 1 auditor-change filings
+2026-04-01 06:01:46 [Auditor Change Monitor] INFO   LITE: found 1 auditor-change filings
+2026-04-01 06:01:47 [Auditor Change Monitor] INFO   LRCX: found 1 auditor-change filings
+2026-04-01 06:01:48 [Auditor Change Monitor] INFO   LVS: found 2 auditor-change filings
+2026-04-01 06:01:53 [Auditor Change Monitor] INFO   MELI: found 4 auditor-change filings
+2026-04-01 06:01:55 [Auditor Change Monitor] INFO   MLM: found 1 auditor-change filings
+2026-04-01 06:01:55 [Auditor Change Monitor] INFO   MNST: found 1 auditor-change filings
+2026-04-01 06:01:57 [Auditor Change Monitor] INFO   MP: found 1 auditor-change filings
+2026-04-01 06:01:58 [Auditor Change Monitor] INFO   Progress: 400/686
+2026-04-01 06:01:59 [Auditor Change Monitor] INFO   MSCI: found 1 auditor-change filings
+2026-04-01 06:02:00 [Auditor Change Monitor] INFO   MSI: found 1 auditor-change filings
+2026-04-01 06:02:01 [Auditor Change Monitor] INFO   MTZ: found 1 auditor-change filings
+2026-04-01 06:02:09 [Auditor Change Monitor] INFO   NXPI: found 2 auditor-change filings
+2026-04-01 06:02:13 [Auditor Change Monitor] INFO   PALL: found 1 auditor-change filings
+2026-04-01 06:02:13 [Auditor Change Monitor] INFO   PATH: found 1 auditor-change filings
+2026-04-01 06:02:14 [Auditor Change Monitor] INFO   Progress: 450/686
+2026-04-01 06:02:14 [Auditor Change Monitor] INFO   PAYX: found 1 auditor-change filings
+2026-04-01 06:02:17 [Auditor Change Monitor] INFO   PKG: found 2 auditor-change filings
+2026-04-01 06:02:18 [Auditor Change Monitor] INFO   PLUG: found 1 auditor-change filings
+2026-04-01 06:02:20 [Auditor Change Monitor] INFO   PODD: found 3 auditor-change filings
+2026-04-01 06:02:21 [Auditor Change Monitor] INFO   PPLT: found 1 auditor-change filings
+2026-04-01 06:02:21 [Auditor Change Monitor] INFO   PRIM: found 1 auditor-change filings
+2026-04-01 06:02:25 [Auditor Change Monitor] INFO   QQQ: found 2 auditor-change filings
+2026-04-01 06:02:25 [Auditor Change Monitor] INFO   QRVO: found 1 auditor-change filings
+2026-04-01 06:02:28 [Auditor Change Monitor] INFO   Progress: 500/686
+2026-04-01 06:02:29 [Auditor Change Monitor] INFO   ROL: found 1 auditor-change filings
+2026-04-01 06:02:35 [Auditor Change Monitor] INFO   SMCI: found 3 auditor-change filings
+2026-04-01 06:02:37 [Auditor Change Monitor] INFO   SOFI: found 1 auditor-change filings
+2026-04-01 06:02:38 [Auditor Change Monitor] INFO   SOUN: found 4 auditor-change filings
+2026-04-01 06:02:38 [Auditor Change Monitor] INFO   SOYB: found 3 auditor-change filings
+2026-04-01 06:02:45 [Auditor Change Monitor] INFO   TDY: found 2 auditor-change filings
+2026-04-01 06:02:47 [Auditor Change Monitor] INFO   TKO: found 1 auditor-change filings
+2026-04-01 06:02:49 [Auditor Change Monitor] INFO   TMUS: found 2 auditor-change filings
+2026-04-01 06:02:50 [Auditor Change Monitor] INFO   TRMB: found 1 auditor-change filings
+2026-04-01 06:02:54 [Auditor Change Monitor] INFO   Progress: 600/686
+2026-04-01 06:02:56 [Auditor Change Monitor] INFO   UNG: found 1 auditor-change filings
+2026-04-01 06:02:58 [Auditor Change Monitor] INFO   USO: found 2 auditor-change filings
+2026-04-01 06:03:01 [Auditor Change Monitor] INFO   VRT: found 1 auditor-change filings
+2026-04-01 06:03:02 [Auditor Change Monitor] INFO   VTRS: found 1 auditor-change filings
+2026-04-01 06:03:04 [Auditor Change Monitor] INFO   Progress: 650/686
+2026-04-01 06:03:05 [Auditor Change Monitor] INFO   WEAT: found 3 auditor-change filings
+2026-04-01 06:03:07 [Auditor Change Monitor] INFO   WOLF: found 1 auditor-change filings
+2026-04-01 06:03:12 [Auditor Change Monitor] INFO Fetch complete — stats so far: {'fetched': 70, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 616, 'elapsed': 0.0}
+2026-04-01 06:03:12 [Auditor Change Monitor] INFO Transforming...
+2026-04-01 06:03:45 [Auditor Change Monitor] INFO Transformed 107 rows
+2026-04-01 06:03:45 [Auditor Change Monitor] INFO Storing...
+2026-04-01 06:03:45 [Auditor Change Monitor] INFO Writing 107 auditor change records...
+2026-04-01 06:03:45 [Auditor Change Monitor] INFO Stored 107 rows
+2026-04-01 06:03:45 [Auditor Change Monitor] INFO Auditor changes: 70 fetched, 107 stored, 616 skipped, 0 errors
+2026-04-01 06:03:45 [Auditor Change Monitor] INFO === Done in 224.39s | {'fetched': 70, 'transformed': 107, 'stored': 107, 'errors': 0, 'skipped': 616, 'elapsed': 224.39} ===

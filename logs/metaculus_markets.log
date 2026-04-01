@@ -1,0 +1,11 @@
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO === Metaculus Prediction Markets (ID 24) starting ===
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO Loaded 731 securities
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO Fetching...
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO Fetching Metaculus open forecast questions...
+2026-04-01 08:12:01 [Metaculus Prediction Markets] WARNING Metaculus returned 403
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO Transforming...
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO Transformed 0 rows
+2026-04-01 08:12:01 [Metaculus Prediction Markets] INFO No new rows — nothing to store
+2026-04-01 08:12:02 [Metaculus Prediction Markets] INFO Metaculus markets: 0 fetched, 0 stored, 0 errors
+2026-04-01 08:12:02 [Metaculus Prediction Markets] INFO === Done in 0.39s | {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.39} ===

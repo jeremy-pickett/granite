@@ -1,0 +1,124 @@
+export default function AddendumAVideoExtensionContent() {
+  return (
+    <>
+      <header className="page-hero">
+        <div className="container">
+          <p className="hero-series">Addendum A</p>
+          <h1>Extension to Video: I-Frames Are JPEGs in a Trench Coat</h1>
+          <p className="hero-subtitle">Granite Under Sandstone &mdash; Addendum Series</p>
+        </div>
+      </header>
+
+      <section className="section">
+        <div className="container content-narrow">
+          <h2>A.1 The Short Answer</h2>
+          <p>Every modern video codec (H.264/AVC, H.265/HEVC, VP9, AV1) uses block-based transform coding on its independently decodable frames. These frames &mdash; I-frames (Intra-coded frames) &mdash; are compressed using spatial frequency decomposition and quantization within blocks. H.264 uses a 4&times;4 or 8&times;8 integer DCT. H.265 uses variable-size transform blocks up to 32&times;32. AV1 uses transform blocks from 4&times;4 to 64&times;64.</p>
+          <p>The quantization is different from JPEG&rsquo;s. The block sizes vary. The entropy coding differs. But the principle that creates the amplification effect &mdash; block-based spatial frequency decomposition that exploits local spatial correlation and penalizes local complexity &mdash; is identical across all of them.</p>
+          <p>I-frames are JPEGs in a trench coat. The same granite hypothesis applies.</p>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="container content-narrow">
+          <h2>A.2 Why Video Is Easier, Not Harder</h2>
+          <p>The still-image experiments operated under severe constraints: 512&times;512 pixels, approximately 200 twin markers, statistical power marginal at Generation 2+. Video eliminates every one of these constraints.</p>
+          <h3>A.2.1 Massive Marker Capacity</h3>
+          <p>A single 1080p I-frame contains 1920 &times; 1080 &asymp; 2.07 million pixels. At the marker density used in the still-image experiments (approximately 1 twin marker per 1,400 pixels), a single I-frame supports roughly 1,500 twin markers. That is 7.5&times; the 200 markers that achieved detection at Generation 0 on the 512&times;512 test image.</p>
+          <p>A 4K frame (3840 &times; 2160 &asymp; 8.3 million pixels) supports approximately 5,900 markers per I-frame. Detection statistical power scales with the square root of marker count. The detection floor moves substantially deeper into the compression cascade.</p>
+          <div className="table-wrap"><table>
+            <thead><tr><th>Resolution</th><th>Pixels</th><th>Markers/I-frame</th><th>vs. 512&times;512</th></tr></thead>
+            <tbody>
+              <tr><td>512&times;512 (test)</td><td>262,144</td><td>~200</td><td>1&times; (baseline)</td></tr>
+              <tr><td>720p</td><td>921,600</td><td>~660</td><td>3.3&times;</td></tr>
+              <tr><td>1080p</td><td>2,073,600</td><td>~1,500</td><td>7.5&times;</td></tr>
+              <tr><td>4K</td><td>8,294,400</td><td>~5,900</td><td>29.5&times;</td></tr>
+            </tbody>
+          </table></div>
+          <p className="lead"><strong>Table A1. </strong><em>Marker capacity per I-frame by resolution. The statistical power problem that constrained the 512&times;512 experiments does not exist at video resolutions.</em></p>
+          <h3>A.2.2 Temporal Redundancy as Cross-Validation</h3>
+          <p>Video contains multiple I-frames across its duration. A typical encoding configuration produces an I-frame every 1&ndash;2 seconds. A 10-minute video at 2-second I-frame intervals contains 300 I-frames. Each I-frame is an independent embedding target and an independent detection opportunity.</p>
+          <p>This provides two benefits that still images cannot offer:</p>
+          <p><strong>Independent replication within a single file.</strong> If twin markers at position (r, c) show amplified variance anomaly in I-frame 47 AND I-frame 49 AND I-frame 51, that is three independent measurements of the same perturbation surviving three independent compression events. The probability of three false positives at the same spatial position across three independent frames is the cube of the single-frame false positive rate.</p>
+          <p><strong>Corpus-within-a-file forensics.</strong> The 300 I-frames of a single video file constitute a mini-corpus. Every corpus-level analysis described in the paper &mdash; repetitive basket patterns, predictable absence patterns, cross-frame correlation, temporal clustering &mdash; applies within a single video file. A single video provides the statistical population that still images require a dataset to achieve.</p>
+          <div className="table-wrap"><table>
+            <thead><tr><th>Duration</th><th>I-frames</th><th>Markers (1080p)</th><th>Markers (4K)</th><th>Statistical Power</th></tr></thead>
+            <tbody>
+              <tr><td>30 seconds</td><td>15</td><td>~22,500</td><td>~88,500</td><td>Substantial</td></tr>
+              <tr><td>5 minutes</td><td>150</td><td>~225,000</td><td>~885,000</td><td>Overwhelming</td></tr>
+              <tr><td>10 minutes</td><td>300</td><td>~450,000</td><td>~1,770,000</td><td>Effectively unlimited</td></tr>
+              <tr><td>2 hours (film)</td><td>3,600</td><td>~5,400,000</td><td>~21,240,000</td><td>Absurd</td></tr>
+            </tbody>
+          </table></div>
+          <p className="lead"><strong>Table A2. </strong><em>Total marker count across I-frames by video duration at 2-second I-frame interval. A feature film at 4K provides over 21 million independent twin markers.</em></p>
+          <h3>A.2.3 Richer Container Layer</h3>
+          <p>Video formats provide more embedding surface for container-layer signals than JPEG:</p>
+          <p><strong>SEI NAL units (H.264/H.265):</strong> Supplemental Enhancement Information units are the video equivalent of JPEG APP segments. They are preserved by compliant muxers, ignored by decoders, and provide arbitrary-length payload space. The spec defines registered and unregistered SEI types; unregistered SEI (user_data_unregistered) accepts arbitrary payloads identified by a UUID. This is purpose-built carry-your-own-luggage space.</p>
+          <p><strong>PPS quantization parameters:</strong> The Picture Parameter Set carries quantization parameters that control per-frame compression. This is the video analog of JPEG&rsquo;s DQT segment. Strategy 4 (prime-shifted quantization) applies directly: the PPS quantization matrix entries can be shifted to primes with the same negligible visual impact and the same O(1) static detection.</p>
+          <p><strong>Container metadata:</strong> MP4 (ISO BMFF), MKV (Matroska), and WebM containers provide extensive metadata structures &mdash; user-defined atoms, tags, and attachments &mdash; that survive remuxing (container format change without re-encoding). These are additional Douglas Rule embedding surfaces that survive any operation short of re-encoding the video stream itself.</p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container content-narrow">
+          <h2>A.3 What You Embed In, What You Don&rsquo;t</h2>
+          <h3>A.3.1 I-Frames Only</h3>
+          <p>The scheme embeds exclusively in I-frames (intra-coded frames). I-frames are compressed independently, like still images. Each I-frame contains full pixel data for every position, decoded through block-based transform coding. The twin marker embedding and the amplification hypothesis apply directly.</p>
+          <p><strong>P-frames and B-frames are excluded.</strong> P-frames (Predicted) store motion-compensated residuals from a reference frame. B-frames (Bi-predicted) store residuals from two reference frames. The pixel values in P and B frames are differences, not absolute values. They change unpredictably under re-encoding as the motion estimation algorithm makes different choices. Embedding in P/B frames would produce markers that are entangled with motion estimation in ways that are not characterizable from first principles.</p>
+          <p>This is not a limitation. It is a scope boundary. I-frames carry enough embedding surface to provide overwhelming statistical power at any common video resolution and duration. The exclusion of P/B frames is a design choice that trades unnecessary complexity for predictable behavior.</p>
+          <h3>A.3.2 I-Frame Interval Considerations</h3>
+          <p>The I-frame interval (keyframe interval, GOP length) varies by encoder settings and platform requirements. Typical values:</p>
+          <div className="table-wrap"><table>
+            <thead><tr><th>Context</th><th>Typical I-frame Interval</th><th>I-frames per Minute</th></tr></thead>
+            <tbody>
+              <tr><td>YouTube upload processing</td><td>2&ndash;4 seconds</td><td>15&ndash;30</td></tr>
+              <tr><td>Netflix / streaming delivery</td><td>2&ndash;6 seconds</td><td>10&ndash;30</td></tr>
+              <tr><td>Broadcast television</td><td>0.5&ndash;2 seconds</td><td>30&ndash;120</td></tr>
+              <tr><td>Video conferencing</td><td>1&ndash;5 seconds (adaptive)</td><td>12&ndash;60</td></tr>
+              <tr><td>Archival / mezzanine</td><td>All-intra (every frame)</td><td>~1,800 at 30fps</td></tr>
+            </tbody>
+          </table></div>
+          <p className="lead"><strong>Table A3. </strong><em>Typical I-frame intervals. Even the sparsest configurations (6-second intervals) provide ample embedding surface for statistical detection.</em></p>
+          <p>A platform that re-encodes uploaded video may change the I-frame interval. This affects which specific frames carry markers, but does not affect the scheme: the re-encoder must produce its own I-frames, and those I-frames will contain the perturbation artifacts from the original embedding, amplified by the re-encoding process. The markers follow the content, not the frame boundaries.</p>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="container content-narrow">
+          <h2>A.4 The Re-Encoding Pipeline</h2>
+          <p>Video uploaded to a platform is almost always re-encoded. YouTube, for example, re-encodes every upload to multiple resolution and bitrate tiers. This is the adversary&rsquo;s compression pipeline applied automatically at scale.</p>
+          <p>The scheme&rsquo;s response to this pipeline is identical to the still-image case, with amplified statistical power:</p>
+          <p><strong>Layer A (PPS/quantization parameter primality):</strong> Destroyed on first re-encode, same as JPEG DQT. The re-encoder writes its own quantization parameters. Presence confirms first-generation video from a participating encoder. Absence is the expected state for re-encoded video.</p>
+          <p><strong>Layer B (twin markers in I-frames):</strong> Survives through re-encoding according to the same survival curve as JPEG, but with 7&ndash;30&times; more markers per frame providing substantially greater statistical power. Detection at Generation 2+ becomes feasible where it was marginal on 512&times;512 still images.</p>
+          <p><strong>Layer B+ (amplification):</strong> If the amplification hypothesis holds on video I-frames &mdash; and it should, because the transform coding mechanism is the same &mdash; then platform re-encoding at lower bitrates amplifies the perturbation signal. A video scraped from YouTube at 720p after being uploaded at 1080p carries a louder variance anomaly than the original upload. The platform&rsquo;s own compression pipeline is, once again, the detection amplifier.</p>
+          <p><strong>Temporal cross-validation:</strong> The adversary who targets specific I-frames for suppression must identify and suppress markers in every I-frame, because the detector can use any surviving I-frame as evidence. Missing one I-frame out of 300 is sufficient for detection. The adversary&rsquo;s burden of perfection scales with video duration.</p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container content-narrow">
+          <h2>A.5 The Adversary&rsquo;s Problem, Scaled</h2>
+          <p>Consider the adversary&rsquo;s task on a 10-minute 1080p video with 2-second I-frame intervals:</p>
+          <p>300 I-frames. ~1,500 twin markers per I-frame. ~450,000 total markers. Each marker must be identified. Each must be suppressed with targeted local smoothing. Each smoothing operation must avoid creating detectable artifacts. The suppression must be validated per-position, per-frame.</p>
+          <p>On a 2-hour 4K film: 3,600 I-frames. ~5,900 markers per frame. ~21 million markers. The suppression campaign requires identifying and neutralizing 21 million positions across 3,600 independent frames without leaving forensic residue in any of them.</p>
+          <p>At corpus scale &mdash; a platform ingesting thousands of hours of video per day &mdash; this is not a pipeline. It is an army. Armies have budgets, employees, managers, Slack channels, and compute bills. All discoverable.</p>
+          <p>The alternative: don&rsquo;t suppress. Accept State B. Let the signal ride. Most platforms will choose this option because suppression costs more than compliance. That is the economic argument. It applies to video with approximately 1,000&times; more force than it applies to still images, because video provides 1,000&times; more evidence surface.</p>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="container content-narrow">
+          <h2>A.6 What Remains to Be Tested for Video</h2>
+          <p><strong>H.264 integer DCT vs. JPEG DCT:</strong> The 4&times;4 integer transform in H.264 has different rounding and normalization properties than JPEG&rsquo;s 8&times;8 floating-point DCT. The amplification hypothesis predicts the same behavior (quantization penalizes local complexity) but the specific survival curves and amplification rates must be measured empirically.</p>
+          <p><strong>Bitrate-controlled quantization:</strong> Video encoders typically use rate-control (targeting a specific bitrate) rather than fixed quality. Rate-control produces variable quantization per-frame and per-macroblock. The interaction between variable quantization and twin marker perturbation is an empirical question.</p>
+          <p><strong>Scene-cut I-frame placement:</strong> Modern encoders insert I-frames at scene cuts. Markers embedded in a scene that appears briefly may land in few or no I-frames after re-encoding if the encoder places keyframes differently. The scheme should embed across the entire video to ensure markers land in I-frames regardless of keyframe placement strategy.</p>
+          <p><strong>B-frame reference propagation:</strong> While markers are not embedded in P/B frames, perturbation at marker positions in I-frames propagates into P/B frames via the reference chain. This propagated perturbation may create additional detectable artifacts in reconstructed P/B frames. This is speculative and requires investigation.</p>
+          <p><strong>Audio track:</strong> The audio track of a video file is an independent embedding surface. PCM audio samples are the amplitude-domain analog of pixel channel values. Twin prime-gap markers in the amplitude domain, subject to psychoacoustic model survival under MP3/AAC/Opus encoding, are a parallel detection layer independent of the video track. This is future work.</p>
+          <p className="lead"><em>Video is not a harder case. It is the case where every constraint that limited the still-image experiments disappears. The marker capacity is overwhelming. The temporal redundancy provides built-in cross-validation. The adversary&rsquo;s suppression cost scales linearly with duration. A 10-minute video is not 10 times harder to protect than a photograph. It is 450,000 times harder to attack.</em></p>
+          <p className="lead"><em>Theoretical extension. No experimental validation on video has been performed.</em></p>
+          <p className="lead"><strong><em>The I-frame must be tested.</em></strong></p>
+          <p>Jeremy Pickett &mdash; March 2026</p>
+        </div>
+      </section>
+    </>
+  );
+}

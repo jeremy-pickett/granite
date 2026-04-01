@@ -1,0 +1,112 @@
+2026-03-31 07:00:01 [Options Flow Scanner] INFO === Options Flow Scanner (ID 4) starting ===
+2026-03-31 07:00:01 [Options Flow Scanner] INFO Loaded 577 securities
+2026-03-31 07:00:01 [Options Flow Scanner] INFO Fetching...
+2026-03-31 07:00:01 [Options Flow Scanner] INFO Scanning 50 equities (batch offset 461)...
+2026-03-31 07:07:02 [Options Flow Scanner] INFO   STLA: 1 options with volume
+2026-03-31 07:14:04 [Options Flow Scanner] INFO   STLD: 1 options with volume
+2026-03-31 07:21:06 [Options Flow Scanner] INFO   STT: 2 options with volume
+2026-03-31 07:28:07 [Options Flow Scanner] INFO   STZ: 3 options with volume
+2026-03-31 07:35:08 [Options Flow Scanner] INFO   SVXY: 1 options with volume
+2026-03-31 07:42:14 [Options Flow Scanner] INFO   SW: 0 options with volume
+2026-03-31 07:49:21 [Options Flow Scanner] INFO   SWK: 0 options with volume
+2026-03-31 07:56:23 [Options Flow Scanner] INFO   SYF: 1 options with volume
+2026-03-31 08:03:24 [Options Flow Scanner] INFO   SYK: 2 options with volume
+2026-03-31 08:10:25 [Options Flow Scanner] INFO   SYY: 11 options with volume
+2026-03-31 08:10:25 [Options Flow Scanner] INFO   Progress: 10/50 tickers
+2026-03-31 08:17:26 [Options Flow Scanner] INFO   T: 12 options with volume
+2026-03-31 08:24:27 [Options Flow Scanner] INFO   TAN: 0 options with volume
+2026-03-31 08:31:28 [Options Flow Scanner] INFO   TAP: 2 options with volume
+2026-03-31 08:38:55 [Options Flow Scanner] INFO   TDG: 0 options with volume
+2026-03-31 08:45:56 [Options Flow Scanner] INFO   TDY: 0 options with volume
+2026-03-31 08:52:58 [Options Flow Scanner] INFO   TEAM: 10 options with volume
+2026-03-31 08:59:59 [Options Flow Scanner] INFO   TECH: 0 options with volume
+2026-03-31 09:06:59 [Options Flow Scanner] INFO   TER: 0 options with volume
+2026-03-31 09:14:00 [Options Flow Scanner] INFO   TFC: 4 options with volume
+2026-03-31 09:14:00 [Options Flow Scanner] INFO   Progress: 20/50 tickers
+2026-03-31 09:21:01 [Options Flow Scanner] INFO   TGT: 11 options with volume
+2026-03-31 09:28:01 [Options Flow Scanner] INFO   TIP: 0 options with volume
+2026-03-31 09:35:02 [Options Flow Scanner] INFO   TKO: 0 options with volume
+2026-03-31 09:42:03 [Options Flow Scanner] INFO   TLT: 10 options with volume
+2026-03-31 09:49:03 [Options Flow Scanner] INFO   TM: 1 options with volume
+2026-03-31 09:56:03 [Options Flow Scanner] INFO   TME: 5 options with volume
+2026-03-31 10:03:03 [Options Flow Scanner] INFO   TMO: 0 options with volume
+2026-03-31 10:10:04 [Options Flow Scanner] INFO   TMUS: 0 options with volume
+2026-03-31 10:17:04 [Options Flow Scanner] INFO   TPL: 0 options with volume
+2026-03-31 10:24:04 [Options Flow Scanner] INFO   TQQQ: 18 options with volume
+2026-03-31 10:24:04 [Options Flow Scanner] INFO   Progress: 30/50 tickers
+2026-03-31 10:31:04 [Options Flow Scanner] INFO   TRGP: 1 options with volume
+2026-03-31 10:38:04 [Options Flow Scanner] INFO   TRI: 2 options with volume
+2026-03-31 10:45:04 [Options Flow Scanner] INFO   TRMB: 0 options with volume
+2026-03-31 10:52:04 [Options Flow Scanner] INFO   TSCO: 3 options with volume
+2026-03-31 10:59:04 [Options Flow Scanner] INFO   TSLA: 1 options with volume
+2026-03-31 11:06:04 [Options Flow Scanner] INFO   TSN: 2 options with volume
+2026-03-31 11:13:05 [Options Flow Scanner] INFO   TT: 1 options with volume
+2026-03-31 11:20:05 [Options Flow Scanner] INFO   TTD: 13 options with volume
+2026-03-31 11:27:05 [Options Flow Scanner] INFO   TWLO: 0 options with volume
+2026-03-31 11:34:05 [Options Flow Scanner] INFO   TXN: 4 options with volume
+2026-03-31 11:34:05 [Options Flow Scanner] INFO   Progress: 40/50 tickers
+2026-03-31 11:41:05 [Options Flow Scanner] INFO   TXT: 3 options with volume
+2026-03-31 11:48:05 [Options Flow Scanner] INFO   TYL: 0 options with volume
+2026-03-31 11:55:05 [Options Flow Scanner] INFO   U: 14 options with volume
+2026-03-31 12:02:05 [Options Flow Scanner] INFO   UAL: 11 options with volume
+2026-03-31 12:09:05 [Options Flow Scanner] INFO   UBER: 13 options with volume
+2026-03-31 12:16:05 [Options Flow Scanner] INFO   ULTA: 1 options with volume
+2026-03-31 12:23:05 [Options Flow Scanner] INFO   UNG: 8 options with volume
+2026-03-31 12:30:05 [Options Flow Scanner] INFO   UNH: 3 options with volume
+2026-03-31 12:37:05 [Options Flow Scanner] INFO   UNP: 0 options with volume
+2026-03-31 12:44:06 [Options Flow Scanner] INFO   UPRO: 9 options with volume
+2026-03-31 12:44:06 [Options Flow Scanner] INFO   Progress: 50/50 tickers
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Fetch complete — stats so far: {'fetched': 49, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 1, 'elapsed': 0.0}
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Transforming...
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Transformed 184 rows
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Storing...
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Writing 184 options flow records...
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Stored 184 rows
+2026-03-31 12:44:06 [Options Flow Scanner] INFO Options flow: 49 tickers scanned, 184 records stored, 0 errors
+2026-03-31 12:44:06 [Options Flow Scanner] INFO === Done in 20644.31s | {'fetched': 49, 'transformed': 184, 'stored': 184, 'errors': 0, 'skipped': 1, 'elapsed': 20644.31} ===
+2026-04-01 07:12:01 [Options Flow Scanner] INFO === Options Flow Scanner (ID 4) starting ===
+2026-04-01 07:12:01 [Options Flow Scanner] INFO Loaded 686 securities
+2026-04-01 07:12:01 [Options Flow Scanner] INFO Fetching...
+2026-04-01 07:12:01 [Options Flow Scanner] INFO Scanning 50 equities (batch offset 434)...
+2026-04-01 07:33:05 [Options Flow Scanner] INFO   O: 5 options with volume
+2026-04-01 07:40:07 [Options Flow Scanner] INFO   ODFL: 0 options with volume
+2026-04-01 07:47:08 [Options Flow Scanner] INFO   OKE: 7 options with volume
+2026-04-01 07:54:09 [Options Flow Scanner] INFO   OKTA: 4 options with volume
+2026-04-01 08:01:11 [Options Flow Scanner] INFO   OMC: 0 options with volume
+2026-04-01 08:08:12 [Options Flow Scanner] INFO   ON: 7 options with volume
+2026-04-01 08:15:13 [Options Flow Scanner] INFO   ORCL: 9 options with volume
+2026-04-01 08:22:15 [Options Flow Scanner] INFO   ORLY: 0 options with volume
+2026-04-01 08:22:15 [Options Flow Scanner] INFO   Progress: 10/50 tickers
+2026-04-01 08:29:16 [Options Flow Scanner] INFO   OTIS: 1 options with volume
+2026-04-01 08:36:18 [Options Flow Scanner] INFO   OXY: 5 options with volume
+2026-04-01 08:43:19 [Options Flow Scanner] INFO   PALL: 0 options with volume
+2026-04-01 08:50:21 [Options Flow Scanner] INFO   PANW: 0 options with volume
+2026-04-01 08:57:22 [Options Flow Scanner] INFO   PATH: 7 options with volume
+2026-04-01 09:04:24 [Options Flow Scanner] INFO   PAYC: 1 options with volume
+2026-04-01 09:11:26 [Options Flow Scanner] INFO   PAYX: 1 options with volume
+2026-04-01 09:18:27 [Options Flow Scanner] INFO   PCAR: 2 options with volume
+2026-04-01 09:25:30 [Options Flow Scanner] INFO   PCG: 2 options with volume
+2026-04-01 09:32:31 [Options Flow Scanner] INFO   PDBC: 1 options with volume
+2026-04-01 09:32:31 [Options Flow Scanner] INFO   Progress: 20/50 tickers
+2026-04-01 09:39:32 [Options Flow Scanner] INFO   PEG: 0 options with volume
+2026-04-01 09:46:33 [Options Flow Scanner] INFO   PEP: 0 options with volume
+2026-04-01 09:53:35 [Options Flow Scanner] INFO   PFE: 8 options with volume
+2026-04-01 10:00:37 [Options Flow Scanner] INFO   PFG: 1 options with volume
+2026-04-01 10:07:38 [Options Flow Scanner] INFO   PG: 4 options with volume
+2026-04-01 10:15:10 [Options Flow Scanner] INFO   PGR: 2 options with volume
+2026-04-01 10:22:12 [Options Flow Scanner] INFO   PH: 4 options with volume
+2026-04-01 10:29:13 [Options Flow Scanner] INFO   PHM: 0 options with volume
+2026-04-01 10:36:15 [Options Flow Scanner] INFO   PKG: 0 options with volume
+2026-04-01 10:43:16 [Options Flow Scanner] INFO   PLD: 2 options with volume
+2026-04-01 10:43:16 [Options Flow Scanner] INFO   Progress: 30/50 tickers
+2026-04-01 10:50:18 [Options Flow Scanner] INFO   PLTR: 1 options with volume
+2026-04-01 10:57:19 [Options Flow Scanner] INFO   PLUG: 8 options with volume
+2026-04-01 11:04:21 [Options Flow Scanner] INFO   PM: 0 options with volume
+2026-04-01 11:11:22 [Options Flow Scanner] INFO   PNC: 0 options with volume
+2026-04-01 11:18:23 [Options Flow Scanner] INFO   PNR: 0 options with volume
+2026-04-01 11:25:26 [Options Flow Scanner] INFO   PNW: 0 options with volume
+2026-04-01 11:32:27 [Options Flow Scanner] INFO   PODD: 1 options with volume
+2026-04-01 11:39:29 [Options Flow Scanner] INFO   POOL: 0 options with volume
+2026-04-01 11:46:30 [Options Flow Scanner] INFO   PPG: 0 options with volume
+2026-04-01 11:53:32 [Options Flow Scanner] INFO   PPL: 2 options with volume
+2026-04-01 11:53:32 [Options Flow Scanner] INFO   Progress: 40/50 tickers

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future States — Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+<div class="starfield"></div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-brand">Granite <span style="color:var(--text-dim)">/</span> Under Sandstone</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="the-stack/index.html">The Stack</a>
+      <a href="philosophy.html">Philosophy</a>
+      <a href="history.html">History</a>
+      <a href="drops.html">Sample Code</a>
+      <a href="docs/index.html">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+      <a href="future.html" class="active">Future</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">The Road Ahead</p>
+    <h1>Future States</h1>
+    <p class="hero-subtitle">What we&rsquo;re building, what we&rsquo;re reaching for, and what we dream about</p>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- THE UNIVERSALITY THESIS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>The Universality Thesis</h2>
+    <p class="lead">The fuse is engineering. The fire is physics. Any codec that uses a <strong>partition &rarr; transform &rarr; quantize</strong> pipeline is susceptible. The mechanism is universal.</p>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Images</h3>
+        <p>JPEG, WebP, HEIF &mdash; all use block-based DCT or wavelet quantization. Tested and confirmed across JPEG and WebP with cross-codec transcoding.</p>
+      </div>
+      <div class="card">
+        <h3>Audio</h3>
+        <p>MP3, AAC, Opus &mdash; frequency-domain quantization in sub-band partitions. Initial MP3 testing has exceeded expectations.</p>
+      </div>
+      <div class="card">
+        <h3>Video</h3>
+        <p>H.264, H.265, AV1 &mdash; block-based motion-compensated DCT quantization. The same thermodynamic tax applies per-frame.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- TIER 1: MUST BUILD -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num" style="background:var(--teal);border-color:var(--teal);">I</span>
+      <h2>Must Build</h2>
+      <p class="chapter-subtitle">The work we believe in and are committed to delivering</p>
+    </div>
+
+    <div class="dead-ends">
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <h3 style="color:var(--teal)">CLI Detection Tool</h3>
+        <p>A single binary that takes a file and returns a detection state (A/B/C/D) with confidence scores. No cloud. No API key. No dependencies. The file walks in, the measurement walks out. This is the table stakes &mdash; if detection requires infrastructure, we&rsquo;ve already lost the argument.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <h3 style="color:var(--teal)">Audio Provenance (MP3/AAC)</h3>
+        <p>The MDCT frames in audio compression create the same boundary structure as DCT blocks in images. Initial MP3 testing exceeded expectations. Full audio pipeline &mdash; embed, cascade, detect &mdash; validated across MP3, AAC, and Opus. I-frames are JPEGs in a trench coat. Audio frames are the same thing with a different hat.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <h3 style="color:var(--teal)">Payload Encoder v1</h3>
+        <p>Layer F is architecturally ready but not yet validated at scale. Structured flanking data &mdash; creator ID, timestamp, section index &mdash; encoded into the position pattern. The fingerprint becomes a message. The message survives what the file survives.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <h3 style="color:var(--teal)">DIV2K+ Validation Suite</h3>
+        <p>Expand from 800 to 5,000+ images across diverse content classes. Characterize per-class amplification behavior. Map the landscape of where granite is strongest and where sandstone fights back. Publish honest results, including the failures.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <h3 style="color:var(--teal)">Lightroom / Photoshop Plugin</h3>
+        <p>Provenance at the point of creation. One checkbox at export time. The photographer decides. Nobody else. If adoption requires changing workflows, adoption won&rsquo;t happen. It has to live where the work already lives.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--teal)">
+        <h3 style="color:var(--teal)">Open Specification Document</h3>
+        <p>A formal, versioned specification for the embedding and detection protocol. Not a paper &mdash; a spec. Implementable by anyone. BSD-licensed. If only one implementation exists, it&rsquo;s a product, not a protocol. We need the spec to exist independently of us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- TIER 2: STRETCH GOALS -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num" style="background:var(--amber);border-color:var(--amber);">II</span>
+      <h2>Stretch Goals</h2>
+      <p class="chapter-subtitle">Hard problems worth solving if the foundation holds</p>
+    </div>
+
+    <div class="dead-ends">
+      <div class="dead-end" style="border-left-color:var(--amber)">
+        <h3 style="color:var(--amber)">Video Provenance (H.264/H.265/AV1)</h3>
+        <p>Every I-frame is a JPEG. Every P-frame and B-frame carries forward the variance anomaly through motion compensation. The thermodynamic tax compounds across the GOP. The challenge: embed once, detect across temporal compression that spans hundreds of frames. The physics says yes. The engineering is non-trivial.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--amber)">
+        <h3 style="color:var(--amber)">Corpus-Scale Attribution Service</h3>
+        <p>A matching service that compares fingerprints across a corpus. Not identity &mdash; similarity. &ldquo;This file shares a provenance fingerprint with these other files.&rdquo; Jaccard similarity at scale. The hard part isn&rsquo;t the algorithm, it&rsquo;s the trust model: who runs it, who queries it, what gets logged. Participation over permission extends to the infrastructure.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--amber)">
+        <h3 style="color:var(--amber)">Cross-Platform Detection API</h3>
+        <p>An open API that platforms can integrate voluntarily. Upload receives a detection state. No enforcement. No blocking. Just measurement. Platforms that want to surface provenance information can. Platforms that don&rsquo;t, don&rsquo;t. The measurement exists regardless.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--amber)">
+        <h3 style="color:var(--amber)">Adversarial Robustness Testing</h3>
+        <p>Red team the system with generative attacks. Style transfer. Inpainting. Partial reconstruction. Deep fake pipelines that touch every pixel. Find out where the signal actually breaks &mdash; not where we think it breaks, where it <em>actually</em> breaks. Publish everything.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--amber)">
+        <h3 style="color:var(--amber)">Mobile Camera Integration</h3>
+        <p>Provenance embedded at capture time on the device. Before the image touches a network. Before anyone else can claim it. The phone is the first witness. This requires hardware partnerships and OS-level integration &mdash; a stretch, but the right place for the signal to originate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- TIER 3: MOONSHOT -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num" style="background:var(--fire);border-color:var(--fire);">III</span>
+      <h2>Moonshot</h2>
+      <p class="chapter-subtitle">The ideas that sound unreasonable until they aren&rsquo;t</p>
+    </div>
+
+    <div class="dead-ends">
+      <div class="dead-end" style="border-left-color:var(--fire)">
+        <h3 style="color:var(--fire)">Generative AI Provenance</h3>
+        <p>Every image, audio clip, or video generated by an AI model carries a provenance signal from birth. Not a visible watermark. Not metadata that can be stripped. A statistical property baked into the generation process itself &mdash; the model&rsquo;s DCT quantization choices become the embedding surface. The output is born marked. The question &ldquo;was this AI-generated?&rdquo; becomes a detection state, not a debate.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--fire)">
+        <h3 style="color:var(--fire)">Universal Media Provenance Layer</h3>
+        <p>A protocol-level layer that any media format can implement. Not a standard controlled by a committee &mdash; a thermodynamic fact that any codec must respect. Like TCP/IP for provenance: not owned, not permissioned, not optional for physics. Every lossy codec that partitions, transforms, and quantizes is already participating whether it knows it or not. Make that participation legible.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--fire)">
+        <h3 style="color:var(--fire)">Provenance Archaeology</h3>
+        <p>Retroactive detection on existing media. Billions of images already on the internet carry compression artifacts that encode their handling history. Nobody embedded a signal &mdash; but the codec&rsquo;s own quantization decisions are a signal. The variance landscape of a five-times-compressed JPEG is a forensic record. Read the geology of digital media. Sandstone all the way down, and we know what the layers mean.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--fire)">
+        <h3 style="color:var(--fire)">Real-Time Broadcast Provenance</h3>
+        <p>Live video streams carrying provenance signal in real time. Every frame marked as it&rsquo;s encoded. Detection at the receiving end, during playback, before anyone can re-encode or strip. The gap between capture and verification collapses to zero. Deepfakes in live broadcasts become detectable in the same stream they arrive in.</p>
+      </div>
+
+      <div class="dead-end" style="border-left-color:var(--fire)">
+        <h3 style="color:var(--fire)">The Anti-Forgery Constant</h3>
+        <p>Prove mathematically that there exists a lower bound on the energy required to remove the variance anomaly without destroying the content. Not just &ldquo;it&rsquo;s hard to remove&rdquo; &mdash; <em>it is thermodynamically impossible to remove without visible degradation</em>. A proof that the cost of forgery exceeds the value of forgery. The granite isn&rsquo;t just durable. It&rsquo;s <em>provably</em> durable. Turn the conjecture into a theorem.</p>
+      </div>
+    </div>
+
+    <div class="discovery-box" style="margin-top:3rem;">
+      <p>The fuse is what we build. The fire is what physics gives us for free.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <p class="footer-title">Granite Under Sandstone</p>
+        <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+        <p>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-sep">&middot;</span>
+        <span>BSD 2-Clause License</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

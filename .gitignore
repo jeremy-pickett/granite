@@ -24,5 +24,13 @@ backend/docs/*.log
 .env*.local
 collectors/.env
 
+# Next.js build output
+.next/
+website/.next/
+collectors/.next/
+
+# Node
+node_modules/
+
 # OS
 .DS_Store

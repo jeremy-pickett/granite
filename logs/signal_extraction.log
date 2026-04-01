@@ -1,0 +1,16 @@
+2026-04-01 08:30:02 [market_signals] INFO Scanning 731 securities for market signals...
+2026-04-01 08:30:36 [market_signals] INFO Detected 3025 signals across 724 securities, wrote 3025
+2026-04-01 08:30:36 [congressional_signals] INFO Congressional signals: 8 securities with trades → 8 signals
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/collectors_run.py", line 292, in <module>
+    main()
+  File "/home/ubuntu/granite/collectors/collectors_run.py", line 258, in main
+    run_signals()
+  File "/home/ubuntu/granite/collectors/collectors_run.py", line 115, in run_signals
+    insider_signals.run()
+  File "/home/ubuntu/granite/collectors/insider_signals.py", line 51, in run
+    cur.execute("""
+psycopg2.errors.UndefinedColumn: column r.total_value does not exist
+LINE 4:                        r.total_value, r.insider_title
+                               ^
+

@@ -1,0 +1,15 @@
+2026-04-01 07:33:02 [Exchange Flow Monitor] INFO === Exchange Flow Monitor (ID 21) starting ===
+2026-04-01 07:33:02 [Exchange Flow Monitor] INFO Loaded 731 securities
+2026-04-01 07:33:02 [Exchange Flow Monitor] INFO Fetching...
+2026-04-01 07:33:02 [Exchange Flow Monitor] INFO   Binance: 261613.93 BTC ($17903M) 2185917 txs
+2026-04-01 07:33:02 [Exchange Flow Monitor] INFO   Bitfinex: 0.00 BTC ($0M) 0 txs
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO   Coinbase: 0.00 BTC ($0M) 0 txs
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO   OKX: 68200.01 BTC ($4667M) 153 txs
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Fetch complete — stats so far: {'fetched': 4, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Transforming...
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Transformed 4 rows
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Storing...
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Writing 4 exchange flow snapshots...
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Stored 4 rows
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO Exchange flows: 4 exchanges snapshotted, 0 errors
+2026-04-01 07:33:03 [Exchange Flow Monitor] INFO === Done in 1.29s | {'fetched': 4, 'transformed': 4, 'stored': 4, 'errors': 0, 'skipped': 0, 'elapsed': 1.29} ===

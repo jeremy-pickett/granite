@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layer H: Spatial Ruler &mdash; Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=4">
+  <link rel="stylesheet" href="../docs/docs.css">
+</head>
+<body>
+
+<div class="starfield"></div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite <span style="color:var(--text-dim)">/</span> Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="index.html" class="active">The Stack</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html">History</a>
+      <a href="../drops.html">Sample Code</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+      <a href="../future.html">Future</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Layer H Specification</p>
+    <h1>Spatial Ruler</h1>
+    <p class="hero-subtitle">Crop and stitch forensics. The image remembers what it was.</p>
+  </div>
+</header>
+
+<!-- ── Purpose ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Purpose and Role in the Stack</h2>
+    <blockquote>
+      <p>&ldquo;The adversary who crops the image shifts the ruler but cannot erase what the ruler remembers.&rdquo;</p>
+    </blockquote>
+    <p>All other GRANITE layers survive lossy compression, format conversion, and pixel manipulation. They do not address spatial transforms: a crop that removes 20% of an image from the left, a stitch that joins two images side by side, or a resize that changes the image dimensions. Layer H is the spatial layer.</p>
+    <p>An adversary who crops a provenance-marked image does not defeat the other layers &mdash; the surviving pixels still carry their signals &mdash; but they destroy spatial relationships. The image no longer represents the same scene extent it was marked as. Layer H detects this and recovers the original geometry.</p>
+    <p>Layer H is architecturally isolated. It consumes no outputs from other layers and produces no inputs to them. It operates on image geometry and pixel-band statistics, not on the sentinel or halo structures. This independence means it can be applied to an image even if all other layers are absent.</p>
+    <p>The crop or stitch may be Class 1 (routine image editing) or Class 3 (targeted manipulation). Layer H does not distinguish these on its own. It records the geometry. The interpretation &mdash; whether the crop is consistent with known editorial behavior, whether it is suspiciously precise around evidence, whether the stitch joins images with other provenance anomalies &mdash; requires the larger evidentiary context.</p>
+  </div>
+</section>
+
+<!-- ── What It Detects / Proves / Does Not Prove ── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>What This Layer Detects and Proves</h2>
+    <div class="grid-3" style="margin-top:1.5rem">
+      <div class="card card-dark">
+        <h3>Detects</h3>
+        <p>Horizontal crop (left, right, or both). Vertical crop (top, bottom, or both). Both-axis rectangular crop. Image stitch along a seam. Dimension mismatch between current and encoded dimensions.</p>
+      </div>
+      <div class="card card-dark" style="border-top:3px solid var(--pass)">
+        <h3 style="color:var(--pass)">Proves</h3>
+        <p><strong>Participation:</strong> the image was processed by a tool implementing this protocol.</p>
+        <p><strong>Original dimensions:</strong> W_orig and H_orig recoverable to within 8px via least squares when 2+ rulers survive.</p>
+        <p><strong>Crop offset:</strong> amount removed from left and/or top edge.</p>
+        <p><strong>Stitch seam:</strong> approximately identifiable from the column where ruler sets change.</p>
+        <p><strong>Geometric integrity:</strong> rulers at expected positions with consistent payloads = no spatial manipulation.</p>
+      </div>
+      <div class="card card-dark" style="border-top:3px solid var(--tamper)">
+        <h3 style="color:var(--tamper)">Does Not Prove</h3>
+        <p>Why the crop or stitch occurred.</p>
+        <p>Whether the crop was deliberate or editorial.</p>
+        <p>Identity of the entity that performed the operation.</p>
+        <p><em>These inferences require the broader evidentiary context described in the <a href="index.html" style="color:var(--amber)">System Model</a>.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Explicit Constraints ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Explicit Constraints</h2>
+    <p><em>Every item listed is covered by a peer layer or is a documented open item. Nothing in this list is a deficiency &mdash; it is the specification of what this layer is for and what it delegates.</em></p>
+
+    <div style="margin-top:1.5rem">
+      <div class="param-block">
+        <dl>
+          <dt>Rotation destroys ruler alignment</dt>
+          <dd>Use Layer G. These two layers are designed as complements with no overlap in attack surface.</dd>
+
+          <dt>Both-axis crop recovers dimensions only partially</dt>
+          <dd>Simultaneous left and top crop corrupts payloads on both axes. Crop is detected; exact dimensions require the manifest or an iterative search over (crop_left, crop_top) pairs.</dd>
+
+          <dt>Does not authenticate identity</dt>
+          <dd>Presence of a ruler proves the protocol was applied. It does not establish who applied it. That is the matching service&rsquo;s domain.</dd>
+
+          <dt>RAW/Lightroom pipeline not yet validated</dt>
+          <dd>Whether bands survive demosaicing and Lightroom export is an open item. If they do, this layer extends claims to professional photography workflows. This is the highest-priority open item in the system.</dd>
+
+          <dt>Extreme monochromatic content</dt>
+          <dd>Images where the natural |R&minus;G| or |G&minus;B| distribution already clusters near 198 may produce spurious ruler detections. The blind-scan threshold (62) is calibrated against the DIV2K corpus.</dd>
+
+          <dt>Not a pixel-integrity layer</dt>
+          <dd>Use Layer D for pixel-level tampering detection. Layer H is a geometric layer.</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Encoding Surface ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Encoding Surface</h2>
+
+    <h3>Why Bands, Not Points</h3>
+    <p>The fundamental challenge for any geometric layer is JPEG resilience. JPEG operates on 8&times;8 pixel blocks using DCT. A single marked pixel is averaged with 63 neighbors, and any chroma signal is destroyed by the quantization step. This eliminates all single-pixel and small-patch approaches for use with lossy formats.</p>
+    <p>The solution is to fill the entire 8&times;8 block with the target chroma. A 16-pixel-wide band column spans exactly two 8-pixel JPEG block columns. When every pixel in both columns has <code>|R&minus;G| = 198</code>, the entire chroma block is uniformly elevated. JPEG quantizes the block mean, not individual pixels. A uniformly elevated block mean survives at any quality setting &mdash; JPEG cannot reduce a consistent chroma signal without reducing the entire block, which would be visible in the luminance.</p>
+    <p>Empirical result: band mean after Q85 = 195.5 (target 198, drift 2.5 counts). Band mean after Q30 = 195.7. Natural column mean = 15&ndash;20 counts. Detection margin = 175+ counts at all tested quality levels. <strong>Zero bit errors across Q30&ndash;Q95.</strong></p>
+
+    <h3>Band Structure</h3>
+    <p>Each ruler is a <code>BAND_WIDTH = 16</code> pixel-wide column (vertical ruler) or row (horizontal ruler). Every pixel in the band has its channel difference adjusted to <code>RULER_TARGET = 198</code> (= 197+1, 197 prime) for marked segments. Unmarked segments are left at their natural values.</p>
+
+    <h3>Segment Encoding</h3>
+    <p>The band is divided into <code>SEGMENT_HEIGHT = 32</code> pixel segments. Each segment encodes one payload bit. Detection reads the mean <code>|R-G|</code> (or <code>|G-B|</code>) per segment across the band width. If the mean exceeds <code>SEGMENT_THRESHOLD = 80</code>, the segment is classified as bit = 1.</p>
+    <p>The gap between natural content mean (~15 counts) and embedded mean (~195 counts) provides approximately 115 counts of margin, far exceeding the JPEG-induced degradation of 2&ndash;5 counts at Q85.</p>
+
+    <h3>Orthogonal Channel Design</h3>
+    <p>Vertical ruler bands (columns) embed <code>|R-G| = 198</code>. Horizontal ruler bands (rows) embed <code>|G-B| = 198</code>. These use different channel pairs from the same target value.</p>
+    <p>The orthogonal design solves the intersection problem: wherever a vertical and horizontal band cross (a 16&times;16 pixel intersection zone), the horizontal ruler's embedding would overwrite the G channel that the vertical ruler set, corrupting the vertical ruler's signal. By assigning each axis a different channel pair, the detector reads <code>|R-G|</code> for vertical rulers and <code>|G-B|</code> for horizontal rulers, and each is immune to modifications made by the other.</p>
+  </div>
+</section>
+
+<!-- ── Payload Structure ── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Payload Structure</h2>
+    <p>The payload is packed MSB-first in priority order. Critical identification data occupies the first bits, ensuring that even a heavily cropped image with only a few surviving segments can identify which ruler it is.</p>
+
+    <h3>Standard Mode (dimension &ge; 1024) &mdash; 51 bits</h3>
+    <div class="param-block">
+      <dl>
+        <dt>bit 0</dt>       <dd>mode flag (0 = standard)</dd>
+        <dt>bits 1&ndash;3</dt>   <dd>fraction index (3 bits) &mdash; e.g. 001 = 1/4</dd>
+        <dt>bit 4</dt>       <dd>axis (0 = vertical/column, 1 = horizontal/row)</dd>
+        <dt>bits 5&ndash;17</dt>  <dd>dim_orig (13 bits) &mdash; W for col rulers, H for row rulers</dd>
+        <dt>bits 18&ndash;34</dt> <dd>timestamp_hours (17 bits, hour precision, 50-year range)</dd>
+        <dt>bits 35&ndash;50</dt> <dd>session_hash truncated (16 bits)</dd>
+      </dl>
+    </div>
+
+    <h3>Small Mode (dimension &lt; 1024) &mdash; 28 bits</h3>
+    <div class="param-block">
+      <dl>
+        <dt>bit 0</dt>       <dd>mode flag (1 = small)</dd>
+        <dt>bit 1</dt>       <dd>axis</dd>
+        <dt>bits 2&ndash;14</dt>  <dd>absolute pixel position (13 bits)</dd>
+        <dt>bits 15&ndash;27</dt> <dd>dim_orig (13 bits)</dd>
+      </dl>
+    </div>
+
+    <p>The mode flag in bit 0 means any surviving ruler fragment can identify the decoding path. Four surviving segments (4 bits) yield mode + partial fraction &mdash; enough to prove the image carries a ruler even if the full payload is lost.</p>
+  </div>
+</section>
+
+<!-- ── Ruler Geometry ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Ruler Geometry</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Image Dimension</th><th>Mode</th><th>Ruler Count</th><th>Positions</th><th>Payload Bits</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>&lt; 1024 px (small)</td><td>SMALL</td><td>3</td><td>dim &times; [1/4, 1/2, 3/4]</td><td>16&ndash;23</td></tr>
+          <tr><td>&ge; 1024 px (standard)</td><td>STANDARD</td><td>5</td><td>dim &times; [1/8, 1/4, 1/2, 3/4, 7/8]</td><td>32&ndash;64</td></tr>
+          <tr><td>4096 px (very large)</td><td>STANDARD</td><td>5</td><td>same fractions</td><td>105 (full + redundancy)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Ruler positions are symmetric about the center (e.g., 1/4 and 3/4, 1/8 and 7/8). A right-edge crop and a left-edge crop are equally detectable &mdash; the displaced ruler is always close to an expected position for the other edge.</p>
+  </div>
+</section>
+
+<!-- ── Protocol Constants ── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Protocol Constants</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Constant</th><th>Value</th><th>Derivation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>RULER_TARGET</code></td><td>198</td><td>= 197+1 (197 prime, above FLOOR=43). Used for |R-G| in vertical rulers</td></tr>
+          <tr><td><code>RULER_H_TARGET</code></td><td>198</td><td>= 197+1 same prime, but |G-B| channel &mdash; orthogonal to vertical rulers</td></tr>
+          <tr><td><code>BAND_WIDTH</code></td><td>16 px</td><td>Two 8-pixel JPEG chroma blocks wide &mdash; fills entire DCT block per column</td></tr>
+          <tr><td><code>SEGMENT_HEIGHT</code></td><td>32 px</td><td>One payload bit per 32-pixel segment; balances capacity vs spatial resolution</td></tr>
+          <tr><td><code>SEGMENT_THRESHOLD</code></td><td>80 counts</td><td>Midpoint between natural |R-G| mean (~15) and embedded mean (~195)</td></tr>
+          <tr><td><code>SMALL_THRESH</code></td><td>1024 px</td><td>Below this dimension: absolute position encoding (small mode)</td></tr>
+          <tr><td><code>FLOOR</code></td><td>43</td><td>GRANITE protocol minimum prime (sentinel entry constant M=31 + margin)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The separation between <code>RULER_TARGET = 198</code> and the Layer G targets (<code>INNER_TARGET = 168</code>, <code>OUTER_TARGET = 140</code>) is 30 counts (inner) and 58 counts (outer). Sufficient to prevent crosstalk under JPEG at any tested quality level, since JPEG-induced target drift is typically &plusmn;5&ndash;9 counts.</p>
+  </div>
+</section>
+
+<!-- ── Detection Algorithm ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Detection Algorithm</h2>
+
+    <h3><span style="color:var(--amber)">○</span> Manifest-Mode Detection</h3>
+    <p>When the embedding manifest is available, ruler positions are known. The detector scans each expected column and row position, reads segment means, and decodes the payload.</p>
+    <pre><code>1. Compute expected ruler positions from current image dimensions.
+2. For each expected column c:
+   a. For each 32px segment s:
+      mean_rg = mean(|R-G|) over pixels rows[32s..32s+32], cols[c-8..c+8]
+      bit[s] = 1 if mean_rg >= 80, else 0
+   b. payload = unpack(bits)
+   c. Report: position, fraction, dim_orig, timestamp, session_hash
+3. Repeat for rows using |G-B| channel.
+4. Compare decoded dim_orig to current dimensions.
+   If mismatch: crop detected.</code></pre>
+
+    <h3><span style="color:var(--teal)">&bull;</span> Blind-Mode Detection (Forensic)</h3>
+    <p>When no manifest is available &mdash; typical in forensic analysis of potentially-cropped images &mdash; the detector scans every column for elevated band means.</p>
+    <pre><code>1. Compute per-column mean |R-G| across full image height.
+2. Apply 16px uniform filter to find band centers.
+3. Non-maximum suppression within BAND_WIDTH to get candidates.
+4. At each candidate column: read segment means, decode payload.
+5. Classify as genuine if band_mean >= 62 AND dim_orig > 0.
+6. Repeat for rows using |G-B|.
+7. Run recover_original_dimensions() on all genuine detections.</code></pre>
+
+    <h3>Dimension Recovery: Three Paths</h3>
+    <p>The recovery algorithm handles cases where JPEG or crop corrupts one or more payload paths:</p>
+
+    <div class="grid-3" style="margin-top:1rem; margin-bottom:1.5rem">
+      <div class="card card-dark">
+        <h3>Path A &mdash; Least Squares</h3>
+        <p>2+ col rulers with valid, diverse fractions. Solves <code>new_pos_i = W_orig &times; frac_i &minus; crop_offset</code>. Exact when overdetermined.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Path B &mdash; Small-Mode Displacement</h3>
+        <p><code>crop_top = encoded_pos &minus; current_row</code> for small-mode row rulers. <code>H_orig = H_cur + crop_top</code>. Robust to left crops that corrupt standard-mode payloads.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Path C &mdash; Garbled Payload</h3>
+        <p>If all col rulers report the same fraction (garbled by top crop shifting segment indices), the horizontal axis was not cropped. <code>W_orig = W_cur</code>.</p>
+      </div>
+    </div>
+
+    <pre><code>new_pos_i = W_orig * frac_i - crop_offset
+
+Matrix form:  [frac_i, -1] * [W_orig, crop_offset]^T = new_pos_i
+
+With 2+ rulers: np.linalg.lstsq(A, b) gives exact solution.
+With 4+ rulers: overdetermined system, least squares minimizes residual.
+
+Cross-check: dim_orig in payload must match W_orig estimate.
+Confidence += 1 for each matching payload confirmation.</code></pre>
+  </div>
+</section>
+
+<!-- ── Survivability Profile ── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Survivability Profile</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Transform</th><th>Outcome Class</th><th>Detection</th><th>W Recover</th><th>H Recover</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>JPEG Q95&ndash;Q30</td><td style="color:var(--pass)">1 &mdash; Benign</td><td class="yes">100%</td><td class="yes">✓</td><td class="yes">✓</td><td>Zero bit errors; band mean drift &lt; 5 counts</td></tr>
+          <tr><td>Left crop</td>         <td style="color:var(--tamper)">3 (if targeted)</td><td class="yes">100%</td><td class="yes">exact</td><td class="yes">exact</td><td>LS from col rulers; row payload intact</td></tr>
+          <tr><td>Right crop</td>        <td style="color:var(--tamper)">3 (if targeted)</td><td class="yes">100%</td><td class="yes">exact</td><td>=H_cur</td><td>Row rulers intact; H_orig unchanged</td></tr>
+          <tr><td>Top crop</td>          <td style="color:var(--tamper)">3 (if targeted)</td><td class="yes">100%</td><td>=W_cur</td><td class="yes">exact</td><td>Path B: small-mode row displacement</td></tr>
+          <tr><td>Bottom crop</td>       <td style="color:var(--tamper)">3 (if targeted)</td><td class="yes">100%</td><td>=W_cur</td><td>&asymp;</td><td>Path B: row blind scan</td></tr>
+          <tr><td>Both-axis crop</td>    <td style="color:var(--tamper)">3 (if targeted)</td><td class="yes">100%</td><td>limited</td><td>limited</td><td>Detection solid; dim recovery partial</td></tr>
+          <tr><td>Horizontal stitch</td> <td style="color:var(--tamper)">3 (if targeted)</td><td class="yes">100%</td><td>&mdash;</td><td>&mdash;</td><td>Inconsistent W_orig across ruler sets</td></tr>
+          <tr><td>PNG (lossless)</td>     <td style="color:var(--pass)">1 &mdash; Benign</td><td class="yes">100%</td><td class="yes">✓</td><td class="yes">✓</td><td>Zero degradation</td></tr>
+          <tr><td>Rotation (any)</td>     <td>N/A</td><td>✗</td><td>&mdash;</td><td>&mdash;</td><td>Use Layer G; axis-aligned only</td></tr>
+          <tr><td>RAW/Lightroom</td>      <td style="color:var(--amber)">Open item</td><td>TBD</td><td>TBD</td><td>TBD</td><td>Highest-priority open item</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The JPEG survival result deserves emphasis: <strong>zero bit errors at Q30 through Q95</strong>. This is because the 16-pixel band fills the entire DCT chroma block, so JPEG quantization preserves the mean even as it smears individual pixel values. The band mean after Q85 compression measures 195.5 counts against a target of 198 &mdash; a drift of 2.5 counts, well within the detection threshold margin of 80 counts.</p>
+    <blockquote>
+      <p><em>Positions survive JPEG. Values do not. Density survives everything.</em></p>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ── Validation Results ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Validation Results</h2>
+    <p>All results from Layer H validation against the DIV2K training corpus (100 images, 2K resolution photographs). Test environment: Windows 11, Python 3.12, PIL 10.x.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Test</th><th>Result</th><th>N Tested</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Roundtrip 1024&times;768</td>         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>W and H decode exactly; ts and sh recovered</td></tr>
+          <tr><td>Small mode 800&times;600</td>          <td class="yes">6/6 PASS</td><td>6 rulers</td><td>Absolute positions decode exactly</td></tr>
+          <tr><td>JPEG Q95</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 195.9; natural mean 15.1; gap 180.9</td></tr>
+          <tr><td>JPEG Q85</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 195.5; gap 178.6</td></tr>
+          <tr><td>JPEG Q70</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 195.6</td></tr>
+          <tr><td>JPEG Q60</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 196.0</td></tr>
+          <tr><td>JPEG Q50</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 197.9</td></tr>
+          <tr><td>JPEG Q40</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 199.3; gap 190.4</td></tr>
+          <tr><td>JPEG Q30</td>                         <td class="yes">8/8 PASS</td><td>8 rulers</td><td>Band mean 195.7; zero bit errors</td></tr>
+          <tr><td>Left crop (200px)</td>                <td class="yes">PASS</td><td>100 images</td><td>W_orig = 1024 exact via Path A</td></tr>
+          <tr><td>Top crop (150px)</td>                 <td class="yes">PASS</td><td>100 images</td><td>H_orig = 768 exact via Path B; W_orig = W_cur via Path C</td></tr>
+          <tr><td>Right crop</td>                       <td class="yes">PASS</td><td>100 images</td><td>W_orig exact; H_orig = H_cur (fallback)</td></tr>
+          <tr><td>Both-axis crop</td>                   <td class="yes">detect PASS dim PARTIAL</td><td>100 images</td><td>Crop confirmed; W/H recovery limited without manifest</td></tr>
+          <tr><td>Clean &mdash; no false alarm</td>     <td class="yes">PASS</td><td>100 images</td><td>crop_detected = False on all 100 images</td></tr>
+          <tr><td>Stitch detection</td>                 <td class="yes">PASS</td><td>50 pairs</td><td>Inconsistent W_orig triggers stitch flag</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── API Reference ── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>API Reference</h2>
+    <p>Module: <code>layer_h_ruler.py</code> &nbsp;|&nbsp; License: BSD-2 &nbsp;|&nbsp; Dependencies: numpy, PIL, scipy, sympy</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Function</th><th>Signature</th><th>Returns</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>embed_all_rulers()</code></td><td>image, timestamp_hrs=None, session_hash=0</td><td>PIL Image with all rulers embedded</td></tr>
+          <tr><td><code>embed_ruler()</code></td><td>image, cr, is_col, bits, skip_positions=None</td><td>PIL Image with single ruler embedded</td></tr>
+          <tr><td><code>detect_all_rulers()</code></td><td>image</td><td>List[RulerDetection] at expected positions</td></tr>
+          <tr><td><code>detect_ruler()</code></td><td>image, cr, is_col</td><td>RulerDetection with decoded payload</td></tr>
+          <tr><td><code>blind_scan_rulers()</code></td><td>image, band_col_threshold=62, band_row_threshold=62</td><td>List[RulerDetection] found by scan</td></tr>
+          <tr><td><code>analyze_crop()</code></td><td>image</td><td>CropForensicReport</td></tr>
+          <tr><td><code>recover_original_dimensions()</code></td><td>detections, W_cur, H_cur</td><td>dict: W_orig, H_orig, crop_left, crop_top</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Quickstart</h3>
+    <pre><code>from layer_h_ruler import embed_all_rulers, detect_all_rulers, analyze_crop
+
+# Embed
+marked = embed_all_rulers(image, timestamp_hrs=ts, session_hash=receipt_id)
+
+# Detect &mdash; manifest mode
+rulers = detect_all_rulers(marked)
+for r in rulers:
+    print(r.payload.dim_orig, r.payload.fraction)
+
+# Forensic analysis &mdash; blind mode, no manifest
+report = analyze_crop(suspect_image)
+if report.crop_detected:
+    print(f'Crop detected. W_orig={report.original_W_estimate}')
+    for ev in report.evidence:
+        print(f'  {ev}')</code></pre>
+  </div>
+</section>
+
+<!-- ── Known Limitations and Open Items ── -->
+<section class="section">
+  <div class="container content-narrow">
+    <h2>Known Limitations and Open Items</h2>
+
+    <div class="grid-2" style="margin-top:1.5rem">
+      <div class="card card-dark">
+        <h3>Confirmed Limitations</h3>
+        <p><strong>Both-axis crop dimension recovery.</strong> Simultaneous left and top crop corrupts payloads on both axes. Crop is detected; exact dimensions require the manifest or an iterative search over (crop_left, crop_top) pairs. The iterative search is O(N_fracs&sup2;) and tractable but not yet implemented.</p>
+        <p><strong>Extreme monochromatic content.</strong> Images whose natural |R&minus;G| distribution clusters near 198 may produce spurious detections above the band threshold. Threshold is calibrated against DIV2K; specialized image types (infrared, extreme-saturation) require threshold adjustment.</p>
+        <p><strong>Rotation destroys axis alignment.</strong> By design. Layer G covers rotation. The two layers are complementary.</p>
+      </div>
+      <div class="card card-dark">
+        <h3>Open Items</h3>
+        <p><strong>RAW/Lightroom pipeline.</strong> Highest-priority open item. If ruler bands survive RAW demosaicing and Lightroom export, this layer extends forensic provenance to professional photography workflows.</p>
+        <p><strong>Both-axis iterative recovery.</strong> Implement candidate search over (crop_left, crop_top) pairs by correlating blind-scan positions against all fraction assignments.</p>
+        <p><strong>Stitch seam precision.</strong> Currently detected but not precisely localized. Add seam-column reporting to <code>analyze_crop()</code>.</p>
+        <p><strong>Scale to 500+ images.</strong> Current validation: 100 DIV2K images. Extend to full 800-image training set.</p>
+        <p><strong>Neural codec characterization.</strong> HEIC, AVIF, WebP use non-DCT compression. Band-mean encoding is theoretically more robust but survivability has not been measured.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Canonical Phrases ── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <h2>Canonical Phrases</h2>
+    <blockquote><p><em>&ldquo;Positions survive JPEG. Values do not. Density survives everything.&rdquo;</em></p></blockquote>
+    <blockquote><p><em>&ldquo;The ruler's position is its testimony. The fraction is its alibi. Together they prove what the image was.&rdquo;</em></p></blockquote>
+    <blockquote><p><em>&ldquo;The adversary who crops the image shifts the ruler but cannot erase what the ruler encodes.&rdquo;</em></p></blockquote>
+    <blockquote><p><em>&ldquo;Can you strip it without the stripping being interpretable? That is the harder problem, and the one this system actually solves.&rdquo;</em></p></blockquote>
+
+    <p style="margin-top:3rem; text-align:center; color:var(--text-dim); font-style:italic">Document version: 2.0 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; System Model + Layer H specification complete.</p>
+
+    <div style="text-align:center; margin-top:2rem">
+      <a href="index.html" class="btn btn-secondary">&larr; Back to The Stack</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div>
+      <div class="footer-title">Granite Under Sandstone</div>
+      <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <span class="footer-sep">/</span>
+      <a href="index.html">The Stack</a>
+      <span class="footer-sep">/</span>
+      <a href="../docs/index.html">Docs</a>
+      <span class="footer-sep">/</span>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

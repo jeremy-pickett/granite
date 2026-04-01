@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Addendum H: Thar Be Dragons &mdash; Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<div class="starfield"></div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite <span style="color:var(--text-dim)">/</span> Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../the-stack/index.html">The Stack</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html">History</a>
+      <a href="../drops.html">Sample Code</a>
+      <a href="index.html" class="active">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+      <a href="../future.html">Future</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Addendum H</p>
+    <h1>Thar Be Dragons</h1>
+    <p class="hero-subtitle">Granite Under Sandstone &mdash; Addendum Series</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container content-narrow">
+    <h2>H.1 The Uncomfortable Truth</h2>
+    <p>The provenance signal lives in the physics. The attribution architecture lives in the positions. The positions live in a derivation from a seed. The seed is a 256-bit number that a human must generate, store, protect, and never lose.</p>
+    <p>Everything below the seed is elegant. Everything above the seed is key management. Key management is the graveyard of elegant systems. The hardest problem in cryptography has never been the algorithm. It has been the human holding the key.</p>
+    <p class="lead"><em>Whitfield Diffie did not become famous for inventing public-key cryptography. He became famous for understanding that the hard problem was never the math. It was the key distribution. We face the same problem in a different domain. The math works. The question is whether the humans can hold the secret.</em></p>
+    </div></section>
+<section class="section section-alt"><div class="container content-narrow">
+    <h2>H.2 The Seven Dragons</h2>
+    <h3>Dragon 1: Single Point of Total Compromise</h3>
+    <p>The seed is the root of the derivation tree. Every fingerprint the creator has ever produced or will ever produce derives from this one value. If the seed is obtained by an adversary, the adversary can:</p>
+    <p>Derive the position set for any image the creator has published, enabling targeted suppression at known positions.</p>
+    <p>Forge new images with the creator’s position patterns, producing files that the matching service attributes to the creator.</p>
+    <p>Register fingerprints under a different pseudonym that match the creator’s images, creating competing claims.</p>
+    <p>Compute fingerprints for images the creator has not yet published, pre-registering claims with earlier timestamps.</p>
+    <p><strong>Severity: </strong>Catastrophic. One secret. Total compromise of all past and future attribution. This is the worst property a secret can have, and it is an intrinsic consequence of deterministic derivation from a single root.</p>
+    <h3>Dragon 2: The Seed Lives on a Human’s Device</h3>
+    <p>Password managers get breached. Laptops get stolen. Phones are lost. Cloud backups are compromised. Mnemonics are photographed. Sticky notes are found. Every key management failure in the history of cryptography applies to the seed. The seed is exactly as secure as the least secure device or storage medium it has ever touched.</p>
+    <p><strong>Severity: </strong>High. The seed’s security ceiling is determined by the creator’s operational security practices, which vary from excellent (hardware security module) to catastrophic (texted to a friend).</p>
+    <h3>Dragon 3: Rotation Is Expensive</h3>
+    <p>If the creator suspects compromise and rotates to a new seed, all images embedded with the old seed have fingerprints that no longer connect to the new seed. The creator’s corpus splits into two unlinked sets. Linking the old and new identities requires a public declaration: “old pseudonym and new pseudonym belong to the same entity.” That declaration is: additional infrastructure; a permanent record connecting the two identities; and if the old seed was compromised, a bridge between the compromised identity and the new one.</p>
+    <p><strong>Severity: </strong>Medium. Rotation works but it is not free, not seamless, and not private.</p>
+    <h3>Dragon 4: No Revocation Mechanism</h3>
+    <p>There is no certificate authority. There is no revocation list. If the seed leaks, the creator can delete their registrations from matching services, but the fingerprints in the wild still match the leaked seed’s derivations. Anyone holding the leaked seed can register those fingerprints under a new pseudonym. The creator cannot “invalidate” the seed because the seed is not issued by anyone. It is a number. Numbers cannot be revoked.</p>
+    <p><strong>Severity: </strong>High. The absence of revocation is a design choice (no central authority), not an oversight. It is the cost of decentralization. Centralized revocation requires a central authority. The scheme explicitly avoids central authorities. The tradeoff is acknowledged.</p>
+    <h3>Dragon 5: No Forward Secrecy</h3>
+    <p>In Diffie-Hellman key exchange, ephemeral session keys provide forward secrecy: compromise of the long-term key does not compromise past sessions because each session used a unique ephemeral key that was discarded after use. In this scheme, the seed IS the long-term key, and the fingerprints are deterministically derived from it without ephemeral components. Every fingerprint ever derived is retroactively compromised when the seed is compromised.</p>
+    <p>There is no mechanism by which a past fingerprint can be made independent of the seed after the fact. The derivation is deterministic and one-way, but it is one-way in the wrong direction for forward secrecy: knowing the seed reveals all fingerprints, but knowing all fingerprints does not reveal the seed.</p>
+    <p><strong>Severity: </strong>High. Forward secrecy is a property the scheme fundamentally cannot provide without introducing ephemeral state, which contradicts the “one seed, deterministic derivation” design.</p>
+    <h3>Dragon 6: Weak Seed Generation</h3>
+    <p>A 256-bit random seed is computationally infeasible to brute-force. A seed derived from a pet’s name, a birthday, a phone number, or “password123” is trivially brutable. The adversary who knows a fingerprint and an image context needs only brute-force the seed space to derive the seed. With 256 bits of entropy, this is impossible. With 20 bits of entropy (“fluffy2024”), it takes seconds.</p>
+    <p>The scheme’s security guarantee is conditional on proper seed generation. The library must generate the seed using a cryptographically secure random number generator (CSPRNG) and must not accept user-supplied strings as seeds without explicit key derivation (e.g., PBKDF2, Argon2) that stretches low-entropy input into high-entropy output. Even with stretching, a weak passphrase is a weak passphrase. The library should warn. The library cannot prevent.</p>
+    <p><strong>Severity: </strong>Critical if seed generation is left to the user. Mitigated if the library generates the seed automatically and presents it as a mnemonic or hex string for backup.</p>
+    <h3>Dragon 7: Observable Image Context</h3>
+    <p>The derivation function takes two inputs: the secret seed and the image context. The image is public. If the image context is derived from the image (perceptual hash, dimensions, color space), the adversary can compute it. The adversary now has two of three values: the context (computed from the public image) and the fingerprint (detected from the public image). They need the seed.</p>
+    <p>HMAC-SHA512 is a pseudorandom function (PRF). Given the output and one input, recovering the other input is computationally equivalent to brute-forcing the key space. With a 256-bit seed, this is infeasible. The dragon is not in the math. The dragon is in potential implementation errors: using a non-PRF derivation, using a truncated seed, or using a predictable seed that reduces the effective key space.</p>
+    <p><strong>Severity: </strong>Low if implemented correctly. Catastrophic if implemented incorrectly. The implementation is the dragon, not the design.</p>
+    </div></section>
+<section class="section"><div class="container content-narrow">
+    <h2>H.3 The Severity Map</h2>
+    <div class="table-wrap"><table>
+<thead><tr><th>Dragon</th><th>Severity</th><th>Mitigable?</th><th>By Whom?</th></tr></thead>
+<tbody>
+<tr><td>1. Total compromise</td><td>Catastrophic</td><td>Partially. Hierarchical seeds can limit blast radius.</td><td>Library design.</td></tr>
+<tr><td>2. Device security</td><td>High</td><td>Yes. HSM, encrypted storage, hardware tokens.</td><td>Creator’s operational security.</td></tr>
+<tr><td>3. Rotation cost</td><td>Medium</td><td>Partially. Pre-planned rotation with linked pseudonyms.</td><td>Matching service policy.</td></tr>
+<tr><td>4. No revocation</td><td>High</td><td>No. Fundamental cost of decentralization.</td><td>Nobody. By design.</td></tr>
+<tr><td>5. No forward secrecy</td><td>High</td><td>No. Contradicts deterministic derivation.</td><td>Nobody. Fundamental tradeoff.</td></tr>
+<tr><td>6. Weak seed generation</td><td>Critical</td><td>Yes. Library enforces CSPRNG generation.</td><td>Library implementation.</td></tr>
+<tr><td>7. Observable context</td><td>Low (if correct)</td><td>Yes. Use HMAC-SHA512, full-length seed.</td><td>Library implementation.</td></tr>
+</tbody></table></div>
+    <p class="lead"><strong>Table H1. </strong><em>The seven dragons. Two are mitigable by library design, two by the creator’s operational security, one by matching service policy, and two are fundamental tradeoffs inherent to the decentralized architecture.</em></p>
+    </div></section>
+<section class="section section-alt"><div class="container content-narrow">
+    <h2>H.4 Partial Mitigations</h2>
+    <h3>H.4.1 Hierarchical Seeds (Limiting Blast Radius)</h3>
+    <p>Instead of one seed for all images, the creator derives a tree of sub-seeds from a master seed, analogous to BIP-32 hierarchical deterministic wallets:</p>
+    <p>master_seed</p>
+    <p>├─ project_seed_A = HMAC(master, &quot;project_A&quot;)</p>
+    <p>├─ project_seed_B = HMAC(master, &quot;project_B&quot;)</p>
+    <p>└─ project_seed_C = HMAC(master, &quot;project_C&quot;)</p>
+    <p>Compromise of project_seed_A exposes only images in project A. The master seed and other project seeds remain secure. The blast radius is limited to one branch of the tree. The cost: the creator must manage multiple project assignments, and the matching service must handle multiple pseudonyms per creator.</p>
+    <p>This does not solve Dragon 1 for the master seed. Compromise of the master seed compromises all branches. It reduces the probability of total compromise by ensuring that day-to-day operations use branch seeds, not the master. The master seed can be stored offline (cold storage, paper backup) and used only to derive new branches.</p>
+    <h3>H.4.2 Seed Generation Discipline</h3>
+    <p>The library generates the seed. Not the user. The seed is 256 bits from a CSPRNG. The library presents it as a 24-word BIP-39 mnemonic or a 64-character hex string. The user writes it down. The library does not accept user-chosen passphrases as seeds without explicit key derivation through Argon2 with high work factor.</p>
+    <p>The first-run experience is: “Your provenance seed has been generated. Write down these 24 words. Store them securely. This is the only secret in the system. If you lose it, attribution cannot be recovered.” Clear. Honest. No jargon. No options that let the user weaken their own security by accident.</p>
+    <h3>H.4.3 Image Context Hardening</h3>
+    <p>The image context used in seed derivation must be:</p>
+    <p><strong>Stable under compression: </strong>The same image compressed to Q75 must produce the same context as at Q95. Otherwise the creator cannot rederive the fingerprint from the compressed version. A perceptual hash (pHash, average hash, DCT hash) satisfies this.</p>
+    <p><strong>Distinct across content: </strong>Two visually different images must produce different contexts. Otherwise an adversary can craft a collision — a different image that produces the same position map from a stolen seed. Perceptual hashes are designed to differ across visually distinct content.</p>
+    <p><strong>Not invertible: </strong>The context should not reveal the seed when combined with the fingerprint. HMAC-SHA512 guarantees this as a PRF property.</p>
+    <p>The recommended context derivation is:</p>
+    <p>context = perceptual_hash(image) || dimensions || color_space</p>
+    <p>This produces a context that is stable under lossy transforms, distinct across content, and computable by the creator at any future time from any surviving version of the image.</p>
+    <h3>H.4.4 Compromise Response Protocol</h3>
+    <p>If a creator suspects seed compromise, the recommended response is:</p>
+    <p><strong>1. Generate a new seed. </strong>Immediately. Store securely.</p>
+    <p><strong>2. Register the new pseudonym with matching services. </strong>Begin embedding new images with the new seed.</p>
+    <p><strong>3. Publish a signed transition statement. </strong>A public declaration linking old pseudonym to new pseudonym, timestamped and signed with any available authentication (GPG key, social media account, notarized statement). This is not cryptographic proof. It is a human attestation. Courts accept human attestations.</p>
+    <p><strong>4. Contact matching services to flag the old pseudonym. </strong>Request that the old pseudonym be marked as “compromised, transition to [new pseudonym].” The service’s policy determines whether and how to honor this request.</p>
+    <p><strong>5. Accept the loss. </strong>Images embedded with the compromised seed are now in a contested state. The original creator has the transition statement and the registration timestamps. The adversary has the seed. The dispute is not cryptographically resolvable. It is legally resolvable through the weight of evidence: registration history, transition statement, original files, receipts.</p>
+    <p>This is not a clean recovery. There is no clean recovery from seed compromise in a decentralized system without revocation authority. The protocol is damage limitation, not damage elimination.</p>
+    </div></section>
+<section class="section"><div class="container content-narrow">
+    <h2>H.5 The Fundamental Tradeoffs</h2>
+    <p>Two of the seven dragons cannot be mitigated. They are structural consequences of the design’s core commitments:</p>
+    <p><strong>No revocation</strong> is the cost of no central authority. A system that can revoke credentials has a revocation authority. A revocation authority is a central point of control. The scheme rejects central points of control. Therefore the scheme cannot revoke. This is not an oversight. It is a price paid for a property we value more.</p>
+    <p><strong>No forward secrecy</strong> is the cost of deterministic derivation. A system that provides forward secrecy must use ephemeral state that is discarded after each operation. A system that provides deterministic rederivation from a single seed must not discard anything. The scheme requires deterministic rederivation so that the creator can prove ownership of any past image from the seed alone. Therefore the scheme cannot provide forward secrecy. This is not an oversight. It is a price paid for a property we value more.</p>
+    <p>Both tradeoffs are instances of a general principle: decentralized systems pay for their decentralization with properties that centralized systems get for free. The scheme accepts these costs because the benefits of decentralization (no lock-in, no authority, no infrastructure dependency) are worth more than the properties sacrificed.</p>
+    <p>Whether this tradeoff is correct depends on the threat model. For a creator whose primary adversary is corpus-scale ingestion by platforms that ignore provenance, the absence of revocation is irrelevant (the adversary isn’t checking revocation lists anyway). For a creator whose primary adversary is a targeted attacker who steals credentials, the absence of revocation is dangerous. The scheme is better suited to the first threat model than the second. The paper should state this explicitly.</p>
+    </div></section>
+<section class="section section-alt"><div class="container content-narrow">
+    <h2>H.6 What Diffie Would Say</h2>
+    <p>The system has one secret per user. That is the minimum possible secret surface. The derivation is a standard PRF construction (HMAC-SHA512) with a full-length key. The key is never transmitted. The fingerprints are one-way derivations from the key. The design is sound.</p>
+    <p>The danger is not in the cryptography. The danger is in the operational security of the key holder and in the absence of recovery mechanisms when operational security fails. These are the same dangers that every cryptographic system faces. They are not solved by better algorithms. They are solved by better practices, better tools, and honest documentation of what happens when practices fail.</p>
+    <p>The scheme documents its dragons. It does not pretend they do not exist. It does not claim robustness it does not have. It states the tradeoffs, explains the costs, and lets the user decide whether the costs are acceptable for their threat model.</p>
+    <p class="lead"><em>The hardest problem in cryptography has never been the algorithm. It has been the human holding the key. We cannot solve the human. We can make the key as simple as possible, the generation as secure as possible, the documentation as honest as possible, and the blast radius as small as possible. The rest is the human’s responsibility. It always was.</em></p>
+    <p class="lead"><em>No seed management system has been implemented.</em></p>
+    <p class="lead"><em>The dragons are described because we see them, not because we have slain them.</em></p>
+    <p class="lead"><strong><em>Some dragons cannot be slain. Only acknowledged.</em></strong></p>
+    <p>Jeremy Pickett — March 2026</p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div>
+      <div class="footer-title">Granite Under Sandstone</div>
+      <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <span class="footer-sep">/</span>
+      <a href="index.html">Docs</a>
+      <span class="footer-sep">/</span>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

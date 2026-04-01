@@ -1,0 +1,24 @@
+2026-04-01 07:20:03 [Short Interest Tracker] INFO === Short Interest Tracker (ID 5) starting ===
+2026-04-01 07:20:03 [Short Interest Tracker] INFO Loaded 686 securities
+2026-04-01 07:20:03 [Short Interest Tracker] INFO Fetching...
+2026-04-01 07:20:03 [Short Interest Tracker] INFO Fetching short interest for 686 equities...
+2026-04-01 07:20:22 [Short Interest Tracker] INFO   Progress: 50/686 (50 fetched)
+2026-04-01 07:20:41 [Short Interest Tracker] INFO   Progress: 100/686 (96 fetched)
+2026-04-01 07:21:00 [Short Interest Tracker] INFO   Progress: 150/686 (143 fetched)
+2026-04-01 07:21:18 [Short Interest Tracker] INFO   Progress: 200/686 (187 fetched)
+2026-04-01 07:21:36 [Short Interest Tracker] INFO   Progress: 250/686 (231 fetched)
+2026-04-01 07:21:54 [Short Interest Tracker] INFO   Progress: 300/686 (275 fetched)
+2026-04-01 07:22:11 [Short Interest Tracker] INFO   Progress: 350/686 (314 fetched)
+2026-04-01 07:22:30 [Short Interest Tracker] INFO   Progress: 400/686 (360 fetched)
+2026-04-01 07:22:48 [Short Interest Tracker] INFO   Progress: 450/686 (406 fetched)
+2026-04-01 07:23:06 [Short Interest Tracker] INFO   Progress: 500/686 (448 fetched)
+2026-04-01 07:23:40 [Short Interest Tracker] INFO   Progress: 600/686 (526 fetched)
+2026-04-01 07:23:55 [Short Interest Tracker] INFO   Progress: 650/686 (554 fetched)
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Fetch complete — stats so far: {'fetched': 581, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 105, 'elapsed': 0.0}
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Transforming...
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Transformed 581 rows
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Storing...
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Writing 581 short interest records...
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Stored 581 rows
+2026-04-01 07:24:07 [Short Interest Tracker] INFO Short interest: 581 fetched, 581 stored, 105 skipped, 0 errors
+2026-04-01 07:24:07 [Short Interest Tracker] INFO === Done in 244.26s | {'fetched': 581, 'transformed': 581, 'stored': 581, 'errors': 0, 'skipped': 105, 'elapsed': 244.26} ===

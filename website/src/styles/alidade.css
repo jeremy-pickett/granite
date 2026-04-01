@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@source "../";
+
+@theme {
+  /* Alidade color palette — light, high-contrast
+     Clean white/grey backgrounds with strong readable text */
+  --color-ald-void: #F5F6FA;
+  --color-ald-deep: #FFFFFF;
+  --color-ald-surface: #EDEEF3;
+  --color-ald-surface-2: #E2E4EB;
+  --color-ald-border: rgba(60, 70, 100, 0.20);
+
+  --color-ald-blue: #2956A8;
+  --color-ald-blue-dim: #5B7EC0;
+  --color-ald-blue-glow: rgba(41, 86, 168, 0.10);
+  --color-ald-cyan: #0E7FAD;
+  --color-ald-green: #1A7D42;
+  --color-ald-red: #C53030;
+  --color-ald-amber: #B7791F;
+  --color-ald-ivory: #111827;
+
+  --color-ald-text: #1F2937;
+  --color-ald-text-muted: #4B5563;
+  --color-ald-text-dim: #6B7280;
+
+  /* Typography — synced with Granite's font stack */
+  --font-family-serif: var(--font-serif), Georgia, serif;
+  --font-family-mono: var(--font-mono), 'IBM Plex Mono', monospace;
+  --font-family-display: var(--font-display), sans-serif;
+
+  /* Font size overrides */
+  --text-sm: 18px;
+  --text-sm--line-height: 1.5;
+  --text-base: 23px;
+  --text-base--line-height: 1.6;
+  --text-lg: 28px;
+  --text-lg--line-height: 1.5;
+  --text-xl: 32px;
+  --text-xl--line-height: 1.4;
+}
+
+/* Base: 17px (Granite is 16px, +1pt) */
+.alidade-root {
+  font-size: 17px;
+  font-family: var(--font-serif), Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Override Tailwind's font families to use Granite's loaded fonts */
+.alidade-root .font-mono {
+  font-family: var(--font-mono), 'IBM Plex Mono', monospace !important;
+}
+
+.alidade-root .font-serif {
+  font-family: var(--font-serif), Georgia, serif !important;
+}
+
+/* Portfolio glow — gradient borders with high contrast */
+.glow-held-neutral {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(var(--color-ald-surface), var(--color-ald-surface)),
+    linear-gradient(135deg, #f59e0b, #fbbf24, #f59e0b);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+}
+
+.glow-held-down {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(var(--color-ald-surface), var(--color-ald-surface)),
+    linear-gradient(135deg, #ef4444, #f87171, #dc2626);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+}
+
+.glow-held-up {
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(var(--color-ald-surface), var(--color-ald-surface)),
+    linear-gradient(135deg, #3b82f6, #60a5fa, #2563eb);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 14px rgba(59, 130, 246, 0.35);
+}
+
+/* Buy confirmation: fade in, flash twice, fade out */
+@keyframes fadeFlash {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  25%  { opacity: 0.3; }
+  40%  { opacity: 1; }
+  55%  { opacity: 0.3; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}

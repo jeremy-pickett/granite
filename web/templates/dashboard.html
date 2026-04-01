@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alidade IALD Dashboard</title>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --text-dim: #94a3b8; --text-bright: #f8fafc;
+  --border: #475569;
+  --critical: #ef4444; --elevated: #f59e0b; --moderate: #3b82f6; --low: #6b7280;
+  --tier-s: #22c55e; --tier-a: #4ade80; --tier-b: #86efac;
+  --tier-c: #fbbf24; --tier-d: #9ca3af; --tier-e: #6b7280;
+  --bullish: #22c55e; --bearish: #ef4444; --neutral: #94a3b8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; background: var(--bg); color: var(--text); font-size: 13px; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+h1 { font-size: 18px; color: var(--text-bright); margin-bottom: 4px; }
+.subtitle { color: var(--text-dim); font-size: 11px; margin-bottom: 20px; }
+
+/* Tooltip */
+.tip { position: relative; cursor: help; border-bottom: 1px dotted var(--text-dim); }
+.tip .tiptext { visibility: hidden; background: #0f172a; color: var(--text); border: 1px solid var(--border);
+  padding: 8px 12px; border-radius: 6px; font-size: 11px; line-height: 1.5;
+  position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%);
+  width: 280px; white-space: normal; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+.tip:hover .tiptext { visibility: visible; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th { text-align: left; padding: 8px 10px; border-bottom: 2px solid var(--border); color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; overflow: hidden; }
+td { padding: 6px 10px; border-bottom: 1px solid var(--surface2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+tr:hover { background: var(--surface); cursor: pointer; }
+tr.expanded { background: var(--surface); }
+
+/* Score bar */
+.score-bar { display: inline-block; width: 80px; height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; vertical-align: middle; margin-right: 6px; }
+.score-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+
+/* Verdict badge */
+.verdict { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: bold; letter-spacing: 0.05em; }
+
+/* Signal tier badge */
+.tier { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center;
+  border-radius: 3px; font-size: 10px; font-weight: bold; color: #000; margin-right: 4px; }
+
+/* Direction indicator */
+.dir { font-weight: bold; }
+.dir-bullish { color: var(--bullish); }
+.dir-bearish { color: var(--bearish); }
+.dir-neutral { color: var(--neutral); }
+
+/* Detail panel */
+.detail-row td { padding: 0; }
+.detail { background: var(--surface); padding: 16px 20px; border-left: 3px solid var(--border); }
+.detail h3 { font-size: 13px; color: var(--text-bright); margin-bottom: 10px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.detail-section { background: var(--bg); border-radius: 6px; padding: 12px; }
+.detail-section h4 { font-size: 11px; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+.signal-row { padding: 4px 0; border-bottom: 1px solid var(--surface2); display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.signal-row:last-child { border-bottom: none; }
+.signal-name { flex: 1; }
+.signal-val { font-family: monospace; min-width: 50px; text-align: right; }
+
+/* Consensus bar */
+.consensus-bar { display: flex; height: 16px; border-radius: 3px; overflow: hidden; margin: 6px 0; }
+.consensus-bar div { transition: width 0.3s; }
+.cb-sbuy { background: #15803d; }
+.cb-buy { background: #22c55e; }
+.cb-hold { background: #eab308; }
+.cb-sell { background: #f97316; }
+.cb-ssell { background: #dc2626; }
+
+/* Rating label */
+.rating-row { display: flex; justify-content: space-between; padding: 3px 0; font-size: 11px; }
+.rating-company { color: var(--text-dim); }
+.rating-action { font-weight: bold; }
+
+.trend-label { font-size: 11px; padding: 2px 6px; border-radius: 3px; }
+.trend-improving { background: rgba(34,197,94,0.2); color: #22c55e; }
+.trend-declining { background: rgba(239,68,68,0.2); color: #ef4444; }
+.trend-stable { background: rgba(148,163,184,0.2); color: #94a3b8; }
+
+.loading { color: var(--text-dim); padding: 20px; text-align: center; }
+
+/* Type badge */
+.type-badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px;
+  max-width: 60px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.type-equity { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.type-crypto { background: rgba(249,115,22,0.15); color: #fb923c; }
+
+/* Column widths */
+#securities th:nth-child(1), #securities td:nth-child(1) { width: 70px; }
+#securities th:nth-child(2), #securities td:nth-child(2) { width: 200px; }
+#securities th:nth-child(3), #securities td:nth-child(3) { width: 60px; }
+#securities th:nth-child(4), #securities td:nth-child(4) { width: 180px; }
+#securities th:nth-child(5), #securities td:nth-child(5) { width: 90px; }
+#securities th:nth-child(6), #securities td:nth-child(6) { width: 60px; }
+#securities th:nth-child(7), #securities td:nth-child(7) { width: 80px; }
+#securities th:nth-child(8), #securities td:nth-child(8) { width: 80px; }
+#securities th:nth-child(9), #securities td:nth-child(9) { width: 100px; }
+#securities th:nth-child(10), #securities td:nth-child(10) { width: 80px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Alidade IALD Dashboard</h1>
+  <p class="subtitle">
+    <span class="tip">IALD<span class="tiptext">Integrated Anomaly &amp; Liquidity Detection. Scores the platform's confidence in trend direction. Higher IALD = more signals converging, higher conviction in the predicted move.</span></span>
+    Security Scoring &mdash; 33 active signals across 34 collectors
+  </p>
+
+  <table id="securities">
+    <thead>
+      <tr>
+        <th>Ticker</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>
+          <span class="tip">IALD Score<span class="tiptext">0.0&ndash;1.0 composite score measuring signal intensity. Computed from weighted, time-decayed signals with cluster discounting and independence bonuses. Higher = more anomalous activity detected. tanh(sum/2) normalization.</span></span>
+        </th>
+        <th>Verdict</th>
+        <th>
+          <span class="tip">Signals<span class="tiptext">Number of active signals contributing to the score. Each signal has a tier (S/A/B/C/D/E), weight, and time decay. Signals from diverse clusters earn an independence bonus.</span></span>
+        </th>
+        <th>
+          <span class="tip">30d Avg<span class="tiptext">Average IALD score over the last 30 days. Compare to current score: if current &gt; avg, the security is becoming more anomalous. If current &lt; avg, anomalies are fading.</span></span>
+        </th>
+        <th>
+          <span class="tip">Volatility<span class="tiptext">Standard deviation of IALD scores over 30 days. High volatility = score is swinging (new signals appearing and decaying). Low volatility = stable state (either consistently flagged or consistently clean).</span></span>
+        </th>
+        <th>
+          <span class="tip">Range<span class="tiptext">Min&ndash;Max IALD score over last 30 days. Wide range means the security has oscillated between clean and flagged. Narrow range near 0 = consistently clean. Narrow range near 1 = persistent anomaly.</span></span>
+        </th>
+        <th>Trend</th>
+      </tr>
+    </thead>
+    <tbody id="sec-body">
+      <tr><td colspan="10" class="loading">Loading securities...</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+const TIER_COLORS = {"S":"#22c55e","A":"#4ade80","B":"#86efac","C":"#fbbf24","D":"#9ca3af","E":"#6b7280","P":"#4b5563","X":"#374151"};
+const VERDICT_COLORS = {"VERY HIGH":"#ef4444","HIGH":"#f59e0b","MEDIUM":"#3b82f6","LOW":"#6b7280","VERY LOW":"#374151"};
+let expandedRow = null;
+
+function fmt(n, d=4) { return n != null ? n.toFixed(d) : '—'; }
+function fmtPct(n) { return n != null ? n.toFixed(1)+'%' : '—'; }
+
+function scoreColor(score) {
+  if (score >= 0.75) return '#ef4444';
+  if (score >= 0.50) return '#f59e0b';
+  if (score >= 0.25) return '#3b82f6';
+  return '#6b7280';
+}
+
+async function loadSecurities() {
+  const resp = await fetch('/api/securities');
+  const data = await resp.json();
+  const tbody = document.getElementById('sec-body');
+  tbody.innerHTML = '';
+
+  data.forEach(s => {
+    const score = s.score || 0;
+    const color = scoreColor(score);
+    const vColor = VERDICT_COLORS[s.verdict] || '#6b7280';
+    const trendCls = s.score_trend === 'improving' ? 'trend-improving' : s.score_trend === 'declining' ? 'trend-declining' : 'trend-stable';
+
+    const tr = document.createElement('tr');
+    tr.dataset.sid = s.security_id;
+    tr.innerHTML = `
+      <td><strong>${s.ticker}</strong></td>
+      <td style="color:var(--text-dim)">${(s.name||'').substring(0,30)}</td>
+      <td><span class="type-badge type-${s.security_type}">${s.security_type}</span></td>
+      <td>
+        <span class="score-bar"><span class="score-fill" style="width:${score*100}%;background:${color}"></span></span>
+        <span style="color:${color}">${fmt(score)}</span>
+      </td>
+      <td><span class="verdict" style="background:${vColor}20;color:${vColor}">${s.verdict||'—'}</span></td>
+      <td>${s.active_signals||0}</td>
+      <td>${fmt(s.avg_score_30d)}</td>
+      <td>${fmt(s.volatility_30d)}</td>
+      <td style="font-size:11px">${fmt(s.min_score_30d)}–${fmt(s.max_score_30d)}</td>
+      <td><span class="trend-label ${trendCls}">${s.score_trend||'—'}</span></td>
+    `;
+    tr.onclick = () => toggleDetail(s.security_id, tr);
+    tbody.appendChild(tr);
+  });
+}
+
+async function toggleDetail(sid, row) {
+  // Close existing
+  if (expandedRow) {
+    const existing = document.querySelector('.detail-row');
+    if (existing) existing.remove();
+    if (expandedRow === row) { expandedRow.classList.remove('expanded'); expandedRow = null; return; }
+    expandedRow.classList.remove('expanded');
+  }
+  expandedRow = row;
+  row.classList.add('expanded');
+
+  const resp = await fetch(`/api/security/${sid}`);
+  const data = await resp.json();
+
+  const detailTr = document.createElement('tr');
+  detailTr.className = 'detail-row';
+  const td = document.createElement('td');
+  td.colSpan = 10;
+
+  let signalsHtml = '';
+  const bullishSignals = data.signals.filter(s => s.direction === 'bullish');
+  const bearishSignals = data.signals.filter(s => s.direction === 'bearish');
+  const neutralSignals = data.signals.filter(s => s.direction === 'neutral');
+
+  function renderSignal(s) {
+    const dirCls = `dir-${s.direction}`;
+    const dirIcon = s.direction === 'bullish' ? '▲' : s.direction === 'bearish' ? '▼' : '●';
+    return `<div class="signal-row">
+      <span class="tier" style="background:${s.tier_color}">${s.tier}</span>
+      <span class="signal-name">${s.signal_type}</span>
+      <span class="dir ${dirCls}">${dirIcon}</span>
+      <span class="signal-val" title="Weighted contribution after decay: contribution × confidence × weight × decay">${s.weighted_contribution.toFixed(3)}</span>
+      <span class="signal-val" style="color:var(--text-dim)" title="Time decay factor (half-life: ${s.half_life}h, age: ${s.age_hours}h)">${s.decay.toFixed(2)}d</span>
+    </div>`;
+  }
+
+  if (bearishSignals.length) {
+    signalsHtml += '<div style="margin-bottom:4px;color:#ef4444;font-size:11px;font-weight:bold">BEARISH PRESSURE</div>';
+    signalsHtml += bearishSignals.map(renderSignal).join('');
+  }
+  if (bullishSignals.length) {
+    signalsHtml += '<div style="margin-top:8px;margin-bottom:4px;color:#22c55e;font-size:11px;font-weight:bold">BULLISH SUPPORT</div>';
+    signalsHtml += bullishSignals.map(renderSignal).join('');
+  }
+  if (neutralSignals.length) {
+    signalsHtml += '<div style="margin-top:8px;margin-bottom:4px;color:#94a3b8;font-size:11px;font-weight:bold">NEUTRAL / VOLATILITY</div>';
+    signalsHtml += neutralSignals.map(renderSignal).join('');
+  }
+  if (!data.signals.length) signalsHtml = '<div style="color:var(--text-dim)">No active signals</div>';
+
+  let consensusHtml = '<div style="color:var(--text-dim)">No analyst consensus data</div>';
+  const c = data.consensus;
+  if (c) {
+    const ratingLabel = {5:'Strong Buy',4:'Buy',3:'Hold',2:'Sell',1:'Strong Sell'}[Math.round(c.mean_rating)] || '';
+    consensusHtml = `
+      <div style="font-size:16px;font-weight:bold;margin-bottom:4px">${c.mean_rating?.toFixed(2) || '—'} / 5.00 <span style="font-size:12px;color:var(--text-dim)">${ratingLabel}</span></div>
+      <div style="font-size:11px;color:var(--text-dim)">${c.total_analysts} analysts &mdash; Mode: ${c.mode_label || '—'}</div>
+      <div class="consensus-bar">
+        <div class="cb-sbuy" style="width:${c.strong_buy_pct||0}%" title="Strong Buy: ${fmtPct(c.strong_buy_pct)}"></div>
+        <div class="cb-buy" style="width:${c.buy_pct||0}%" title="Buy: ${fmtPct(c.buy_pct)}"></div>
+        <div class="cb-hold" style="width:${c.hold_pct||0}%" title="Hold: ${fmtPct(c.hold_pct)}"></div>
+        <div class="cb-sell" style="width:${c.sell_pct||0}%" title="Sell: ${fmtPct(c.sell_pct)}"></div>
+        <div class="cb-ssell" style="width:${c.strong_sell_pct||0}%" title="Strong Sell: ${fmtPct(c.strong_sell_pct)}"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim)">
+        <span>Strong Buy ${fmtPct(c.strong_buy_pct)}</span><span>Buy ${fmtPct(c.buy_pct)}</span>
+        <span>Hold ${fmtPct(c.hold_pct)}</span><span>Sell ${fmtPct(c.sell_pct)}</span>
+      </div>
+      ${c.mean_price_target ? `<div style="margin-top:8px">Price target: <strong>$${c.mean_price_target?.toFixed(2)}</strong> mean ($${c.low_price_target?.toFixed(2)} &ndash; $${c.high_price_target?.toFixed(2)})</div>` : ''}
+    `;
+  }
+
+  let ratingsHtml = '';
+  if (data.recent_ratings && data.recent_ratings.length) {
+    ratingsHtml = data.recent_ratings.map(r => `
+      <div class="rating-row">
+        <span>${r.rating_date||''}</span>
+        <span class="rating-company">${(r.company||'').substring(0,25)}</span>
+        <span class="rating-action">${r.action||''}</span>
+        <span>${r.from_rating ? r.from_rating+' → '+r.to_rating : r.to_rating||''}</span>
+      </div>
+    `).join('');
+  }
+
+  // Signal descriptions
+  let descHtml = '';
+  data.signals.slice(0, 5).forEach(s => {
+    if (s.description) {
+      descHtml += `<div style="padding:3px 0;font-size:11px;border-bottom:1px solid var(--surface2)">
+        <span class="tier" style="background:${s.tier_color};font-size:9px">${s.tier}</span>
+        ${s.description.substring(0, 120)}
+      </div>`;
+    }
+  });
+
+  td.innerHTML = `<div class="detail">
+    <div class="detail-grid">
+      <div class="detail-section">
+        <h4><span class="tip">Signal Breakdown<span class="tiptext">Each signal contributes to the IALD score. Weighted contribution = contribution × confidence × tier_weight × time_decay. Signals are grouped by direction. Tier badge color: green=high conviction (S/A), yellow=moderate (C), grey=supporting (D/E).</span></span></h4>
+        ${signalsHtml}
+      </div>
+      <div>
+        <div class="detail-section" style="margin-bottom:12px">
+          <h4><span class="tip">Analyst Consensus<span class="tiptext">Aggregated from individual analyst upgrades/downgrades over the last 12 months. Mean rating on 1-5 scale (1=Strong Sell, 5=Strong Buy). Distribution bar shows the cohort breakdown. Price targets are consensus from Finnhub.</span></span></h4>
+          ${consensusHtml}
+        </div>
+        ${ratingsHtml ? `<div class="detail-section">
+          <h4>Recent Analyst Actions</h4>
+          ${ratingsHtml}
+        </div>` : ''}
+      </div>
+    </div>
+    ${data.llm_outlook ? `<div class="detail-section" style="margin-top:12px">
+      <h4><span class="tip">AI Outlook<span class="tiptext">Daily assessment by Claude Haiku based on the last week of public news. Direction is extracted from the analysis. Query time logged for performance tracking. This is an AI opinion, not a recommendation.</span></span>
+        <span style="float:right;font-size:10px;color:var(--text-dim)">${data.llm_outlook.model} &mdash; ${data.llm_outlook.outlook_date} (${data.llm_outlook.query_seconds.toFixed(1)}s)</span>
+      </h4>
+      <div style="margin:6px 0">
+        <span class="dir dir-${data.llm_outlook.direction}" style="font-size:14px">${data.llm_outlook.direction === 'bullish' ? '▲ BULLISH' : data.llm_outlook.direction === 'bearish' ? '▼ BEARISH' : '● NEUTRAL'}</span>
+      </div>
+      <div style="font-size:12px;line-height:1.6;color:var(--text)">${data.llm_outlook.analysis}</div>
+    </div>` : ''}
+    ${descHtml ? `<div class="detail-section" style="margin-top:12px"><h4>Signal Details</h4>${descHtml}</div>` : ''}
+  </div>`;
+
+  detailTr.appendChild(td);
+  row.after(detailTr);
+}
+
+loadSecurities();
+</script>
+</body>
+</html>

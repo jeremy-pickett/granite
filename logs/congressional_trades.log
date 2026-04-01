@@ -1,0 +1,24 @@
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO === Congressional Trade Feed (ID 17) starting ===
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Loaded 731 securities
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Fetching...
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Fetching recent congressional trades (bulk)...
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO   Got 1000 trades from bulk endpoint
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Fetch complete — stats so far: {'fetched': 1000, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Transforming...
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Transformed 1000 rows
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Storing...
+2026-04-01 06:27:01 [Congressional Trade Feed] INFO Writing 1000 congressional trades...
+2026-04-01 06:27:02 [Congressional Trade Feed] ERROR Collector failed: ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/base.py", line 140, in run
+    self.store(rows)
+  File "/home/ubuntu/granite/collectors/congressional_trades.py", line 174, in store
+    execute_values(
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+psycopg2.errors.CardinalityViolation: ON CONFLICT DO UPDATE command cannot affect row a second time
+HINT:  Ensure that no rows proposed for insertion within the same command have duplicate constrained values.
+
+2026-04-01 06:27:02 [Congressional Trade Feed] INFO Congressional trades: 1000 fetched, 0 stored, 0 skipped, 1 errors
+2026-04-01 06:27:02 [Congressional Trade Feed] INFO === Done in 0.38s | {'fetched': 1000, 'transformed': 1000, 'stored': 0, 'errors': 1, 'skipped': 0, 'elapsed': 0.38} ===

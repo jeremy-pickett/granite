@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Part II: Validation — History — Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css?v=2">
+</head>
+<body>
+
+<div class="starfield"></div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite <span style="color:var(--text-dim)">/</span> Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../the-stack/index.html">The Stack</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html" class="active">History</a>
+      <a href="../drops.html">Sample Code</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+      <a href="../future.html">Future</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Part II &middot; Chapters VIII&ndash;XIII</p>
+    <h1>Validation</h1>
+    <p class="hero-subtitle">800 photographs, three attack classes, and an honest reckoning</p>
+  </div>
+</header>
+
+<!-- ── CHAPTER 8 ──────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">VIII</span>
+      <h2>Block Interior</h2>
+      <p class="chapter-subtitle">The universe inside an 8&times;8 grid</p>
+    </div>
+
+    <p>A deep dive into DCT block structure revealed why some marker positions were more stable than others. The encoder chops the image into 8&times;8 blocks. Sixty-four pixels per block. Each block is processed independently &mdash; the encoder literally does not know that adjacent blocks exist.</p>
+
+    <blockquote>
+      <p>You must chunk them. The chunk boundary creates independence. The chunk interior creates correlation.</p>
+    </blockquote>
+
+    <p>The center positions of each block are dominated by the DC coefficient &mdash; the most stable, most heavily preserved component. Edge positions are dominated by high-frequency AC coefficients &mdash; the first thing quantization throws away. The optimal injection targets are in the interior, where the codec fights hardest to preserve fidelity.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 9 ──────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">IX</span>
+      <h2>Cross-Codec Survival</h2>
+      <p class="chapter-subtitle">&ldquo;You have got to be kidding me.&rdquo;</p>
+    </div>
+
+    <p>The expectation was that transcoding from JPEG to WebP would destroy the signal. Different codec. Different transform. Different quantization scheme. There was no reason it should survive.</p>
+
+    <p>It survived.</p>
+
+    <p>This validated the universality thesis. The signal doesn&rsquo;t depend on JPEG&rsquo;s specific DCT implementation. It depends on the fact that <em>any</em> lossy codec must partition, transform, and quantize. The structural difference between marker and non-marker positions is codec-agnostic because it&rsquo;s a property of the data, not of the compression scheme.</p>
+
+    <p>Initial testing on MP3 audio confirmed the same principle. The MDCT frames used in audio compression create the same exploitable boundary structure. As the generalized detection heuristic emerged:</p>
+
+    <blockquote>
+      <p>Any time I see the word &ldquo;Assume,&rdquo; any time I see the word &ldquo;Window&rdquo; (which assumes boundaries), and any time I see that the same data lives in N+1 places &mdash; we have injection targets.</p>
+    </blockquote>
+
+    <p>Or as it was more memorably put: I-frames are JPEGs in a trench coat.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 10 ─────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">X</span>
+      <h2>The Granite Test</h2>
+      <p class="chapter-subtitle">800 photographs. The moment of truth.</p>
+    </div>
+
+    <p>Everything before this was synthetic images and controlled experiments. The DIV2K dataset &mdash; 800 real photographs of every conceivable subject matter &mdash; was the real test. Real cameras. Real noise. Real content diversity.</p>
+
+    <p>There were bugs. Module import errors. API mismatches. Type errors between bytes and tuples. Each one fixed, re-run, fixed again. And then:</p>
+
+    <blockquote>
+      <p>I don&rsquo;t know what it&rsquo;s doing but it&rsquo;s doing <em>something</em>.</p>
+    </blockquote>
+
+    <p>The results came in:</p>
+
+    <div class="results-final">
+      <div class="result-row">
+        <span class="result-metric">G-B Detection</span>
+        <span class="result-value">96.4%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-metric">R-G Detection</span>
+        <span class="result-value">90.1%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-metric">Either Channel</span>
+        <span class="result-value">99.6%</span>
+      </div>
+      <div class="result-row">
+        <span class="result-metric">Amplification Confirmed</span>
+        <span class="result-value">48.1%</span>
+      </div>
+    </div>
+
+    <p>797 out of 800 images. After four generations of JPEG compression. The signal getting louder, not quieter. On real photographs that the system had never seen.</p>
+
+    <p>Verdict: <strong>GRANITE PARTIAL</strong>. The effect is real but content-class dependent. Some image types amplify more than others. The paper can claim the effect &mdash; with caveats.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 11 ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">XI</span>
+      <h2>The Torture Tests</h2>
+      <p class="chapter-subtitle">We tried to kill it</p>
+    </div>
+
+    <p>With detection validated, the next question: what destroys it? Three attack simulations designed to stress every assumption:</p>
+
+    <h3>The Rotation Attack</h3>
+    <p>Rotate the image. Flip it. Rotate again. Flip again. Re-encode as JPEG. After a full chain of geometric transforms plus lossy compression, with 97.5% of pixels changed from the original: <strong>still detected</strong>. 4.0x ratio. p=10<sup>-51</sup>. Fingerprint Jaccard: 0.72.</p>
+
+    <h3>The Slice-and-Stitch Attack</h3>
+    <p>Cut the image into four quadrants. Save each one independently as JPEG. Stitch them back together. Detection breaks on the fragments &mdash; too few markers per piece. But reassemble them, and the signal comes back. The fingerprint comes back. Even the stitch seams are forensically detectable.</p>
+
+    <blockquote>
+      <p>The attack undoes itself on reassembly. The only winning move is to keep the pieces separate. And separate pieces are a crop attack, not a stitch attack.</p>
+    </blockquote>
+
+    <h3>The Scale Attack</h3>
+    <p>Resize from 2048px down to 1024, 512, even 256px. The signal survived at every scale. Cross-codec transcoding after resize: still detected. Fingerprint Jaccard above 0.47 across every transform tested.</p>
+
+    <p>The variance ratio at 2048px told the amplification story best: starting at 3.7 at Gen 0, climbing to <strong>9.3 by Gen 4</strong>. The harder you compress, the louder it gets.</p>
+  </div>
+</section>
+
+<!-- ── CHAPTER 12 ─────────────────────────────────────────────────── -->
+<section class="section section-alt">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">XII</span>
+      <h2>Dead Ends</h2>
+      <p class="chapter-subtitle">The ideas that didn&rsquo;t survive</p>
+    </div>
+
+    <p>Not everything worked. Some ideas were abandoned. Some were killed on arrival. Each one taught something.</p>
+
+    <div class="dead-ends">
+      <div class="dead-end">
+        <h3>Basket as Identity</h3>
+        <p>The idea that each creator could use a unique prime basket as their identifier. Collisions appeared after only ~50 images. &ldquo;A collision after 50? Non-starter.&rdquo; Replaced by HMAC-SHA512 position patterns with 10<sup>400</sup> possible configurations.</p>
+      </div>
+      <div class="dead-end">
+        <h3>Blockchain Attribution</h3>
+        <p>Ethereum with Merkle trees for identity anchoring. Rejected as contrary to the project&rsquo;s decentralized ethos. The system that claims no authority cannot depend on one.</p>
+      </div>
+      <div class="dead-end">
+        <h3>DC-Anchored Embedding</h3>
+        <p>Anchoring markers to DC coefficients for stability. Better performance, but too predictable. It solved a problem that didn&rsquo;t exist while making the adversary&rsquo;s job easier.</p>
+      </div>
+      <div class="dead-end">
+        <h3>Browser Extension Detection</h3>
+        <p>Dismissed without ceremony. Not even wrong.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CHAPTER 13 ─────────────────────────────────────────────────── -->
+<section class="section">
+  <div class="container content-narrow">
+    <div class="chapter-header">
+      <span class="chapter-num">XIII</span>
+      <h2>Shoulders of Giants</h2>
+      <p class="chapter-subtitle">An honest assessment</p>
+    </div>
+
+    <p>Near the end, Jeremy asked for the one thing most people don&rsquo;t actually want: an honest answer.</p>
+
+    <blockquote>
+      <p>Please don&rsquo;t be complimentary or give fake praise. The best birthday gift is an honest assessment. Be brutal, because most of the time, for any and everyone, the answer is No. Did we just discover something new?</p>
+    </blockquote>
+
+    <p>His own conclusion was characteristically grounded:</p>
+
+    <blockquote>
+      <p>I am going to assume that each individual piece is probably known to someone at some time, but they may not have grokked how it can work as a cog to solve a larger problem. Like teeth in a gear. The idea of teeth isn&rsquo;t new at all. Variable gears with differential teeth strategies are, though.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>A novel systems design that may or may not have new novel integrated components.</p>
+    </blockquote>
+
+    <blockquote>
+      <p>Shoulders of giants, man. Shoulders of giants.</p>
+    </blockquote>
+
+    <p class="closing-line">I wonder if this is what Satoshi felt before he hit publish on his seminal paper.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- PREV -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="container content-narrow" style="text-align:center;">
+    <a href="part-1-discovery.html" class="btn btn-secondary">&larr; Part I: Discovery</a>
+    <p style="margin-top:1.5rem;"><a href="../history.html" style="font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);">&larr; Back to History</a></p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div>
+        <p class="footer-title">Granite Under Sandstone</p>
+        <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+        <p>Co-developed with Claude (Anthropic). Human-directed, AI-assisted.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-sep">&middot;</span>
+        <span>BSD 2-Clause License</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentation — Granite Under Sandstone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<div class="starfield"></div>
+
+<nav class="nav">
+  <div class="container nav-inner">
+    <a href="../index.html" class="nav-brand">Granite <span style="color:var(--text-dim)">/</span> Under Sandstone</a>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../the-stack/index.html">The Stack</a>
+      <a href="../philosophy.html">Philosophy</a>
+      <a href="../history.html">History</a>
+      <a href="../drops.html">Sample Code</a>
+      <a href="index.html" class="active">Docs</a>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+      <a href="../future.html">Future</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="hero-series">Documentation</p>
+    <h1>Granite Docs</h1>
+    <p class="hero-subtitle">Integration guides, API reference, and field notes.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+
+    <h2>Integration</h2>
+    <div class="grid-3">
+      <a href="raw-integration.html" class="doc-card">
+        <span class="doc-tag guide">Guide</span>
+        <h3>Raw Integration</h3>
+        <p>Embed and detect provenance signals by importing the source modules directly. No library, no build step.</p>
+      </a>
+      <a href="design-history.html" class="doc-card">
+        <span class="doc-tag guide">Guide</span>
+        <h3>Design History</h3>
+        <p>How we got here &mdash; every wrong assumption, why it failed, and what the correct architecture is.</p>
+      </a>
+      <div class="doc-card">
+        <span class="doc-tag coming">Coming</span>
+        <h3>Library Integration</h3>
+        <p>Install via pip, import, and go. Clean API surface for production use.</p>
+      </div>
+      <div class="doc-card">
+        <span class="doc-tag coming">Coming</span>
+        <h3>Architecture Overview</h3>
+        <p>The three detection layers, signal pipeline, and how they compose.</p>
+      </div>
+      <a href="prime-split-encoding.html" class="doc-card">
+        <span class="doc-tag guide">Paper</span>
+        <h3>Prime Split Encoding</h3>
+        <p>Steganographic information channels in prime decomposition space. Layer 2 payload encoding via split selection.</p>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+
+    <h2>Addendums</h2>
+    <p class="lead">Field notes, extensions, and deep dives from the research series.</p>
+    <div class="grid-3">
+      <a href="addendum-a-video-extension.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum A</span>
+        <h3>Extension to Video</h3>
+        <p>I-frames are JPEGs in a trench coat. The same granite hypothesis applies to H.264, H.265, VP9, and AV1.</p>
+      </a>
+      <a href="addendum-b-integration-landscape.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum B</span>
+        <h3>Integration Landscape</h3>
+        <p>Where Granite sits in the provenance ecosystem &mdash; C2PA, watermarking, fingerprinting, and the gaps between them.</p>
+      </a>
+      <a href="addendum-c-cascading-canary-survival.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum C</span>
+        <h3>Cascading Canary Survival</h3>
+        <p>What happens to the signal across 5+ generations of lossy compression. The canary in the cascade.</p>
+      </a>
+      <a href="addendum-d-attribution-architecture.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum D</span>
+        <h3>Attribution Architecture</h3>
+        <p>From detection to attribution &mdash; how the rare basket layer enables corpus-scale provenance at O(1) lookup.</p>
+      </a>
+      <a href="addendum-f-multilayer-provenance.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum F</span>
+        <h3>Multilayer Provenance</h3>
+        <p>How the three detection layers compose into a defense-in-depth provenance architecture.</p>
+      </a>
+      <a href="addendum-g-known-attacks.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum G</span>
+        <h3>Known Attacks</h3>
+        <p>Every attack we tested &mdash; rotation, slicing, rescaling, cross-codec transcoding &mdash; and what survived.</p>
+      </a>
+      <a href="addendum-h-thar-be-dragons.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum H</span>
+        <h3>Thar Be Dragons</h3>
+        <p>The failure modes, edge cases, and open problems we know about. Honest accounting of what doesn&rsquo;t work yet.</p>
+      </a>
+      <a href="addendum-i-color-of-survival.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum I</span>
+        <h3>The Color of Survival</h3>
+        <p>Why G-B outperforms R-G, and what chroma subsampling teaches us about channel pair selection.</p>
+      </a>
+      <a href="addendum-j-thermodynamic-tax.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum J</span>
+        <h3>The Thermodynamic Tax</h3>
+        <p>The information-theoretic cost of embedding. What the signal costs in PSNR, file size, and perceptual quality.</p>
+      </a>
+      <a href="addendum-k-fuse-and-fire.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum K</span>
+        <h3>Fuse and Fire</h3>
+        <p>The decision framework &mdash; when to declare detection, when to escalate, and the doctrine of compound evidence.</p>
+      </a>
+      <a href="addendum-l-spanning-sentinel.html" class="doc-card">
+        <span class="doc-tag addendum">Addendum L</span>
+        <h3>The Spanning Sentinel</h3>
+        <p>When the compressor becomes the custodian &mdash; relational encoding, tiered detection, and the 0.9988 gap.</p>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div>
+      <div class="footer-title">Granite Under Sandstone</div>
+      <p>Jeremy Pickett &mdash; Axiomatic Fictions Series</p>
+    </div>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <span class="footer-sep">/</span>
+      <a href="index.html">Docs</a>
+      <span class="footer-sep">/</span>
+      <a href="https://github.com/jeremy-pickett/granite" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+2026-03-31 06:47:01 [Late Filing Scanner] INFO === Late Filing Scanner (ID 9) starting ===
+2026-03-31 06:47:01 [Late Filing Scanner] INFO Loaded 577 securities
+2026-03-31 06:47:02 [Late Filing Scanner] INFO CIK cache loaded: 10447 tickers
+2026-03-31 06:47:02 [Late Filing Scanner] INFO Fetching...
+2026-03-31 06:47:02 [Late Filing Scanner] INFO Scanning 577 equities for late filings (NT 10-K/10-Q)...
+2026-03-31 06:47:05 [Late Filing Scanner] INFO   ADM: found 2 late filings
+2026-03-31 06:47:06 [Late Filing Scanner] INFO   ADSK: found 1 late filings
+2026-03-31 06:47:18 [Late Filing Scanner] INFO   AXON: found 4 late filings
+2026-03-31 06:47:18 [Late Filing Scanner] INFO   Progress: 50/577
+2026-03-31 06:47:20 [Late Filing Scanner] INFO   BE: found 1 late filings
+2026-03-31 06:47:23 [Late Filing Scanner] INFO   BLNK: found 27 late filings
+2026-03-31 06:47:28 [Late Filing Scanner] INFO   CANE: found 1 late filings
+2026-03-31 06:47:29 [Late Filing Scanner] INFO   CBOE: found 1 late filings
+2026-03-31 06:47:30 [Late Filing Scanner] INFO   CCI: found 2 late filings
+2026-03-31 06:47:32 [Late Filing Scanner] INFO   CHPT: found 1 late filings
+2026-03-31 06:47:34 [Late Filing Scanner] INFO   Progress: 100/577
+2026-03-31 06:47:45 [Late Filing Scanner] INFO   DBC: found 1 late filings
+2026-03-31 06:47:50 [Late Filing Scanner] INFO   Progress: 150/577
+2026-03-31 06:47:51 [Late Filing Scanner] INFO   EBAY: found 1 late filings
+2026-03-31 06:47:58 [Late Filing Scanner] INFO   EVGO: found 1 late filings
+2026-03-31 06:47:59 [Late Filing Scanner] INFO   EXE: found 1 late filings
+2026-03-31 06:48:00 [Late Filing Scanner] INFO   EXPD: found 1 late filings
+2026-03-31 06:48:05 [Late Filing Scanner] INFO   Progress: 200/577
+2026-03-31 06:48:18 [Late Filing Scanner] INFO   HSIC: found 1 late filings
+2026-03-31 06:48:19 [Late Filing Scanner] INFO   IAU: found 1 late filings
+2026-03-31 06:48:21 [Late Filing Scanner] INFO   Progress: 250/577
+2026-03-31 06:48:22 [Late Filing Scanner] INFO   IONQ: found 1 late filings
+2026-03-31 06:48:25 [Late Filing Scanner] INFO   JBLU: found 1 late filings
+2026-03-31 06:48:30 [Late Filing Scanner] INFO   LCID: found 1 late filings
+2026-03-31 06:48:32 [Late Filing Scanner] INFO   LIN: found 1 late filings
+2026-03-31 06:48:47 [Late Filing Scanner] INFO   MTZ: found 5 late filings
+2026-03-31 06:48:48 [Late Filing Scanner] INFO   Progress: 350/577
+2026-03-31 06:49:00 [Late Filing Scanner] INFO   PLUG: found 2 late filings
+2026-03-31 06:49:02 [Late Filing Scanner] INFO   PRIM: found 1 late filings
+2026-03-31 06:49:03 [Late Filing Scanner] INFO   Progress: 400/577
+2026-03-31 06:49:05 [Late Filing Scanner] INFO   Q: found 1 late filings
+2026-03-31 06:49:13 [Late Filing Scanner] INFO   SLV: found 1 late filings
+2026-03-31 06:49:13 [Late Filing Scanner] INFO   SMCI: found 15 late filings
+2026-03-31 06:49:14 [Late Filing Scanner] INFO   SOFI: found 1 late filings
+2026-03-31 06:49:15 [Late Filing Scanner] INFO   SOUN: found 6 late filings
+2026-03-31 06:49:15 [Late Filing Scanner] INFO   SOYB: found 1 late filings
+2026-03-31 06:49:18 [Late Filing Scanner] INFO   SVXY: found 1 late filings
+2026-03-31 06:49:22 [Late Filing Scanner] INFO   TECH: found 1 late filings
+2026-03-31 06:49:23 [Late Filing Scanner] INFO   TFC: found 1 late filings
+2026-03-31 06:49:26 [Late Filing Scanner] INFO   TRMB: found 4 late filings
+2026-03-31 06:49:28 [Late Filing Scanner] INFO   Progress: 500/577
+2026-03-31 06:49:33 [Late Filing Scanner] INFO   UVXY: found 1 late filings
+2026-03-31 06:49:39 [Late Filing Scanner] INFO   WDC: found 1 late filings
+2026-03-31 06:49:39 [Late Filing Scanner] INFO   Progress: 550/577
+2026-03-31 06:49:39 [Late Filing Scanner] INFO   WEAT: found 1 late filings
+2026-03-31 06:49:44 [Late Filing Scanner] INFO   ZBRA: found 2 late filings
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Fetch complete — stats so far: {'fetched': 37, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 540, 'elapsed': 0.0}
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Transforming...
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Transformed 96 rows
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Storing...
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Writing 96 late filing records...
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Stored 96 rows
+2026-03-31 06:49:45 [Late Filing Scanner] INFO Late filings: 37 fetched, 96 stored, 0 errors
+2026-03-31 06:49:45 [Late Filing Scanner] INFO === Done in 163.89s | {'fetched': 37, 'transformed': 96, 'stored': 96, 'errors': 0, 'skipped': 540, 'elapsed': 163.89} ===
+2026-04-01 06:12:02 [Late Filing Scanner] INFO === Late Filing Scanner (ID 9) starting ===
+2026-04-01 06:12:02 [Late Filing Scanner] INFO Loaded 686 securities
+2026-04-01 06:12:02 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:12:02 [Late Filing Scanner] INFO Fetching...
+2026-04-01 06:12:02 [Late Filing Scanner] INFO Scanning 686 equities for late filings (NT 10-K/10-Q)...
+2026-04-01 06:12:06 [Late Filing Scanner] INFO   ADM: found 2 late filings
+2026-04-01 06:12:09 [Late Filing Scanner] INFO   ADSK: found 1 late filings
+2026-04-01 06:12:16 [Late Filing Scanner] INFO   AES: found 1 late filings
+2026-04-01 06:12:35 [Late Filing Scanner] INFO   Progress: 50/686
+2026-04-01 06:12:38 [Late Filing Scanner] INFO   AXON: found 4 late filings
+2026-04-01 06:12:40 [Late Filing Scanner] INFO   BAX: found 2 late filings
+2026-04-01 06:12:41 [Late Filing Scanner] INFO   BE: found 1 late filings
+2026-04-01 06:12:45 [Late Filing Scanner] INFO   BLNK: found 27 late filings
+2026-04-01 06:12:50 [Late Filing Scanner] INFO   CANE: found 1 late filings
+2026-04-01 06:12:52 [Late Filing Scanner] INFO   CBOE: found 1 late filings
+2026-04-01 06:12:52 [Late Filing Scanner] INFO   Progress: 100/686
+2026-04-01 06:12:53 [Late Filing Scanner] INFO   CCI: found 2 late filings
+2026-04-01 06:12:56 [Late Filing Scanner] INFO   CHPT: found 1 late filings
+2026-04-01 06:13:08 [Late Filing Scanner] INFO   Progress: 150/686
+2026-04-01 06:13:11 [Late Filing Scanner] INFO   DBC: found 1 late filings
+2026-04-01 06:13:19 [Late Filing Scanner] INFO   EBAY: found 1 late filings
+2026-04-01 06:13:23 [Late Filing Scanner] INFO   Progress: 200/686
+2026-04-01 06:13:27 [Late Filing Scanner] INFO   EVGO: found 1 late filings
+2026-04-01 06:13:28 [Late Filing Scanner] INFO   EXE: found 1 late filings
+2026-04-01 06:13:29 [Late Filing Scanner] INFO   EXPD: found 1 late filings
+2026-04-01 06:13:32 [Late Filing Scanner] INFO   FE: found 2 late filings
+2026-04-01 06:14:14 [Late Filing Scanner] INFO   GEN: found 3 late filings
+2026-04-01 06:14:14 [Late Filing Scanner] INFO   Progress: 250/686
+2026-04-01 06:16:00 [Late Filing Scanner] INFO   HSIC: found 1 late filings
+2026-04-01 06:16:02 [Late Filing Scanner] INFO   IAU: found 1 late filings
+2026-04-01 06:16:04 [Late Filing Scanner] INFO   Progress: 300/686
+2026-04-01 06:16:06 [Late Filing Scanner] INFO   IONQ: found 1 late filings
+2026-04-01 06:16:10 [Late Filing Scanner] INFO   JBLU: found 1 late filings
+2026-04-01 06:16:10 [Late Filing Scanner] INFO   JCI: found 1 late filings
+2026-04-01 06:16:11 [Late Filing Scanner] INFO   JKHY: found 4 late filings
+2026-04-01 06:16:13 [Late Filing Scanner] INFO   KHC: found 3 late filings
+2026-04-01 06:16:17 [Late Filing Scanner] INFO   LCID: found 1 late filings
+2026-04-01 06:16:17 [Late Filing Scanner] INFO   Progress: 350/686
+2026-04-01 06:16:20 [Late Filing Scanner] INFO   LIN: found 1 late filings
+2026-04-01 06:16:33 [Late Filing Scanner] INFO   MOS: found 1 late filings
+2026-04-01 06:16:35 [Late Filing Scanner] INFO   Progress: 400/686
+2026-04-01 06:16:39 [Late Filing Scanner] INFO   MTZ: found 5 late filings
+2026-04-01 06:16:52 [Late Filing Scanner] INFO   Progress: 450/686

@@ -1,0 +1,32 @@
+2026-04-01 08:20:02 [Crypto Death Spiral Detector] INFO === Crypto Death Spiral Detector (ID 34) starting ===
+2026-04-01 08:20:02 [Crypto Death Spiral Detector] INFO Loaded 45 securities
+2026-04-01 08:20:02 [Crypto Death Spiral Detector] INFO Fetching...
+2026-04-01 08:20:02 [Crypto Death Spiral Detector] INFO Running death spiral analysis for BTC-USD (bitcoin)...
+2026-04-01 08:20:02 [Crypto Death Spiral Detector] INFO   Insufficient DB price data (0 rows), using CoinGecko...
+2026-04-01 08:20:05 [Crypto Death Spiral Detector] INFO   bitcoin: phase=warning  score=0.200  drawdown=29.7%  days_since_peak=77  vol=stable  social=unknown  dev=abandoned  indicators=['dev_abandoned']
+2026-04-01 08:20:05 [Crypto Death Spiral Detector] INFO Running death spiral analysis for ETH-USD (ethereum)...
+2026-04-01 08:20:05 [Crypto Death Spiral Detector] INFO   Insufficient DB price data (0 rows), using CoinGecko...
+2026-04-01 08:20:07 [Crypto Death Spiral Detector] INFO   ethereum: phase=deteriorating  score=0.300  drawdown=37.0%  days_since_peak=77  vol=stable  social=unknown  dev=abandoned  indicators=['price_decline_30pct', 'dev_abandoned']
+2026-04-01 08:20:07 [Crypto Death Spiral Detector] INFO Fetch complete — stats so far: {'fetched': 2, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 43, 'elapsed': 0.0}
+2026-04-01 08:20:07 [Crypto Death Spiral Detector] INFO Transforming...
+2026-04-01 08:20:07 [Crypto Death Spiral Detector] INFO Transformed 2 rows
+2026-04-01 08:20:07 [Crypto Death Spiral Detector] INFO Storing...
+2026-04-01 08:20:07 [Crypto Death Spiral Detector] INFO Writing 2 death spiral records...
+2026-04-01 08:20:08 [Crypto Death Spiral Detector] ERROR Collector failed: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(34) is not present in table "collectors".
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/base.py", line 140, in run
+    self.store(rows)
+  File "/home/ubuntu/granite/collectors/crypto_death_spiral.py", line 450, in store
+    super().store(rows)
+  File "/home/ubuntu/granite/collectors/base.py", line 98, in store
+    db.upsert_coverage_batch(
+  File "/home/ubuntu/granite/collectors/db.py", line 109, in upsert_coverage_batch
+    psycopg2.extras.execute_values(
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+psycopg2.errors.ForeignKeyViolation: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(34) is not present in table "collectors".
+
+2026-04-01 08:20:08 [Crypto Death Spiral Detector] INFO Death spiral: 2 fetched, 0 stored, 1 errors
+2026-04-01 08:20:08 [Crypto Death Spiral Detector] INFO === Done in 5.76s | {'fetched': 2, 'transformed': 2, 'stored': 0, 'errors': 1, 'skipped': 43, 'elapsed': 5.76} ===

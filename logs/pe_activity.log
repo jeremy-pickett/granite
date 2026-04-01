@@ -1,0 +1,41 @@
+2026-04-01 06:30:01 [PE Activity Monitor] INFO === PE Activity Monitor (ID 31) starting ===
+2026-04-01 06:30:01 [PE Activity Monitor] INFO Loaded 686 securities
+2026-04-01 06:30:01 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:30:01 [PE Activity Monitor] INFO Fetching...
+2026-04-01 06:30:01 [PE Activity Monitor] INFO Mapped 592 securities to CIKs
+2026-04-01 06:30:01 [PE Activity Monitor] INFO EFTS pass: going_private (forms=SC 13E-3,8-K)
+2026-04-01 06:30:35 [PE Activity Monitor] INFO   going_private: 121 matched our universe
+2026-04-01 06:30:35 [PE Activity Monitor] INFO EFTS pass: tender_offer (forms=SC TO-T,SC TO-C)
+2026-04-01 06:31:43 [PE Activity Monitor] INFO   tender_offer: 1300 matched our universe
+2026-04-01 06:31:43 [PE Activity Monitor] INFO EFTS pass: merger_agreement (forms=8-K,PREM14A,DEFM14A)
+2026-04-01 06:33:22 [PE Activity Monitor] INFO   merger_agreement: 577 matched our universe
+2026-04-01 06:33:22 [PE Activity Monitor] INFO EFTS pass: debt_offering (forms=8-K)
+2026-04-01 06:35:31 [PE Activity Monitor] INFO   debt_offering: 965 matched our universe
+2026-04-01 06:35:31 [PE Activity Monitor] INFO EFTS pass: asset_sale (forms=8-K)
+2026-04-01 06:35:49 [PE Activity Monitor] WARNING EFTS returned 500 at offset 2200, stopping pass
+2026-04-01 06:35:49 [PE Activity Monitor] INFO   asset_sale: 178 matched our universe
+2026-04-01 06:35:49 [PE Activity Monitor] INFO EFTS scan complete: 31539 total hits, 3141 matched our securities
+2026-04-01 06:35:49 [PE Activity Monitor] INFO Fetch complete — stats so far: {'fetched': 31539, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 06:35:49 [PE Activity Monitor] INFO Transforming...
+2026-04-01 06:35:49 [PE Activity Monitor] INFO Deduplicated: 3141 raw → 2165 unique records
+2026-04-01 06:35:49 [PE Activity Monitor] INFO Transformed 2165 rows
+2026-04-01 06:35:49 [PE Activity Monitor] INFO Storing...
+2026-04-01 06:35:49 [PE Activity Monitor] INFO Writing 2165 PE activity records...
+2026-04-01 06:35:50 [PE Activity Monitor] ERROR Collector failed: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(31) is not present in table "collectors".
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/base.py", line 140, in run
+    self.store(rows)
+  File "/home/ubuntu/granite/collectors/pe_activity.py", line 223, in store
+    super().store(rows)
+  File "/home/ubuntu/granite/collectors/base.py", line 98, in store
+    db.upsert_coverage_batch(
+  File "/home/ubuntu/granite/collectors/db.py", line 109, in upsert_coverage_batch
+    psycopg2.extras.execute_values(
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+psycopg2.errors.ForeignKeyViolation: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(31) is not present in table "collectors".
+
+2026-04-01 06:35:50 [PE Activity Monitor] INFO PE activity: 31539 scanned, 0 stored, 1 errors
+2026-04-01 06:35:50 [PE Activity Monitor] INFO === Done in 348.81s | {'fetched': 31539, 'transformed': 2165, 'stored': 0, 'errors': 1, 'skipped': 0, 'elapsed': 348.81} ===

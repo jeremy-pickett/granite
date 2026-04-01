@@ -1,0 +1,74 @@
+2026-03-31 06:49:01 [Financial Restatement Scanner] INFO === Financial Restatement Scanner (ID 9) starting ===
+2026-03-31 06:49:01 [Financial Restatement Scanner] INFO Loaded 577 securities
+2026-03-31 06:49:01 [Financial Restatement Scanner] INFO CIK cache loaded: 10447 tickers
+2026-03-31 06:49:01 [Financial Restatement Scanner] INFO Fetching...
+2026-03-31 06:49:01 [Financial Restatement Scanner] INFO Source 1: Scanning 577 equities for 8-K Item 4.02...
+2026-03-31 06:49:05 [Financial Restatement Scanner] INFO   ADM: found Item 4.02 (non-reliance) filing
+2026-03-31 06:49:17 [Financial Restatement Scanner] INFO   AXON: found Item 4.02 (non-reliance) filing
+2026-03-31 06:49:18 [Financial Restatement Scanner] INFO   Item 4.02 progress: 50/577
+2026-03-31 06:49:20 [Financial Restatement Scanner] INFO   BE: found Item 4.02 (non-reliance) filing
+2026-03-31 06:49:30 [Financial Restatement Scanner] INFO   CCI: found Item 4.02 (non-reliance) filing
+2026-03-31 06:49:31 [Financial Restatement Scanner] INFO   CHPT: found Item 4.02 (non-reliance) filing
+2026-03-31 06:49:34 [Financial Restatement Scanner] INFO   Item 4.02 progress: 100/577
+2026-03-31 06:49:36 [Financial Restatement Scanner] INFO   CPAY: found Item 4.02 (non-reliance) filing
+2026-03-31 06:49:49 [Financial Restatement Scanner] INFO   Item 4.02 progress: 150/577
+2026-03-31 06:49:57 [Financial Restatement Scanner] INFO   EVGO: found Item 4.02 (non-reliance) filing
+2026-03-31 06:50:04 [Financial Restatement Scanner] INFO   Item 4.02 progress: 200/577
+2026-03-31 06:50:19 [Financial Restatement Scanner] INFO   Item 4.02 progress: 250/577
+2026-03-31 06:50:20 [Financial Restatement Scanner] INFO   IONQ: found Item 4.02 (non-reliance) filing
+2026-03-31 06:50:28 [Financial Restatement Scanner] INFO   LCID: found Item 4.02 (non-reliance) filing
+2026-03-31 06:50:34 [Financial Restatement Scanner] INFO   LYFT: found Item 4.02 (non-reliance) filing
+2026-03-31 06:50:42 [Financial Restatement Scanner] INFO   MPWR: found Item 4.02 (non-reliance) filing
+2026-03-31 06:50:46 [Financial Restatement Scanner] INFO   MTZ: found Item 4.02 (non-reliance) filing
+2026-03-31 06:50:47 [Financial Restatement Scanner] INFO   Item 4.02 progress: 350/577
+2026-03-31 06:50:59 [Financial Restatement Scanner] INFO   PLUG: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:03 [Financial Restatement Scanner] INFO   Item 4.02 progress: 400/577
+2026-03-31 06:51:12 [Financial Restatement Scanner] INFO   SLV: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:12 [Financial Restatement Scanner] INFO   SMCI: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:14 [Financial Restatement Scanner] INFO   SOFI: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:14 [Financial Restatement Scanner] INFO   SOUN: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:15 [Financial Restatement Scanner] INFO   SPG: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:18 [Financial Restatement Scanner] INFO   SVXY: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:19 [Financial Restatement Scanner] INFO   SWK: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:20 [Financial Restatement Scanner] INFO   TAP: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:28 [Financial Restatement Scanner] INFO   Item 4.02 progress: 500/577
+2026-03-31 06:51:33 [Financial Restatement Scanner] INFO   UVXY: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:35 [Financial Restatement Scanner] INFO   VRT: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:39 [Financial Restatement Scanner] INFO   Item 4.02 progress: 550/577
+2026-03-31 06:51:44 [Financial Restatement Scanner] INFO   ZBRA: found Item 4.02 (non-reliance) filing
+2026-03-31 06:51:45 [Financial Restatement Scanner] INFO Source 1 complete: 25 Item 4.02 hits
+2026-03-31 06:51:45 [Financial Restatement Scanner] INFO Source 2: EFTS search for 'restatement' in amended filings...
+2026-03-31 06:51:49 [Financial Restatement Scanner] INFO   EFTS restatement progress: 500/4553 scanned, 8 matched
+2026-03-31 06:51:51 [Financial Restatement Scanner] INFO   EFTS restatement progress: 1000/4553 scanned, 15 matched
+2026-03-31 06:52:01 [Financial Restatement Scanner] INFO   EFTS restatement progress: 1500/4553 scanned, 27 matched
+2026-03-31 06:52:23 [Financial Restatement Scanner] INFO   EFTS restatement progress: 2000/4553 scanned, 33 matched
+2026-03-31 06:52:27 [Financial Restatement Scanner] INFO   EFTS restatement progress: 2500/4553 scanned, 39 matched
+2026-03-31 06:52:31 [Financial Restatement Scanner] INFO   EFTS restatement progress: 3000/4553 scanned, 43 matched
+2026-03-31 06:52:42 [Financial Restatement Scanner] INFO   EFTS restatement progress: 3500/4553 scanned, 46 matched
+2026-03-31 06:52:49 [Financial Restatement Scanner] INFO   EFTS restatement progress: 4000/4553 scanned, 56 matched
+2026-03-31 06:53:07 [Financial Restatement Scanner] INFO   EFTS restatement progress: 4500/4553 scanned, 72 matched
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Source 2 complete: 75 restatement hits in our universe
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Fetch complete — stats so far: {'fetched': 24, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Transforming...
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Transformed 86 rows
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Storing...
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Writing 86 financial restatement records...
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Stored 86 rows
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO Financial restatements: 24 fetched, 86 stored, 0 errors
+2026-03-31 06:53:11 [Financial Restatement Scanner] INFO === Done in 249.73s | {'fetched': 24, 'transformed': 86, 'stored': 86, 'errors': 0, 'skipped': 0, 'elapsed': 249.73} ===
+2026-04-01 06:15:56 [Financial Restatement Scanner] INFO === Financial Restatement Scanner (ID 9) starting ===
+2026-04-01 06:15:57 [Financial Restatement Scanner] INFO Loaded 686 securities
+2026-04-01 06:15:57 [edgar_utils] INFO CIK cache loaded: 10447 tickers
+2026-04-01 06:15:57 [Financial Restatement Scanner] INFO Fetching...
+2026-04-01 06:15:57 [Financial Restatement Scanner] INFO Source 1: Scanning 686 equities for 8-K Item 4.02...
+2026-04-01 06:16:01 [Financial Restatement Scanner] INFO   ADM: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:03 [Financial Restatement Scanner] INFO   AES: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:14 [Financial Restatement Scanner] INFO   Item 4.02 progress: 50/686
+2026-04-01 06:16:17 [Financial Restatement Scanner] INFO   AXON: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:20 [Financial Restatement Scanner] INFO   BAX: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:21 [Financial Restatement Scanner] INFO   BE: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:33 [Financial Restatement Scanner] INFO   Item 4.02 progress: 100/686
+2026-04-01 06:16:34 [Financial Restatement Scanner] INFO   CCI: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:37 [Financial Restatement Scanner] INFO   CHPT: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:46 [Financial Restatement Scanner] INFO   CPAY: found Item 4.02 (non-reliance) filing
+2026-04-01 06:16:50 [Financial Restatement Scanner] INFO   Item 4.02 progress: 150/686

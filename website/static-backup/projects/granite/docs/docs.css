@@ -1,0 +1,163 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   DOCS — Code blocks, parameter blocks, doc-specific styles
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Code Blocks ──────────────────────────────────────────────────── */
+
+pre {
+  background: #0d0d14;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  line-height: 1.6;
+}
+
+pre code {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: #c8c4be;
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* Inline code */
+code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--surface-2);
+  color: var(--amber);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+
+/* ── Parameter Blocks ─────────────────────────────────────────────── */
+
+.param-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.param-block h4 {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.param-block dl {
+  margin: 0;
+}
+
+.param-block dt {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
+
+.param-block dt:first-child {
+  margin-top: 0;
+}
+
+.param-block dd {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-left: 0;
+  padding-left: 1rem;
+  margin-bottom: 0;
+}
+
+/* ── Doc headings spacing ─────────────────────────────────────────── */
+
+.content-narrow h2 {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.content-narrow h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.content-narrow h3 {
+  margin-top: 2rem;
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: 1rem;
+}
+
+/* ── Doc index cards ──────────────────────────────────────────────── */
+
+.doc-card {
+  display: block;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+}
+
+.doc-card:hover {
+  border-color: var(--amber);
+  box-shadow: 0 0 20px var(--amber-glow);
+  color: inherit;
+}
+
+.doc-card h3 {
+  font-family: var(--mono);
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.doc-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.doc-card .doc-tag {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 3px;
+  margin-bottom: 0.75rem;
+}
+
+.doc-tag.guide {
+  background: var(--pass-dim);
+  color: var(--pass);
+}
+
+.doc-tag.reference {
+  background: var(--amber-glow);
+  color: var(--amber);
+}
+
+.doc-tag.coming {
+  background: var(--surface-2);
+  color: var(--text-dim);
+}
+
+.doc-tag.addendum {
+  background: var(--fire-glow);
+  color: var(--fire);
+}

@@ -1,0 +1,39 @@
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] INFO === Santiment On-Chain Analytics (ID 30) starting ===
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] INFO Loaded 45 securities
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] INFO Fetching...
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] INFO Fetching Santiment metrics for BTC-USD (bitcoin)...
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/daily_active_addresses
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:02 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/exchange_inflow
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/exchange_outflow
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/network_growth
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/whale_transaction_count
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/social_volume_total
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for bitcoin/dev_activity
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] INFO Fetching Santiment metrics for ETH-USD (ethereum)...
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for ethereum/daily_active_addresses
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for ethereum/exchange_inflow
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:03 [Santiment On-Chain Analytics] WARNING   No data for ethereum/exchange_outflow
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING   No data for ethereum/network_growth
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING   No data for ethereum/whale_transaction_count
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING   No data for ethereum/social_volume_total
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING GraphQL errors: [{'message': 'Argument "from" has invalid value "2026-03-25".', 'locations': [{'line': 6, 'column': 33}]}, {'message': 'Argument "to" has invalid value "2026-04-01".', 'locations': [{'line': 7, 'column': 33}]}]
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] WARNING   No data for ethereum/dev_activity
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 43, 'elapsed': 0.0}
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] INFO Transforming...
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] INFO Transformed 0 rows
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] INFO No new rows — nothing to store
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] INFO Santiment: 0 fetched, 0 stored, 0 errors
+2026-04-01 07:42:04 [Santiment On-Chain Analytics] INFO === Done in 2.39s | {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 43, 'elapsed': 2.39} ===

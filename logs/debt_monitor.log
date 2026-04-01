@@ -1,0 +1,60 @@
+2026-04-01 07:15:01 [Debt Loading Monitor] INFO === Debt Loading Monitor (ID 32) starting ===
+2026-04-01 07:15:01 [Debt Loading Monitor] INFO Loaded 686 securities
+2026-04-01 07:15:01 [Debt Loading Monitor] INFO Fetching...
+2026-04-01 07:16:12 [Debt Loading Monitor] INFO   Progress: 25 tickers fetched, 0 skipped
+2026-04-01 07:17:26 [Debt Loading Monitor] INFO   Progress: 50 tickers fetched, 2 skipped
+2026-04-01 07:18:46 [Debt Loading Monitor] INFO   Progress: 75 tickers fetched, 6 skipped
+2026-04-01 07:18:48 [Debt Loading Monitor] INFO   Progress: 75 tickers fetched, 7 skipped
+2026-04-01 07:20:09 [Debt Loading Monitor] INFO   Progress: 100 tickers fetched, 11 skipped
+2026-04-01 07:21:25 [Debt Loading Monitor] INFO   Progress: 125 tickers fetched, 13 skipped
+2026-04-01 07:22:35 [Debt Loading Monitor] INFO   Progress: 150 tickers fetched, 13 skipped
+2026-04-01 07:23:50 [Debt Loading Monitor] INFO   Progress: 175 tickers fetched, 15 skipped
+2026-04-01 07:23:53 [Debt Loading Monitor] INFO   Progress: 175 tickers fetched, 16 skipped
+2026-04-01 07:23:56 [Debt Loading Monitor] INFO   Progress: 175 tickers fetched, 17 skipped
+2026-04-01 07:25:18 [Debt Loading Monitor] INFO   Progress: 200 tickers fetched, 21 skipped
+2026-04-01 07:26:35 [Debt Loading Monitor] INFO   Progress: 225 tickers fetched, 24 skipped
+2026-04-01 07:27:52 [Debt Loading Monitor] INFO   Progress: 250 tickers fetched, 27 skipped
+2026-04-01 07:29:15 [Debt Loading Monitor] INFO   Progress: 275 tickers fetched, 33 skipped
+2026-04-01 07:30:47 [Debt Loading Monitor] INFO   Progress: 300 tickers fetched, 42 skipped
+2026-04-01 07:32:02 [Debt Loading Monitor] INFO   Progress: 325 tickers fetched, 45 skipped
+2026-04-01 07:33:12 [Debt Loading Monitor] INFO   Progress: 350 tickers fetched, 46 skipped
+2026-04-01 07:34:32 [Debt Loading Monitor] INFO   Progress: 375 tickers fetched, 51 skipped
+2026-04-01 07:35:38 [Debt Loading Monitor] INFO   Progress: 400 tickers fetched, 51 skipped
+2026-04-01 07:36:52 [Debt Loading Monitor] INFO   Progress: 425 tickers fetched, 52 skipped
+2026-04-01 07:38:18 [Debt Loading Monitor] INFO   Progress: 450 tickers fetched, 59 skipped
+2026-04-01 07:39:52 [Debt Loading Monitor] INFO   Progress: 475 tickers fetched, 70 skipped
+2026-04-01 07:39:55 [Debt Loading Monitor] INFO   Progress: 475 tickers fetched, 71 skipped
+2026-04-01 07:39:57 [Debt Loading Monitor] INFO   Progress: 475 tickers fetched, 72 skipped
+2026-04-01 07:40:00 [Debt Loading Monitor] INFO   Progress: 475 tickers fetched, 73 skipped
+2026-04-01 07:40:02 [Debt Loading Monitor] INFO   Progress: 475 tickers fetched, 74 skipped
+2026-04-01 07:40:05 [Debt Loading Monitor] INFO   Progress: 475 tickers fetched, 75 skipped
+2026-04-01 07:41:21 [Debt Loading Monitor] INFO   Progress: 500 tickers fetched, 79 skipped
+2026-04-01 07:41:23 [Debt Loading Monitor] INFO   Progress: 500 tickers fetched, 80 skipped
+2026-04-01 07:41:26 [Debt Loading Monitor] INFO   Progress: 500 tickers fetched, 81 skipped
+2026-04-01 07:41:29 [Debt Loading Monitor] INFO   Progress: 500 tickers fetched, 82 skipped
+2026-04-01 07:42:40 [Debt Loading Monitor] INFO   Progress: 525 tickers fetched, 84 skipped
+2026-04-01 07:44:33 [Debt Loading Monitor] INFO   Progress: 550 tickers fetched, 103 skipped
+2026-04-01 07:44:36 [Debt Loading Monitor] INFO   Progress: 550 tickers fetched, 104 skipped
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO Fetch complete — stats so far: {'fetched': 569, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 117, 'elapsed': 0.0}
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO Transforming...
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO Transformed 2260 rows
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO Storing...
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO Writing 2249 debt metric records (2249 deduped)...
+2026-04-01 07:45:58 [Debt Loading Monitor] ERROR Collector failed: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(32) is not present in table "collectors".
+Traceback (most recent call last):
+  File "/home/ubuntu/granite/collectors/base.py", line 140, in run
+    self.store(rows)
+  File "/home/ubuntu/granite/collectors/debt_monitor.py", line 270, in store
+    super().store(rows)
+  File "/home/ubuntu/granite/collectors/base.py", line 98, in store
+    db.upsert_coverage_batch(
+  File "/home/ubuntu/granite/collectors/db.py", line 109, in upsert_coverage_batch
+    psycopg2.extras.execute_values(
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/psycopg2/extras.py", line 1299, in execute_values
+    cur.execute(b''.join(parts))
+psycopg2.errors.ForeignKeyViolation: insert or update on table "collector_coverage" violates foreign key constraint "collector_coverage_collector_id_fkey"
+DETAIL:  Key (collector_id)=(32) is not present in table "collectors".
+
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO Debt monitor: 569 tickers fetched, 117 skipped, 1 errors
+2026-04-01 07:45:58 [Debt Loading Monitor] INFO === Done in 1857.21s | {'fetched': 569, 'transformed': 2260, 'stored': 0, 'errors': 1, 'skipped': 117, 'elapsed': 1857.21} ===

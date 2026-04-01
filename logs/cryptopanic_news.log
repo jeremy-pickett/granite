@@ -1,0 +1,11 @@
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO === CryptoPanic News Feed (ID 25) starting ===
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO Loaded 45 securities
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO Fetching...
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO Fetching CryptoPanic hot news...
+2026-04-01 08:03:01 [CryptoPanic News Feed] WARNING CryptoPanic returned 404
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO Fetch complete — stats so far: {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.0}
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO Transforming...
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO Transformed 0 rows
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO No new rows — nothing to store
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO CryptoPanic news: 0 fetched, 0 stored, 0 errors
+2026-04-01 08:03:01 [CryptoPanic News Feed] INFO === Done in 0.41s | {'fetched': 0, 'transformed': 0, 'stored': 0, 'errors': 0, 'skipped': 0, 'elapsed': 0.41} ===
